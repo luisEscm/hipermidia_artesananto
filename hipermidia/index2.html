@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+
+<head>
+<body>
+    minha página HTML
+    <label for="fruta">Fruatas</label>
+    <input type="text" id="fruta" placeholder="Digite o nome da fruta">
+    <button id="btn" onclick="createFruit()" class="text-red">
+        Enviar
+    </button>
+
+    <p id="result">
+        A fruta digitada foi
+    </p>
+    <div>
+
+    </div>
+    <img>
+
+    <script>
+        function createFruit(){
+            const frutaInput = document.getElementById("fruta")
+            const myBtn = document.getElementById("btn")
+            const fruta = frutaInput.value
+            const result = document.getElementById("result")
+            result.innerText = fruta
+            console.log(myBtn)
+            console.log(fruta)
+        }
+    </script>
+
+    <p>Este é um paragrafo</p>
+
+</body>
+</head>

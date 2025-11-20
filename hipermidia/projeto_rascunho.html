@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="./projeto_rascunho.css">
+</head>
+<body>
+
+  <form id="myForm">
+    <input id="myFile" type="file">
+    <textarea name="" id="post-text"></textarea>
+    <button type="submit">Enviar</button>
+  </form>
+
+  <div class="feed">
+    <h2>Feed</h2>
+  </div>
+
+  <script>
+    const myForm = document.querySelector("#myForm")
+    const myFile = document.querySelector("#myFile")
+    const postText = document.querySelector("#post-text")
+    const feed = document.getElementsByClassName("feed")[0]
+
+    myForm.addEventListener("submit", (e) => {
+      
+      e.preventDefault()
+
+      const myDiv = document.createElement("div")
+      myDiv.className = "post"
+      const myParagraph = document.createElement("p")
+      const myImage = document.createElement("img")
+
+      myParagraph.innerText = postText.value
+
+      readFile(myImage, myFile.files[0])
+
+
+      let post = {
+        description: postText.value,
+        img: myFile.files[0].name
+      }
+
+      savePost(post)
+      
+      myDiv.appendChild(myParagraph)
+      myDiv.appendChild(myImage)
+
+      feed.appendChild(myDiv)
+    })
+
+    function readFile(img, file) {
+
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        img.src = e.target.result
+      }
+
+      reader.readAsDataURL(file)
+    }
+
+
+    function savePost(post) {
+
+      
+      console.log(localStorage.getItem("posts"))
+
+      if (!localStorage.getItem("posts")) {
+        localStorage.setItem("posts", JSON.stringify(post))
+      }
+
+      // localStorage.setItem("posts", )
+    }
+  </script>
+</body>
+</html>
