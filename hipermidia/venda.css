@@ -1,0 +1,83 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+}
+
+header {
+  background-color: #f2f4f7;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #d1d5db;
+  padding: 9px;
+}
+
+.painel {
+    display: flex;
+    align-items: center;
+    gap:9px;
+}
+
+.painel .img_loja{
+    background: #7B2CFF; 
+    width: 55px;
+    height: 55px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.painel img{
+    width: 80%;
+}
+
+.painel h1{
+  font-size: 24px;
+  color: #111827;
+  font-weight: 650;
+}
+
+
+header nav {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+header nav a{
+    background-color: #7B2CFF;
+    display: flex;
+    align-items: center;
+    padding: 2px 5px  ;
+    font-size: 10px;
+    background: #0d6efd;
+    color: white;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    gap: 5px;
+}
+
+.nav_img{
+ 
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav_img img{
+    width: 80%;
+    height: 70%;
+    object-fit: contain;
+}
+
+nav a:hover{
+    transform: scale(1.1);
+}
