@@ -2,6 +2,7 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  
 }
 
 body {
@@ -9,6 +10,7 @@ body {
 }
 
 header {
+
   background-color: #f2f4f7;
   display: flex;
   align-items: center;
@@ -26,7 +28,7 @@ header {
 .painel .img_loja{
     background: #7B2CFF; 
     width: 55px;
-    height: 55px;
+    height: 45px;
     border-radius: 10px;
     display: flex;
     align-items: center;
@@ -54,18 +56,22 @@ header nav a{
     background-color: #7B2CFF;
     display: flex;
     align-items: center;
-    padding: 2px 5px  ;
+    padding: 3px 5px  ;
     font-size: 10px;
     background: #0d6efd;
     color: white;
     border-radius: 10px;
     text-decoration: none;
     font-weight: 600;
-    gap: 5px;
+    height: 45px;
 }
 
+nav h2{
+  padding: 0px 2px;
+}
+
+
 .nav_img{
- 
     height: 45px;
     display: flex;
     align-items: center;
@@ -73,11 +79,97 @@ header nav a{
 }
 
 .nav_img img{
-    width: 80%;
     height: 70%;
+    aspect-ratio: 1 / 1;
     object-fit: contain;
 }
 
+
 nav a:hover{
-    transform: scale(1.1);
+  transition: 0.3s;
+  transform: scale(1.1);
+   background-color: #7B2CFF;
+}
+
+/*segundo bloco*/
+
+.abas_vendedor{
+  background-color: #f2f4f7;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #d1d5db;
+  gap: 20px;
+  justify-content: flex-start;
+  padding: 5px 10px;
+}
+
+.abas_vendedor .aba{
+  display: flex;
+  text-decoration: none;
+  align-items: center;
+  padding: 0% 5px;
+  border-radius: 10px  ;
+  height: 45px;
+  gap:7px;
+}
+
+.aba img {
+    height: 90%;
+    aspect-ratio: 1 / 1;
+    object-fit: contain;
+}
+
+.aba h2{
+  color: black;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.aba.ativa {
+    background: #7B2CFF; 
+    color: white;
+}
+
+.aba.ativa h2 {
+    color: white;
+}
+
+/*aba produtos*/
+
+.aba_produto{
+  display: none;
+}
+
+.aba_produto h3{
+  font-size: 19px;
+  font-weight: 500;
+}
+
+.adiciona_produto {
+  background-color: black;
+  background-color: #7B2CFF;
+  padding: 2px 9px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.extra{
+  display: flex;
+  width: 100%;
 }
