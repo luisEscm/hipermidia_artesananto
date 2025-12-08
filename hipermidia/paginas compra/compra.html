@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compras</title>
+    <link rel="stylesheet" href="compra.css"> 
+</head>
+<body>
+    <!-- ================= HEADER ================= -->
+    <header class="header">
+        <div class="header-left">
+            <h1 class="logo">Art Attack</h1>
+        </div>
+
+        <div class="header-center">
+            <input 
+                type="text" 
+                placeholder="Buscar produtos artesanais..." 
+                class="search-input"
+            />
+        </div>
+
+        <div class="header-right">
+            <button class="btn-login">
+                <svg 
+                    xmlns="https://cdn-icons-png.flaticon.com/512/1286/1286923.png" 
+                    width="18" 
+                    height="18" 
+                    viewBox="5 0 24 24" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    stroke-width="2" 
+                    stroke-linecap="round" 
+                    stroke-linejoin="round"
+                >
+                    <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+                    <polyline points="10 17 15 12 10 7"/>
+                    <line x1="15" y1="12" x2="3" y2="12"/>
+                </svg>
+
+                Entrar
+            </button>
+        </div>
+    </header>
+
+    <!-- ============== aqui tem as tags dos produtos ============== -->
+    <nav class="categories">
+        <ul class="category-list">
+            <!-- por enquanto ta esses, mas tem de colocar pra adaptar para as tags existentes-->
+            <li>Acessórios</li>
+            <li>Aromáticas</li>
+            <li>Arte</li>
+            <li>Bem-estar</li>
+            <li>Bolsas</li>
+            <li>Casa</li>
+            <li>Cerâmica</li>
+            <li>Cestas</li>
+            <li>Couro</li>
+            <li>Cozinha</li>
+            <li>Decoração</li>
+            <li>Joias</li>
+            <li>Madeira</li>
+        </ul>
+    </nav>
+
+    <!-- ============== Os produtos vão ficar nessa parte ============== -->
+    <main class="main-content">
+
+        <section class="intro">
+            <h2>Produtos Artesanais Brasileiros</h2>
+            <p>Descubra peças únicas feitas à mão por artesãos de todo o Brasil</p>
+        </section>
+
+        <!-- ============== Aqui vai ficar a grid dos produtos ============== -->
+        <section class="product-grid">
+
+            <!-- Esse card tá só de exemplo visual no site, depois temos de tirar ele -->
+            <article class="product-card">
+                <div class="product-image">
+                    <img src=".../hipermidia/imagens trabalho/megaman.png" alt="megaman">
+                    <button class="favorite-btn">♡</button>
+                </div>
+
+                <div class="product-info">
+                    <h3>Conjunto de Cerâmica Artesanal</h3>
+                    <span class="producer">por Cerâmica da Terra</span>
+
+                    <div class="tags">
+                        <span class="tag">Cerâmica</span>
+                        <span class="tag">Decoração</span>
+                        <span class="tag">+1</span>
+                    </div>
+
+                    <div class="price-stock">
+                        <span class="price">R$ 189,90</span>
+                        <span class="stock">15 disponíveis</span>
+                    </div>
+
+                    <button class="btn-cart">Adicionar ao Carrinho</button>
+                </div>
+            </article>
+
+            <!-- Exemplo de como é pra estar escrito os blocos dos cards
+            <article class="product-card">
+                <div class="product-image">
+                    <img src="caminho imagem" alt="Titulo da imagem do card">
+                    <button class="favorite-btn">♡</button> Botão de favorito
+                </div>
+
+                <div class="product-info">
+                    <h3>Titulo do produto</h3>
+                    <span class="producer">por [nome da loja]</span>
+
+                    <div class="tags">
+                        lista de tags do produto
+                        <span class="tag">Joias</span>
+                        <span class="tag">Prata</span>
+                        <span class="tag">+1</span>
+                    </div>
+
+                    <div class="price-stock">
+                        Preço e quantidade dos stocks
+                        <span class="price">R$ 245,00</span>
+                        <span class="stock">8 disponíveis</span>
+                    </div>
+
+                    <button class="btn-cart">Adicionar ao Carrinho</button>
+                </div>
+            </article>
+            -->
+            <!-- Repete para os demais produtos -->
+
+        </section>
+    </main>
+</body>
+</html>
