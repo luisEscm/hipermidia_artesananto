@@ -8,6 +8,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="venda.css">    
+    <link rel="stylesheet" href= "pedidos.css">
+    <link rel="stylesheet" href= "estatistica.css">
 </head>
 <body>
 
@@ -25,48 +27,136 @@
                 <div class="nav_img">
                     <img src="venda/person48.png" alt="Meus Produtos">
                 </div>
-                <h2>Perfil</h2>
+                <h2 class="texto">Perfil</h2>
             </a>
             <a href="#">
                 <div class="nav_img" id="loja">
                     <img src="venda/storefront.png" alt="Meus Produtos">
                 </div>
-                <h2>Loja</h2>
+                <h2 class="texto">Loja</h2>
             </a>
             <a href="#">
                 <div class="nav_img">
                     <img src="venda/login_78.png" alt="Meus Produtos">
                 </div>
-                <h2>Sair</h2>
+                <h2 class="texto">Sair</h2>
             </a>    
         </nav>
     </header>
 
     
     <div class="abas_vendedor">
-        <a href="#" class="aba ativa" data-target="produtos">
+        <a href="#" class="aba " data-target="produtos">
             <img src="venda/mprodutos48.png" alt="Foto Produto">
             <h2>Meus Produtos</h2>
         </a>
 
-        <a href="#" class="aba">
+        <a href="#" class="aba ">
             <img src="venda/produtos48.png" alt="Foto Pedido" data-target="pedidos">
             <h2>Pedidos</h2>
         </a>
 
-        <a href="#" class="aba" data-target="estatistica">
+        <a href="#" class="aba ativa" data-target="estatistica">
             <img src="venda/estatistica48.png" alt="Foto Estatistica">
             <h2>Estatística</h2>
         </a>
     </div>
 
-    <div class="aba_produto extra" id ="produtos">
+    <div class="aba_produto " id ="produtos">
         <div class="adiciona_produto">
             <h3 id="meu_p">Meus produtos </h3>
-            <button class="nav_img">Adiciona produto</button>
+            <button class="butao_add" onclick="window.location.href='form.html'">
+                <img src="venda/add48.png" alt="Simbolo adição" >
+                <h2 class="texto">Adicionar produto</h2>
+            </button>
         </div>
-        
+
+        <div class="filtro">
+            <div class="busca">
+                <input id="busca" type="text" placeholder="Buscar por nome do produto"  required>
+                <button class="botao">
+                    <img src="venda/itadori.jpg" alt="Buscar" id="itadori">
+                </button>
+            </div>
+            <button class="filtrar" id="filtro">
+                    <img src="venda/filter.png" alt="Imagem de um filtro">
+                    <h2 class="texto">Filtros</h2>
+            </button>
+        </div>
+        <div class="lista_produtos" id="lista_produtos"></div>   
     </div>
+
+    <div class="aba_venda">
+        <h2>Pedidos Recebidos</h2>
+    </div>
+
+    
+    <div class="aba_estatistica extra">
+        <h2>Suas estatísticas</h2>
+
+        <div class="estatisticas-cards">
+            <div class="estat-card">
+                <div class="estat-icon bg-blue">
+                    <img src="venda/mprodutos48.png" alt="produtos">
+                </div>
+                <div class="estat-info">
+                    <div class="estat-label">Total de Produtos</div>
+                    <div class="estat-value">127</div>
+                </div>
+                <div class="estat-change up">↑ 12%</div>
+            </div>
+
+            <div class="estat-card">
+                <div class="estat-icon bg-green">
+                    <img src="venda/icon-receita.png" alt="receita">
+                </div>
+                <div class="estat-info">
+                    <div class="estat-label">Receita Total (3 meses)</div>
+                    <div class="estat-value">R$ 17460.50</div>
+                </div>
+                <div class="estat-change up">↑ 23%</div>
+            </div>
+
+            <div class="estat-card">
+                <div class="estat-icon bg-purple">
+                    <img src="venda/produtos48.png" alt="pedidos">
+                </div>
+                <div class="estat-info">
+                    <div class="estat-label">Pedidos Concluídos</div>
+                    <div class="estat-value">89</div>
+                </div>
+                <div class="estat-change up">↑ 8%</div>
+            </div>
+
+            <div class="estat-card">
+                <div class="estat-icon bg-yellow">
+                    <img src="venda/icon-media.png" alt="média">
+                </div>
+                <div class="estat-info">
+                    <div class="estat-label">Média Mensal</div>
+                    <div class="estat-value">R$ 5820.17</div>
+                </div>
+                <div class="estat-change up">↑ 15%</div>
+            </div>
+        </div>
+    </div>
+    <!-- const html = `
+            <div class="cartao-produto">
+                <img src="${produto.imagem}" alt="${produto.nome}" class="img-produto">
+                <div class="info-produto">
+                    <h3>${produto.nome}</h3>
+                    <div class="tags-produto">${tags}</div>
+                    <div class="preco-estoque">
+                        <span class="preco">R$ ${produto.preco.toFixed(2)}</span>
+                        <span class="estoque">${produto.quantidade} em estoque</span>
+                    </div>
+                    <div class="botoes-produto">
+                        <button class="btn-editar" onclick="editarProduto(${produto.id})">✏️ Editar</button>
+                        <button class="btn-excluir" onclick="excluirProduto(${produto.id})">🗑️ Excluir</button>
+                    </div>
+                </div>
+            </div>
+        `;-->
 
 </body>
 </html>

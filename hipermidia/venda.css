@@ -2,11 +2,12 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  
+  outline: none ;
 }
 
 body {
   font-family: "Inter", sans-serif;
+  padding: 5px 30px;
 }
 
 header {
@@ -22,13 +23,13 @@ header {
 .painel {
     display: flex;
     align-items: center;
-    gap:9px;
+    gap:5px;
 }
 
 .painel .img_loja{
     background: #7B2CFF; 
-    width: 55px;
-    height: 45px;
+    width: 40px;
+    height: 40px;
     border-radius: 10px;
     display: flex;
     align-items: center;
@@ -40,34 +41,37 @@ header {
 }
 
 .painel h1{
-  font-size: 24px;
+  font-size: 20px;
   color: #111827;
-  font-weight: 650;
+  font-weight: 600;
 }
 
 
 header nav {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 5px;
 }
 
 header nav a{
     background-color: #7B2CFF;
     display: flex;
     align-items: center;
-    padding: 3px 5px  ;
+    padding: 0px 5px  ;
     font-size: 10px;
     background: #0d6efd;
-    color: white;
     border-radius: 10px;
     text-decoration: none;
-    font-weight: 600;
-    height: 45px;
+    height: 45%;
+    width:50%;
 }
 
-nav h2{
+.texto{
+  color: white;
   padding: 0px 2px;
+  font-weight: 500;
+  width: auto;
+  font-size:17px;
 }
 
 
@@ -107,10 +111,11 @@ nav a:hover{
   display: flex;
   text-decoration: none;
   align-items: center;
-  padding: 0% 5px;
+  padding: 0px 5px;
   border-radius: 10px  ;
   height: 45px;
   gap:7px;
+  
 }
 
 .aba img {
@@ -138,38 +143,234 @@ nav a:hover{
 
 .aba_produto{
   display: none;
+ 
 }
 
-.aba_produto h3{
-  font-size: 19px;
+.aba_produto#meu_p{
+  font-size: 17px;
   font-weight: 500;
 }
 
 .adiciona_produto {
-  background-color: black;
-  background-color: #7B2CFF;
-  padding: 2px 9px;
+ width: 100%;
+  padding: 0px 9px;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
+.adiciona_produto .butao_add{
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  background-color: blue;
+  color: white ;
+  padding: 5px 10px;
+  border-radius: 10px;
+  height: 40px;
+}
+
+.adiciona_produto .butao_add:hover{
+  background-color: #7B2CFF ;
+  transition: 0.3s;
+  transform: scale(1.1);
+}
+
+.adiciona_produto .butao_add h2{
+  font-size:17px;
+}
+
+.butao_add img {
+    width: 24px;
+    height: 24px;
+    aspect-ratio: 1 / 1;
+    object-fit: contain;
+}
 
 
+.filtro{
+  display: flex;
+  align-items: center;
+  padding: 15px 9px;
+  justify-content: space-between;
+  gap: 15px
 
+}
 
+.filtro .busca{
+  width: 90%;
+  display: flex ;
+  gap: 2px;
+}
+.filtro .busca input{
+  padding: 12px 9px;
+  border-radius: 10px ;
+  border: grey 2px solid  ;
+  width: 100%;
+}
 
+.filtro .busca input:focus{
+   border:  #7B2CFF 2px solid  ;
+}
 
+.botao{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  height: 40px;
+  width: 40px ;
+  border:none;
+  cursor: pointer;
+  
+}
 
+.filtro .busca button #itadori{
+  border: none;
+  border-radius: 10px;
+  height: 40px;
+  object-fit: cover;
+}
 
+.filtro .busca button #itadori:hover{
+  box-shadow: 0 2px 8px 0px #7B2CFF ;
+  transition: 0.3s;
+  transform: scale(1.1);
+}
 
+.filtro .filtrar{
+  display: flex;
+  border-radius: 10px;
+  align-items: center;
+  justify-content: center;
+   border: 2px solid grey;
+   padding: 4px 3px;
+}
 
+.filtro .filtrar img{
+  width: 30px;
+  height: 30px;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+}
 
+.filtro .filtrar h2{
+  color: black ;
+}
+
+.filtro .filtrar:hover{
+  background-color: #d4d8de ;
+  transition: 0.3s;
+  transform: scale(1.1);
+}
+
+\*bloco de produtos*/
+
+.produtos-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px;
+}
+
+.cartao_produto {
+    display: flex;
+    gap: 16px;
+    background: #fff;
+    border: 1px solid #e3e6ee;
+    border-radius: 12px;
+    padding: 16px;
+    align-items: flex-start;
+}
+
+.img_produto {
+    width: 180px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.info_produto {
+    flex: 1;
+}
+
+.info_produto h3 {
+    margin: 0 0 8px 0;
+    font-size: 18px;
+    color: #1a2233;
+}
+
+.tags_produto {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+
+.tag_produto {
+    display: inline-block;
+    background: #e3f2fd;
+    color: #0d6efd;
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-size: 14px;
+}
+
+.preco_estoque {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    font-size: 16px;
+}
+
+.preco {
+    color: #0d6efd;
+    font-weight: 600;
+}
+
+.estoque {
+    color: #666;
+    font-size: 14px;
+}
+
+.botoes_produto {
+    display: flex;
+    gap: 12px;
+}
+
+.btn_editar, .btn_excluir {
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.2s;
+}
+
+.btn_editar {
+    background: #fff;
+    border: 1px solid #ccc;
+    color: #1a2233;
+}
+
+.btn_editar:hover {
+    background: #f0f0f0;
+}
+
+.btn_excluir {
+    background: #fff;
+    border: 1px solid #ff4d4d;
+    color: #ff4d4d;
+}
+
+.btn_excluir:hover {
+    background: #ffe6e6;
+}
 
 
 
 
 .extra{
-  display: flex;
-  width: 100%;
+  display: block;
 }
+

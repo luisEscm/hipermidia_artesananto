@@ -1,0 +1,140 @@
+body {
+    font-family: 'Inter', Arial, sans-serif;
+    background: #fff;
+    margin: 0;
+    padding: 0;
+}
+
+form#form_produtos {
+    max-width: 600px;
+    margin: 30px auto;
+    background: #d3d3d3;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    padding: 15px 30px;
+    position: relative;
+}
+
+form h1 {
+    font-size: 28 px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    text-align: left;
+}
+
+form#form_produtos label {
+    display: block;
+    font-weight: 500;
+    color: #1a2233;
+    margin-bottom: 8px;
+    margin-top: 18px;
+    font-size: 17px;
+}
+
+form#form_produtos input {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: 1px solid #e3e6ee;
+    font-size: 16px;
+    margin-bottom: 8px;
+    background: #fafbfc;
+    box-sizing: border-box;
+    transition: border 0.2s;
+}
+
+form#form_produtos input:focus {
+    border: 2px solid #0d6efd;
+    outline: none;
+}
+
+.tags {
+    margin-bottom: 8px;
+    margin-top: 8px;
+}
+
+.tags .tag {
+    display: inline-block;
+    border: 1px solid #e3e6ee;
+    border-radius: 16px;
+    padding: 6px 16px;
+    margin: 4px 4px 0 0;
+    font-size: 15px;
+    background: #fff;
+    color: #222;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.tags .tag:hover {
+    background: #0d6efd;
+    color: #fff;
+}
+
+.tag_adicionar{
+    display: flex;
+     gap: 8px;
+      margin-bottom: 12px;
+}
+
+#nova_tag {
+    border: 1px solid #e3e6ee;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 16px;
+    background: #fafbfc;
+    margin-bottom: 0;
+}
+
+#adicionar_tag {
+    background: #7B2CFF;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+#adicionar_tag:hover {
+    background: #7B2CFF;
+}
+
+.botoes_form {
+    display: flex;
+    gap: 16px;
+    margin-top: 16px;
+}
+
+#cancelar_form {
+    flex: 1;
+    background: white;
+    color: #222;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 12px 0;
+    font-size: 16px;
+    cursor: pointer;
+    transition: border 0.2s;
+}
+
+#cancelar_form:hover {
+    border-color: #0d6efd;
+}
+
+#salvar_produto {
+    flex: 2;
+    background: #0d6efd;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 0;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+#salvar_produto:hover {
+    background: #0b5ed7;
+}

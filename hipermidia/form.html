@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário de Produto</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="form.css">
+</head>
+<body>
+    <form id="form_produtos" >
+        <h1>Produto</h1>
+        <label >Nome do Produto</label>
+        <input class="input" id="nome_produto" type="text" placeholder="Ex: Vaso" required><br>
+
+        <label >Preço (R$)</label>
+        <input class="input" id="preco_produto" type="number" min="0" value="0" required><br>
+
+        <label>Quantidade em Estoque</label>
+        <input class="input" id="quantidade_produto" type="number" min="0" value="0" required><br>
+
+        <label>Tags</label>
+        <div class="tags" id="tag_container">
+        
+        </div>
+        <div class="tag_adicionar">
+            <input class="input" id="nova_tag" type="text" placeholder="Adicionar nova tag" style="flex:1;">
+            <button type="button" id="adicionar_tag">+ Adicionar</button>
+        </div>
+
+        <label>URL da Imagem</label>
+        <input class="input" id="url_imagem" type="text" placeholder="https://exemplo.com/imagem.jpg"><br>
+
+        <div class="botoes_form">
+            <button type="button" id="cancelar_form" onclick="window.location.href='venda.html'">Cancelar</button>
+            <button type="submit" id="salvar_produto">Adicionar Produto</button>
+        </div>
+    </form>
+</body>
+</html>
