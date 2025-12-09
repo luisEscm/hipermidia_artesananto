@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Checkout</title>
+    <link rel="stylesheet" href="checkout.css">
+</head>
+<body>
+
+<header class="top-bar">
+    <a href="compra.html">← Voltar ao carrinho</a>
+</header>
+
+<main class="container">
+
+    <div class="steps">
+        <div class="step active">1 Informações</div>
+        <div class="step">2 Pagamento</div>
+    </div>
+
+    <div class="layout">
+
+        <!-- FORMULÁRIO -->
+        <div class="card">
+            <h3>Informações de Entrega</h3>
+
+            <form id="checkoutForm">
+                <label>Nome Completo</label>
+                <input id="nome" required>
+
+                <label>Telefone</label>
+                <input id="telefone" required>
+
+                <label>E-mail</label>
+                <input id="email" required>
+
+                <label>Endereço</label>
+                <input id="endereco" required>
+
+                <div class="row">
+                    <div>
+                        <label>Cidade</label>
+                        <input id="cidade" required>
+                    </div>
+                    <div>
+                        <label>UF</label>
+                        <input id="uf" maxlength="2" required>
+                    </div>
+                </div>
+
+                <label>CEP</label>
+                <input id="cep" required>
+
+                <button type="submit" class="btn-primary">
+                    Continuar para Pagamento
+                </button>
+            </form>
+        </div>
+
+        <!-- RESUMO -->
+        <div class="card">
+            <h3>Resumo do Pedido</h3>
+
+            <div id="items"></div>
+
+            <hr>
+
+            <div class="total-line">
+                <span>Subtotal</span>
+                <span id="subtotal"></span>
+            </div>
+
+            <div class="total-line">
+                <span>Frete</span>
+                <span>R$ 15,00</span>
+            </div>
+
+            <div class="total-line total">
+                <strong>Total</strong>
+                <strong id="total"></strong>
+            </div>
+        </div>
+
+    </div>
+</main>
+
+<script>
+function obterCarrinho() {
+    return JSON.parse(localStorage.getItem("carrinho")) || [];
+}
+
+function carregarResumo() {
+    const carrinho = obterCarrinho();
+    let subtotal = 0;
+    const itemsDiv = document.getElementById("items");
+
+    itemsDiv.innerHTML = "";
+
+    carrinho.forEach(item => {
+        subtotal += item.preco * item.qtd;
+
+        itemsDiv.innerHTML += `
+            <p>${item.nome} (x${item.qtd}) - 
+            <strong>R$ ${(item.preco * item.qtd).toFixed(2)}</strong></p>
+        `;
+    });
+
+    document.getElementById("subtotal").innerText = `R$ ${subtotal.toFixed(2)}`;
+    document.getElementById("total").innerText = `R$ ${(subtotal + 15).toFixed(2)}`;
+}
+
+document.getElementById("checkoutForm").addEventListener("submit", e => {
+    e.preventDefault();
+
+    const dados = {
+        nome: nome.value,
+        telefone: telefone.value,
+        email: email.value,
+        endereco: endereco.value,
+        cidade: cidade.value,
+        uf: uf.value,
+        cep: cep.value
+    };
+
+    localStorage.setItem("checkout", JSON.stringify(dados));
+    localStorage.setItem("frete", 15);
+
+    window.location.href = "pagamento.html";
+});
+
+carregarResumo();
+</script>
+
+</body>
+</html>

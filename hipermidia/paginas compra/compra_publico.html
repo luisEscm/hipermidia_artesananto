@@ -22,13 +22,35 @@
         </div>
 
         <div class="header-right">
-            <a href="login.html" class="btn-login">
+            <img 
+                src="../compra_imgs/heart.png"
+                alt="Favoritos"
+                class="icon"
+            >
+
+            <img 
+                src="../compra_imgs/user.png"
+                alt="Usuário"
+                class="icon"
+            >
+
+            <a class="cart-icon-wrapper" id="cartLink" title="Ver carrinho" onclick="abrirCarrinho()">
                 <img 
-                    src="https://cdn-icons-png.flaticon.com/512/1286/1286923.png"
-                    alt="Entrar"
-                    class="login-icon"
+                    src="../compra_imgs/cart.png"
+                    alt="Carrinho"
+                    class="icon"
+                    id="headerCartIcon"
                 >
-                Entrar
+                <span class="cart-badge" id="cartCount">0</span>
+            </a>
+
+            <a href="compra.html" class="btn-logout">
+                <img 
+                    src="../compra_imgs/out.png"
+                    alt="Sair"
+                    class="icon"
+                >
+                <span>Sair</span>
             </a>
         </div>
     </header>
@@ -89,7 +111,7 @@
             {id: 1,
              nome: "Megaman",
              produtor: "Cerâmica da Terra",
-             preco: "R$ 189,90",
+             preco: 189.90,
              estoque: 15,
              imagem: "../imagens trabalho/megaman.png",
              tags: ["Heroi", "Video game", "Megaman"],
@@ -100,7 +122,7 @@
              id: 2,
              nome: "xavier e magneto",
              produtor: "Couro & Arte",
-             preco: "R$ 79,90",
+             preco: 79.90,
              estoque: 8,
              imagem: "../imagens trabalho/dr. xavier, magneto.png",
              tags: ["Plastico", "X-man", "Vilão", "Heroi"],
@@ -108,7 +130,8 @@
              detalhes: ["100% feito à mão", "Produção sustentável", "Materiais naturais", "Entrega em todo o Brasil"]
             }
         ];
-
+        
+        let produtoAtual = null
         function criarCardProduto(produto) {
             return `
                 <article class="product-card">
@@ -129,11 +152,11 @@
                         </div>
 
                         <div class="price-stock">
-                            <span class="price">${produto.preco}</span>
+                            <span class="price">R$ ${produto.preco}</span>
                             <span class="stock">${produto.estoque} disponíveis</span>
                         </div>
 
-                        <button class="btn-cart">Adicionar ao Carrinho</button>
+                        <button class="btn-cart" onclick="adicionarAoCarrinhoPorId(${produto.id})">Adicionar ao Carrinho</button>
                     </div>
                 </article>
             `;
@@ -146,6 +169,13 @@
             prods.forEach(prod => {
                 grid.innerHTML += criarCardProduto(prod);
             });
+        }
+
+        function adicionarAoCarrinhoPorId(id) {
+            const produto = prods.find(p => p.id === id);
+            if (!produto) return;
+
+            adicionarAoCarrinho(produto);
         }
 
         carregarProdutos();
@@ -179,12 +209,14 @@
         function openModal(id) {
             const produto = prods.find(p => p.id === id);
             console.log(produto)
+            produtoAtual = prods.find(p => p.id === id);
+            if (!produtoAtual) return;
             if (!produto) return;
 
             document.getElementById("modalImage").src = produto.imagem;
             document.getElementById("modalTitle").innerText = produto.nome;
             document.getElementById("modalAuthor").innerText = produto.produtor;
-            document.getElementById("modalPrice").innerText = produto.preco;
+            document.getElementById("modalPrice").innerText = `R$ ${produto.preco}`;
             document.getElementById("modalDescription").innerText = produto.descricao;
 
 
@@ -203,9 +235,137 @@
                 .classList.remove("active");
         }
     
-        function atualizarPagina(pag){
-            window.location.href = pag;
+        function obterCarrinho() {
+            return JSON.parse(localStorage.getItem("carrinho")) || [];
         }
+
+        function salvarCarrinho(carrinho) {
+            localStorage.setItem("carrinho", JSON.stringify(carrinho));
+        }
+
+        function adicionarAoCarrinho(produto) {
+            const carrinho = obterCarrinho();
+
+            const itemExistente = carrinho.find(item => item.id === produto.id);
+
+            if (itemExistente) {
+                itemExistente.qtd += 1;
+            } else {
+                carrinho.push({
+                    id: produto.id,
+                    nome: produto.nome,
+                    preco: produto.preco,
+                    imagem: produto.imagem,
+                    qtd: 1
+                });
+            }
+
+            salvarCarrinho(carrinho);
+            atualizarContadorCarrinho();
+        }
+
+        function atualizarContadorCarrinho() {
+            const carrinho = obterCarrinho();
+            const total = carrinho.reduce((acc, item) => acc + item.qtd, 0);
+            const contador = document.getElementById("cartCount");
+
+            if (!contador) return;
+
+            if (total > 0) {
+                contador.innerText = total;
+                contador.style.display = "flex";
+            } else {
+                contador.style.display = "none";
+            }
+        }
+
+        function renderizarCarrinho() {
+            const carrinho = obterCarrinho();
+            const container = document.getElementById("cartItems");
+            const totalEl = document.getElementById("cartTotal");
+
+            container.innerHTML = "";
+            let total = 0;
+
+            carrinho.forEach(item => {
+                total += item.preco * item.qtd;
+                console.log(item)
+                const div = document.createElement("div");
+                div.className = "cart-item";
+
+                div.innerHTML = `
+                    <img src="${item.imagem}" class="cart-item-img">
+
+                    <div class="cart-item-info">
+                        <h4>${item.nome}</h4>
+
+                        <span class="cart-item-price">
+                            R$ ${(item.preco * item.qtd).toFixed(2)}
+                        </span>
+
+                        <div class="cart-item-actions">
+                            <button class="qty-btn" onclick="alterarQtd(${item.id}, -1)">−</button>
+                            <span class="qty">${item.qtd}</span>
+                            <button class="qty-btn" onclick="alterarQtd(${item.id}, 1)">+</button>
+
+                            <button class="remove-btn" onclick="removerItem(${item.id})">
+                                Remover
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+
+                container.appendChild(div);
+            });
+
+            totalEl.innerText = `R$ ${total.toFixed(2)}`;
+        }
+
+        function alterarQtd(id, delta) {
+            const carrinho = obterCarrinho();
+            const item = carrinho.find(p => p.id === id);
+
+            if (!item) return;
+
+            item.qtd += delta;
+
+            if (item.qtd <= 0) {
+                removerItem(id);
+                return;
+            }
+
+            salvarCarrinho(carrinho);
+            renderizarCarrinho();
+            atualizarContadorCarrinho();
+        }
+
+        function removerItem(id) {
+            let carrinho = obterCarrinho();
+            carrinho = carrinho.filter(item => item.id !== id);
+
+            salvarCarrinho(carrinho);
+            renderizarCarrinho();
+            atualizarContadorCarrinho();
+        }
+
+        function abrirCarrinho() {
+            document.getElementById("cartDrawer").classList.add("open");
+            document.getElementById("cartOverlay").classList.add("active");
+            renderizarCarrinho();
+        }
+
+        function fecharCarrinho() {
+            document.getElementById("cartDrawer").classList.remove("open");
+            document.getElementById("cartOverlay").classList.remove("active");
+        }
+        
+        function realizarPagamento(){
+            window.location.href = "checkout.html"
+        }
+        document.getElementById("cartOverlay").addEventListener("click", fecharCarrinho);
+        atualizarContadorCarrinho();
+
     </script>
 
     <div class="modal" id="productModal">
@@ -250,12 +410,12 @@
                     </ul>
 
                     <div class="modal-actions">
-                        <button class="btn-primary" onclick="atualizarPagina('login.html')">
+                        <button class="btn-primary" onclick="adicionarAoCarrinho(produtoAtual)">
                             <img class="icon-action-prim" src="../compra_imgs/cart.png"></img>
                             <sapn>Adicionar ao Carrinho</sapn>
                         </button>
 
-                        <button class="btn-secondary" onclick="atualizarPagina('login.html')">
+                        <button class="btn-secondary">
                             <img class="icon-action" src="../compra_imgs/heart.png"></img>
                             <span>Favoritar</span>
                         </button>
@@ -268,5 +428,31 @@
             </div>
         </div>
     </div>
+
+        <!-- OVERLAY -->
+    <div id="cartOverlay" class="cart-overlay"></div>
+
+    <!-- DRAWER DO CARRINHO -->
+    <aside class="cart-drawer" id="cartDrawer">
+        <div class="cart-header">
+            <h2>Carrinho de Compras</h2>
+            <button onclick="fecharCarrinho()">✕</button>
+        </div>
+
+        <div id="cartItems" class="cart-items"></div>
+
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <strong id="cartTotal">R$ 0,00</strong>
+            </div>
+
+            <button class="checkout-btn" onclick="realizarPagamento()">
+                Finalizar Compra
+            </button>
+        </div>
+    </aside>
+
 </body>
+
 </html>

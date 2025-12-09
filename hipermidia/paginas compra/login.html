@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Art Attack | Entrar</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+
+    <div class="login-page">
+
+        <!-- Logo e Título -->
+        <div class="login-header">
+            <div class="logo-icon">
+                <img class="icon-logo-img" src="../venda/storefront.png"></img>
+            </div>
+
+            <h1>Art Attack</h1>
+            <p>Entre para continuar</p>
+        </div>
+
+        <!-- Card de login -->
+        <div class="login-card">
+
+            <form>
+                <div class="field">
+                    <label>E-mail</label>
+                    <div class="input-box">
+                        <img class="icon" src="https://cdn-icons-png.freepik.com/512/6229/6229074.png"></img>
+                        <input type="email" placeholder="seu@email.com" required>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label>Senha</label>
+                    <div class="input-box">
+                        <img class="icon" src="https://cdn-icons-png.flaticon.com/512/158/158709.png"></img>
+                        <input id="senha" type="password" placeholder="••••••••" required>
+                        <img id="olhoIcon" class="icon" src="../compra_imgs/olho.png"></img>
+                    </div>
+                </div>
+
+                <div class="options">
+                    <label class="remember">
+                        <input type="checkbox">
+                        Lembrar-me
+                    </label>
+
+                    <a href="#" class="forgot">Esqueceu a senha?</a> <!--tem de colocaro link certo aqui-->
+                </div>
+
+                <!-- Botão -->
+                <button class="btn-submit" type="submit" onclick="realizar_login()">Entrar</button>
+            </form>
+
+            <!-- Cadastro -->
+            <p class="register">
+                Não tem uma conta? <a href="#">Cadastre-se</a>
+            </p>
+
+        </div>
+    </div>
+
+    <script>
+        const passwordInput = document.getElementById("senha");
+        const eyeIcon = document.getElementById("olhoIcon");
+
+        eyeIcon.addEventListener("click", () => {
+            const isPassword = passwordInput.type === "password";
+
+            // alterna tipo do input
+            passwordInput.type = isPassword ? "text" : "password";
+
+            // alterna ícone
+            eyeIcon.src = isPassword 
+                ? "../compra_imgs/olho-fechado.png" 
+                : "../compra_imgs/olho.png";
+        });
+
+        function realizar_login(){
+            // a gente mete uma verificação aqui depois
+            window.location.href = "compra_publico.html";
+        }
+    </script>
+
+</body>
+</html>

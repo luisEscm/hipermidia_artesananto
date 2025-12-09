@@ -17,36 +17,94 @@ body {
     align-items: center;
     justify-content: space-between;
     padding: 16px 32px;
-    background-color: #ffffff;
+    background: #fff;
     border-bottom: 1px solid #e5e7eb;
 }
 
-.logo {
-    font-size: 22px;
+.header-left .logo {
     color: #2563eb;
+    font-size: 22px;
+}
+
+.header-center {
+    flex: 1;
+    display: flex;
+    justify-content: center;
 }
 
 .search-input {
-    width: 400px;
-    max-width: 100%;
-    padding: 10px 16px;
-    border: 1px solid #d1d5db;
-    border-radius: 999px;
-    outline: none;
+    width: 75%;
+    max-width: 520px;
+    padding: 14px 20px;
+    font-size: 15px;
+    border-radius: 30px;
 }
 
-.search-input:focus {
-    border-color: #2563eb;
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
 }
 
-.btn-login {
-    background-color: #2563eb;
-    color: white;
-    border: none;
-    padding: 10px 18px;
-    border-radius: 10px;
+.icon,
+.login-icon {
+    width: 26px;
+    height: 26px;
     cursor: pointer;
-    font-weight: 500;
+}
+
+.icon:hover{
+    transform: scale(1.1);
+}
+
+.cart-icon-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.cart-badge {
+    position: absolute;
+    top: -6px; /* fica na borda superior */
+    right: -6px; /* fica na borda lateral */
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    border-radius: 999px;
+    background: #2563eb; /* azul */
+    color: #fff;
+    font-size: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.cart-badge {
+    display: inline-flex;
+}
+
+/* classe para esconder */
+.cart-badge.hidden {
+    display: none;
+}
+
+/* parte para o botão de logout */
+.btn-logout {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: #1f2933;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.btn-logout:hover {
+    color: #2563eb; /*não sei se isso ficou legal */
+}
+
+.btn-logout:hover .icon {
+    transform: scale(1.1);
 }
 
 /* ========== esta é a parte para as tags ========== */
@@ -217,17 +275,415 @@ body {
 .btn-login {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
 
-    background-color: #2563eb;
-    color: white;
-    border: none;
+    text-decoration: none;
+    color: #fff;
+
+    background: #2563eb;
     padding: 10px 18px;
-    border-radius: 10px;
+    border-radius: 22px;
+
+    font-size: 15px;
+    transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.btn-login:hover {
+    background: #1e40af;     /* ✅ mais escuro */
+}
+
+.btn-login:active {
+    transform: scale(0.97);
+    background: #1e3a8a;
+}
+
+.login-icon {
+    width: 22px;
+    height: 22px;
+    filter: brightness(0) invert(1); /* ícone branco */
+}
+
+.btn-login {
+    font-size: 15px;
+    gap: 10px;
+}
+
+/*=========================================== card de detalhes do produto ====================================================*/
+/* ===== OVERLAY ===== */
+
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: none; 
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.modal {
+    display: none;
+}
+.modal.active {
+    display: flex;
+}
+
+
+/* ===== CONTAINER PRINCIPAL ===== */
+
+.modal-content {
+    background: #ffffff;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 1000px;
+    display: flex;
+    gap: 32px;
+    padding: 32px;
+    position: relative;
+}
+
+/* ===== BOTÃO FECHAR ===== */
+
+.modal-close {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    border: none;
+    background: none;
+    font-size: 24px;
     cursor: pointer;
+}
+
+/* ===== IMAGEM ===== */
+
+.modal-body {
+    display: flex;
+    gap: 32px;
+    align-items: flex-start;
+}
+
+.modal-image {
+    flex: 1;
+}
+
+.modal-image img {
+    width: 100%;
+    height: 100%;
+    max-height: 420px;
+    object-fit: cover;
+    border-radius: 14px;
+}
+
+/* ===== INFORMAÇÕES ===== */
+
+.modal-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* ===== TÍTULO ===== */
+
+.modal-info h2 {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+/* ===== AUTOR ===== */
+
+.modal-author {
+    font-size: 15px;
+    color: #6b7280;
+}
+
+.modal-author a {
+    color: #2563eb;
+    text-decoration: none;
+}
+
+.modal-author a:hover {
+    text-decoration: underline;
+}
+
+/* ===== TAGS ===== */
+
+.tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.tags span {
+    font-size: 14px;
+    padding: 6px 14px;
+    background: #e0ebff;
+    color: #2563eb;
+    border-radius: 999px;
     font-weight: 500;
 }
 
-.btn-login svg {
-    display: block;
+/* ===== DISPONIBILIDADE ===== */
+
+.availability {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14.5px;
+    color: #16a34a;
+}
+
+/* ===== PREÇO ===== */
+
+.price {
+    font-size: 24px;
+    font-weight: 600;
+    color: #2563eb;
+    margin: 16px 0 8px;
+}
+
+/* ===== SUBTÍTULOS ===== */
+
+.modal-info h3 {
+    font-size: 17px;
+    margin-bottom: 6px;
+}
+
+/* ===== DESCRIÇÃO ===== */
+
+.description {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #374151;
+}
+
+/* ===== LISTA DE DETALHES ===== */
+
+.modal-info ul {
+    padding-left: 18px;
+    margin-top: 6px;
+}
+
+.modal-info li {
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: #374151;
+}
+
+/* ===== AÇÕES ===== */
+
+.modal-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+/* ===== BOTÃO PRINCIPAL ===== */
+
+.btn-primary {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 22px;
+    background: #2563eb;
+    color: #fff;
+    border-radius: 12px;
+    border: none;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.btn-primary:hover {
+    background: #1e4fd6;
+}
+
+/* ===== BOTÕES SECUNDÁRIOS ===== */
+
+.btn-secondary {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 18px;
+    background: #ffffff;
+    border: 1px solid #d1d5db;
+    border-radius: 12px;
+    font-size: 14.5px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.btn-secondary:hover {
+    background: #f3f4f6;
+}
+
+.icon-action {
+    height: 24px;
+    width: 24px;
+}
+
+.icon-action-prim {
+    height: 34px;
+    width: 34px;
+}
+
+/*=================================== card do carrinho =========================================*/
+
+/* ================= OVERLAY ================= */
+.cart-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.3s;
+    z-index: 99;
+}
+
+.cart-overlay.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+/* ================= DRAWER ================= */
+.cart-drawer {
+    position: fixed;
+    top: 0;
+    right: -380px;
+    width: 380px;
+    height: 100vh;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    transition: 0.3s;
+    z-index: 100;
+}
+
+.cart-drawer.open {
+    right: 0;
+}
+
+/* ================= HEADER ================= */
+.cart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px;
+    border-bottom: 1px solid #eee;
+}
+
+.cart-header h2 {
+    font-size: 18px;
+}
+
+.cart-header button {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* ================= ITEMS ================= */
+.cart-items {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+}
+
+/* ================= ITEM ================= */
+.cart-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border-radius: 10px;
+    background: #f9f9f9;
+    margin-bottom: 12px;
+}
+
+/* ✅ IMAGEM (CORRETO AGORA) */
+.cart-item-img {
+    width: 64px !important;
+    height: 64px !important;
+    border-radius: 6px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+/* ================= INFO ================= */
+.cart-item-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.cart-item-info h4 {
+    font-size: 14px;
+    margin: 0;
+}
+
+.cart-item-price {
+    font-weight: bold;
+    color: #2563eb;
+}
+
+/* ================= AÇÕES ================= */
+.cart-item-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 6px;
+}
+
+.qty-btn {
+    width: 26px;
+    height: 26px;
+    border: 1px solid #ccc;
+    background: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.qty {
+    min-width: 20px;
+    text-align: center;
+}
+
+/* ✅ BOTÃO REMOVER */
+.remove-btn {
+    margin-left: auto;
+    background: none;
+    border: none;
+    color: #dc2626;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+/* ================= FOOTER ================= */
+.cart-footer {
+    border-top: 1px solid #eee;
+    padding: 15px;
+}
+
+.cart-total {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.checkout-btn {
+    width: 100%;
+    background: #2563eb;
+    color: #fff;
+    border: none;
+    padding: 12px;
+    font-size: 15px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.checkout-btn:hover {
+    background: #1e40af;
 }

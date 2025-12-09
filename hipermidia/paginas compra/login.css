@@ -1,0 +1,137 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background-color: #f3f6ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-page {
+    width: 100%;
+    max-width: 420px;
+    text-align: center;
+}
+
+/* ===== HEADER ===== */
+.login-header {
+    margin-bottom: 32px;
+}
+
+.logo-icon {
+    width: 64px;
+    height: 64px;
+    background-color: #2563eb;
+    border-radius: 16px;
+    margin: 0 auto 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-logo-img {
+    width: 42px;
+    height: 42px;
+}
+
+.login-header h1 {
+    font-size: 22px;
+    margin-bottom: 4px;
+}
+
+.login-header p {
+    color: #666;
+}
+
+/* ===== CARD ===== */
+.login-card {
+    background-color: #ffffff;
+    border-radius: 20px;
+    padding: 28px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+}
+
+/* ===== CAMPOS ===== */
+.field {
+    text-align: left;
+    margin-bottom: 18px;
+}
+
+.field label {
+    font-size: 14px;
+    margin-bottom: 6px;
+    display: block;
+    color: #333;
+}
+
+.input-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    padding: 10px 14px;
+}
+
+.input-box input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 14px;
+}
+
+.icon {
+    width: 18px;   /* largura */
+    height: 18px;  /* altura */
+    font-size: 16px;
+    color: #777;
+}
+
+.icon.action {
+    cursor: pointer;
+}
+
+/* ===== OPÇÕES ===== */
+.options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 14px 0 20px;
+    font-size: 13px;
+}
+
+.options a {
+    color: #2563eb;
+    text-decoration: none;
+}
+
+/* ===== BOTÃO ===== */
+.btn-submit {
+    width: 100%;
+    padding: 14px;
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* ===== CADASTRO ===== */
+.register {
+    margin-top: 16px;
+    font-size: 14px;
+}
+
+.register a {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 500;
+}
