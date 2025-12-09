@@ -1,59 +1,221 @@
 import db from '../config/database.js';
 
-class PostService {
-  
-  // Criar um novo post
-  createPost(img, description) {
-    const sql = `
-      INSERT INTO posts (img, description)
-      VALUES (?, ?)
-    `;
+class StoreService {
 
-    const result = db.prepare(sql).run(img, description);
+  // Estatísticas do vendedor
+  obterEstatisticas(qtd_meses = 3, vendedorId) {
+
+    const qtdmeses = Number(qtd_meses);
+    const qtd_meses = qtdmeses <= 0 ? 0 : qtdmeses > 12 ? 12 : qtdmeses;
+    const agora = new Date();
+    const anoAtual = String(agora.getFullYear());
+    const mesAtual = agora.getMonth() + 1;
+
+    const mesesSelecionados = [];
+    for (let i = 0; i < qtd_meses; i += 1) {
+      const mes = mesAtual - i;
+      if (mes <= 0) break;
+      mesesSelecionados.push(String(mes).padStart(2, '0'));
+    }
+
+    let receita = 0;
+    let pedidos = 0;
+    let quantidadeVendida = 0;
+
+    if (mesesSelecionados.length > 0) {
+      const marcadores = mesesSelecionados.map(() => '?').join(', ');
+      const parametros = [anoAtual, ...mesesSelecionados, vendedorId, 'concluido'];
+
+      const estatisticasPeriodo = db.prepare(`
+        SELECT 
+          SUM(valor_total) AS receita,
+          SUM(quantidade) AS quantidadeVendida,
+          COUNT(*) AS pedidos
+        FROM Pedidos
+        WHERE strftime('%Y', data_pedido) = ?
+          AND strftime('%m', data_pedido) IN (${marcadores})
+          AND vendedor_id = ?
+          AND status = ?
+      `).get(...parametros) || {};
+
+      receita = estatisticasPeriodo.receita || 0;
+      pedidos = estatisticasPeriodo.pedidos || 0;
+      quantidadeVendida = estatisticasPeriodo.quantidadeVendida || 0;
+    }
+
+    const mediaMensal = mesesSelecionados.length > 0 ? receita / mesesSelecionados.length : 0;
 
     return {
-      id: result.lastInsertRowid,
-      img,
-      description
+      receita,
+      pedidos,
+      quantidadeVendida,
+      mediaMensal
     };
   }
 
-  // Buscar todos os posts
-  getAllPosts() {
-    const sql = `SELECT * FROM posts`;
-    return db.prepare(sql).all();
-  }
-
-  // Buscar um post por ID
-  getPostById(id) {
-    const sql = `SELECT * FROM posts WHERE id = ?`;
-    return db.prepare(sql).get(id);
-  }
-
-  // Atualizar um post
-  updatePost(id, img, description) {
+  //rank dos produtos mais vendidos estatistica
+  obterProdutosMaisVendidos(vendedorId) {
     const sql = `
-      UPDATE posts
-      SET img = ?, description = ?
-      WHERE id = ?
+      SELECT 
+        p.id,
+        p.nome,
+        SUM(ped.quantidade) AS vendidos,
+        SUM(ped.valor_total) AS total,
+        p.preco AS unit,
+        p.url_imagem AS imagem
+      FROM Pedidos ped
+      JOIN Produtos p ON ped.produto_id = p.id
+      WHERE ped.vendedor_id = ?
+      GROUP BY p.id
+      ORDER BY vendidos DESC
     `;
+    return db.prepare(sql).all(vendedorId);
+  }
 
-    const result = db.prepare(sql).run(img, description, id);
+  // Listar todos os produtos
+  obterTodosProdutos(vendedorId) {
+    const produtos = db.prepare(`
+      SELECT 
+        id, 
+        nome, 
+        preco, 
+        quantidade_estoque AS quantidade, 
+        url_imagem AS imagem 
+      FROM Produtos
+      WHERE vendedor_id = ?
+    `).all(vendedorId);
 
-    if (result.changes === 0) {
-      return null;
+    return produtos.map((produto) => {
+      const tags = db.prepare(`
+        SELECT t.nome 
+        FROM Tags t
+        JOIN Produto_Tags pt ON t.id = pt.tag_id
+        WHERE pt.produto_id = ?
+      `).all(produto.id);
+
+      return {
+        ...produto,
+        tags: tags.map((tag) => tag.nome)
+      };
+    });
+ } 
+
+
+  //lista de pedidos realizados
+   obterPedidos(vendedorId) {
+    const sql = `
+      SELECT 
+        ped.id,
+        u.nome AS cliente,
+        p.nome AS produto,
+        ped.quantidade AS qtd,
+        ped.valor_total AS total,
+        ped.status,
+        ped.data_pedido AS data
+      FROM Pedidos ped
+        JOIN Usuarios u ON ped.comprador_id = u.id
+        JOIN Produtos p ON ped.produto_id = p.id
+      WHERE ped.vendedor_id = ?
+      ORDER BY ped.data_pedido DESC
+    `;
+    return db.prepare(sql).all(vendedorId);
+  }
+
+
+  //cria o produto e adiciona no banco
+  criarProduto(dados) {
+    const inserirProduto = db.prepare(`
+      INSERT INTO Produtos (vendedor_id, nome, preco, quantidade_estoque, url_imagem)
+      VALUES (?, ?, ?, ?, ?)
+    `);
+
+    const resultado = inserirProduto.run(
+      dados.vendedor_id,
+      dados.nome,
+      dados.preco,
+      dados.quantidade,
+      dados.imagem
+    );
+
+    const idProduto = resultado.lastInsertRowid;
+
+    //verifica se foi adicionado tag no produto
+    if (Array.isArray(dados.tags) && dados.tags.length > 0) {
+      const buscarTag = db.prepare('SELECT id FROM Tags WHERE nome = ?');
+    
+      const associarTag = db.prepare(`
+        INSERT OR IGNORE INTO Produto_Tags (produto_id, tag_id)
+        VALUES (?, ?)
+      `);
+
+      const transacao = db.transaction((tags) => {
+        tags.forEach((nomeTag) => {
+          //normalizar
+          const nomeNormalizado = nomeTag.trim().toLowerCase();
+          if (!nomeNormalizado){
+            return
+          };
+
+          const tagExistente = buscarTag.get(nomeNormalizado);
+
+          //se existe a tag
+          if (tagExistente) {
+            associarTag.run(idProduto, tagExistente.id);
+          }
+        });
+      });
+
+      // Remove duplicatas do array antes de processar
+      const tagsUnicas = [...new Set(dados.tags)];
+      transacao(tagsUnicas);
     }
 
-    return { id, img, description };
+    return {
+      id: idProduto,
+      nome: dados.nome,
+      preco: dados.preco,
+      quantidade: dados.quantidade,
+      imagem: dados.imagem,
+      tags: dados.tags
+    };
   }
 
-  // Deletar um post
-  deletePost(id) {
-    const sql = `DELETE FROM posts WHERE id = ?`;
-    const result = db.prepare(sql).run(id);
+  deletarProduto(id) {
+    const produtoExistente = db.prepare('SELECT id FROM Produtos WHERE id = ?').get(id);
+    if (!produtoExistente) return false;
 
-    return result.changes > 0;
+    const excluirProduto = db.prepare('DELETE FROM Produtos WHERE id = ?');
+    const resultado = excluirProduto.run(id);
+
+    return resultado.changes > 0;
   }
+
+  //retorna as tags existentes no banco
+  listarTags() {
+      return db.prepare('SELECT * FROM Tags ORDER BY nome ASC').all();
+  }
+
+  //adiciona tag no banco
+  adicionarTag(nome) {
+
+    const nomeNormalizado = nome.trim().toLowerCase();
+    const buscarTag = db.prepare('SELECT * FROM Tags WHERE nome = ?');
+    const criarTag = db.prepare('INSERT INTO Tags (nome) VALUES (?)');
+
+    let tag = buscarTag.get(nomeNormalizado);
+
+    if (!tag) {
+      const info = criarTag.run(nomeNormalizado);
+      tag = { id: info.lastInsertRowid, nome: nomeNormalizado };
+    }
+
+    return tag;
+  }
+
 }
 
-export default new PostService();
+
+
+
+
+export default new StoreService();
