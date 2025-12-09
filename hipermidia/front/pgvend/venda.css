@@ -1,0 +1,165 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  outline: none ;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  padding: 5px 30px;
+}
+
+header {
+
+  background-color: #f2f4f7;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #d1d5db;
+  padding: 9px;
+}
+
+.painel {
+    display: flex;
+    align-items: center;
+    gap:5px;
+    margin-left: 8px;
+}
+
+.painel .img_loja{
+    background: #7B2CFF; 
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.painel img{
+    width: 80%;
+}
+
+.painel h1{
+  font-size: 20px;
+  color: #213047;
+  font-weight: 600;
+}
+
+
+header nav {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+header nav a{
+    background-color: #7B2CFF;
+    display: flex;
+    align-items: center;
+    padding: 0px 5px  ;
+    font-size: 10px;
+    background: #0d6efd;
+    border-radius: 10px;
+    text-decoration: none;
+    height: 45%;
+    width:50%;
+}
+
+.texto{
+  color: white;
+  padding: 0px 2px;
+  font-weight: 500;
+  width: auto;
+  font-size:17px;
+}
+
+
+.nav_img{
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav_img img{
+    height: 70%;
+    aspect-ratio: 1 / 1;
+    object-fit: contain;
+}
+
+
+nav a:hover{
+  transition: 0.3s;
+  transform: scale(1.1);
+   background-color: #7B2CFF;
+}
+
+/*segundo bloco*/
+
+.abas_vendedor{
+  background-color: #f2f4f7;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #d1d5db;
+  gap: 20px;
+  justify-content: flex-start;
+  padding: 5px 10px;
+}
+
+.abas_vendedor .aba{
+  display: flex;
+  text-decoration: none;
+  align-items: center;
+  padding: 0px 5px;
+  border-radius: 10px  ;
+  height: 45px;
+  gap:7px;
+  
+}
+
+.aba img {
+    height: 90%;
+    aspect-ratio: 1 / 1;
+    object-fit: contain;
+}
+
+.aba h2{
+  color: #213047;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.aba.ativa {
+    background: #7B2CFF; 
+    color: white;
+}
+
+.aba.ativa h2 {
+    color: white;
+}
+
+@media(max-width: 450px){
+  .painel{
+    padding: 10px;
+  }
+  header{
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  nav{
+    flex-wrap: wrap;
+   
+  }
+  .abas_vendedor{
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+}
+
+.extra{
+  display: block;
+}

@@ -1,0 +1,173 @@
+.aba_estatistica{
+    display: none;
+    background: transparent;
+    padding: 24px 16px;
+    
+}
+
+.aba_estatistica h2 {
+    color: #213047;
+    font-size: 20px;
+    font-weight: 600;
+    padding: 8px 0 16px 0;
+}
+
+.cartoes{
+    display: grid;
+    box-shadow: 5px 2px 4px rgb(215, 215, 215);
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    align-items: stretch;
+    border-radius: 10px;
+}
+
+.cartoes_est{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #f8f4f4;
+    border-radius: 10px;
+    padding: 18px;
+    border: 1px solid  rgb(215, 215, 215);
+}
+
+.est_incon_fundo{
+    width: 56px;
+    height: 56px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.est_incon_fundo img{
+    width: 35px;
+    height: 35px;
+    object-fit: contain;
+}
+
+
+.azul { background: #497abe; }
+.verde { background: #50cd71; }
+.roxo { background: #7654a3; }
+.amarelo { background: #ffa200; }
+
+.info_est{
+    flex: 1;
+}
+
+.est_label{
+    color: #6b7280;
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+
+.est_valor{
+    color: #101827;
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.est_troca{
+    font-size: 14px;
+    color: #10b981;
+    font-weight: 600;
+    margin-left: 8px;
+}
+
+.est_troca.up { color: #10b981; }
+.est_troca.down { color: #ef4444; }
+
+
+/* tabela para injecao*/
+
+.top_vendidos{
+  background:#f4f2f2;
+  border-radius:12px;
+  border: 1px solid  rgb(215, 215, 215);
+  box-shadow: 5px 2px 4px  rgb(215, 215, 215);
+  padding:20px;
+  margin-top:20px;
+}
+.top_vendidos h2{
+  margin:0 0 14px 0;
+  color:#213047;
+  font-size: 20px;
+    font-weight: 600;
+}
+.top_lista{ 
+    display:flex; 
+    flex-direction:column; 
+    gap:12px;
+ }
+.top_item{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  padding:12px 8px;
+  border-radius:8px;
+  border-top: 1px solid rgb(6, 6, 6);
+}
+.top_item:first-child{
+     border-top: 0; 
+}
+.top_rank{
+  width:44px;
+  height:44px; 
+  flex-shrink:0;
+  background:#e9f2ff; 
+  color:#2a6bd6;
+  display:flex; 
+  align-items:center; 
+  justify-content:center;
+  border-radius:10px;
+  font-weight:700;
+}
+.top_img{
+  width:64px;
+  height:64px; 
+  object-fit:cover; 
+  border-radius: 10px; 
+  flex-shrink:0;
+}
+.top_info{ 
+    flex:1; 
+    min-width:0; 
+}
+
+.top_nome{ 
+    color:#13202b; 
+    font-weight:600; 
+    white-space:nowrap; 
+    overflow:hidden; 
+    text-overflow:ellipsis; 
+}
+.top_sub{ 
+    color:#7b8794; 
+    font-size:13px; 
+    margin-top:6px; 
+}
+.top_precos{ 
+    text-align:right; 
+    min-width:140px; 
+}
+.top_total{ 
+    color:#13202b; 
+    font-weight:700; 
+}
+.top_unit{ color:#9aa3ad; 
+    font-size:13px; 
+    margin-top:6px; 
+}
+
+@media (max-width:720px){
+  .top_item{ gap:12px; }
+  .top_precos{ min-width:100px; font-size:14px; }
+}
+
+@media (max-width: 480px){
+    .cartoes_est{ padding: 12px; gap: 12px; }
+    .est_incon_fundo{ width: 48px; height: 48px; }
+    .est_valor{ font-size: 16px; }
+}
