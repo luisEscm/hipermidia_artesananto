@@ -15,9 +15,10 @@
 
         <div class="header-center">
             <input 
-                type="text" 
-                placeholder="Buscar produtos artesanais..." 
+                type="text"
+                placeholder="Buscar produtos artesanais..."
                 class="search-input"
+                oninput="atualizarBusca(this.value)"
             />
         </div>
 
@@ -110,6 +111,7 @@
         ];
 
         let filtrosSelecionados = new Set();
+        let textoBusca = "";
 
         function criarCardProduto(produto) {
             return `
@@ -188,21 +190,37 @@
             const grid = document.getElementById("Grid_prods");
             grid.innerHTML = "";
 
-            // Nenhum filtro selecionado → mostra tudo
-            if (filtrosSelecionados.size === 0) {
-                prods.forEach(prod => {
-                    grid.innerHTML += criarCardProduto(prod);
-                });
-                return;
-            }
+            const produtosFiltrados = prods.filter(prod => {
 
-            const produtosFiltrados = prods.filter(prod =>
-                prod.tags.some(tag => filtrosSelecionados.has(tag))
-            );
+                // ===== FILTRO POR TAGS (multi) =====
+                const passaTags =
+                    filtrosSelecionados.size === 0 ||
+                    prod.tags.some(tag => filtrosSelecionados.has(tag));
+
+                // ===== BUSCA SOMENTE PELO NOME =====
+                const passaBusca =
+                    textoBusca === "" ||
+                    prod.nome.toLowerCase().includes(textoBusca);
+
+                return passaTags && passaBusca;
+            });
 
             produtosFiltrados.forEach(prod => {
                 grid.innerHTML += criarCardProduto(prod);
             });
+
+            if (produtosFiltrados.length === 0) {
+                grid.innerHTML = `
+                    <p style="grid-column: 1 / -1; text-align:center;">
+                        Nenhum produto encontrado 😕
+                    </p>
+                `;
+            }
+        }
+
+        function atualizarBusca(valor) {
+            textoBusca = valor.toLowerCase().trim();
+            filtrarProdutos();
         }
 
         // Card de detalhes do produto
@@ -264,6 +282,7 @@
         }
 
         renderizarFiltros();
+        filtrarProdutos();
         carregarProdutos();
     </script>
 

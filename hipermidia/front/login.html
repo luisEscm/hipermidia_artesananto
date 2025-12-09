@@ -23,12 +23,12 @@
         <!-- Card de login -->
         <div class="login-card">
 
-            <form>
+            <form onsubmit="realizar_login(event)">
                 <div class="field">
                     <label>E-mail</label>
                     <div class="input-box">
                         <img class="icon" src="https://cdn-icons-png.freepik.com/512/6229/6229074.png"></img>
-                        <input type="email" placeholder="seu@email.com" required>
+                        <input id="email" type="email" placeholder="seu@email.com" required>
                     </div>
                 </div>
 
@@ -37,7 +37,7 @@
                     <div class="input-box">
                         <img class="icon" src="https://cdn-icons-png.flaticon.com/512/158/158709.png"></img>
                         <input id="senha" type="password" placeholder="••••••••" required>
-                        <img id="olhoIcon" class="icon" src="compra_imgs/olho.png"></img>
+                        <img id="olhoIcon" class="icon" src="pgcomp/compra_imgs/olho.png"></img>
                     </div>
                 </div>
 
@@ -51,7 +51,7 @@
                 </div>
 
                 <!-- Botão -->
-                <button class="btn-submit" type="submit" onclick="realizar_login()">Entrar</button>
+                <button class="btn-submit" type="submit">Entrar</button>
             </form>
 
             <!-- Cadastro -->
@@ -78,8 +78,21 @@
                 : "pgcomp/compra_imgs/olho.png";
         });
 
-        function realizar_login(){
+        function realizar_login(event){
             // a gente mete uma verificação aqui depois
+            event.preventDefault();
+            const valor = document.getElementById("email").value;
+            if(valor === "vendedor@gmail.com"){
+                localStorage.setItem("usuarioLogado", JSON.stringify({
+                    nome: "João",
+                    categoria: "vendedor"
+                })); // depois é só ajustar as informações
+            }else{
+                localStorage.setItem("usuarioLogado", JSON.stringify({
+                    nome: "João2",
+                    categoria: "comprador"
+                })); // depois é só ajustar as informações
+            }
             window.location.href = "compra.html";
         }
     </script>
