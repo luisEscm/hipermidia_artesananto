@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Pagamento</title>
+    <link rel="stylesheet" href="pgcomp/pagamento.css">
+</head>
+<body>
+
+<header class="top-bar">
+    <a href="checkout.html">← Voltar</a>
+</header>
+
+<main class="container">
+
+    <div class="steps">
+        <div class="step completed">
+            <span class="step-number">✓</span>
+            <span class="step-text">Informações</span>
+        </div>
+
+        <div class="step-line"></div>
+
+        <div class="step active">
+            <span class="step-number">2</span>
+            <span class="step-text">Pagamento</span>
+        </div>
+    </div>
+
+    <div class="layout">
+
+        <!-- PAGAMENTO -->
+        <div class="card">
+            <h3>Método de Pagamento</h3>
+
+            <div class="payment-options">
+
+                <label class="payment-option">
+                    <input type="radio" name="pagamento" value="cartao" checked onchange="trocarPagamento(this.value)">
+                    <div class="payment-box">
+                        <img src="https://cdn-icons-png.flaticon.com/512/633/633611.png" alt="Cartão">
+                        <span>Cartão</span>
+                    </div>
+                </label>
+
+                <label class="payment-option">
+                    <input type="radio" name="pagamento" value="pix" onchange="trocarPagamento(this.value)">
+                    <div class="payment-box">
+                        <img src="https://cdn-icons-png.flaticon.com/512/5968/5968705.png" alt="PIX">
+                        <span>Pix</span>
+                    </div>
+                </label>
+
+            </div>
+            <!-- CARTÃO -->
+            <div id="cartaoCampos">
+                <label>Número do Cartão</label>
+                <input id="numeroCartao">
+
+                <label>Nome no Cartão</label>
+                <input id="nomeCartao">
+
+                <div class="row">
+                    <input id="validade" placeholder="MM/AA">
+                    <input id="cvv" placeholder="CVV">
+                </div>
+            </div>
+
+            <!-- PIX -->
+            <div id="pixInfo" style="display:none; margin-top:12px;">
+                <p>
+                    O pagamento via PIX será gerado após confirmar o pedido.
+                </p>
+            </div>
+
+            <button class="btn-primary" onclick="finalizar()">
+                Finalizar Pedido
+            </button>
+        </div>
+
+        <!-- RESUMO -->
+        <div class="card">
+            <div id="resumo" class="resumo-items"></div>
+            <hr>
+            <p><strong>Total:</strong> <span id="total"></span></p>
+        </div>
+
+    </div>
+</main>
+
+<script>
+function obterCarrinho() {
+    return JSON.parse(localStorage.getItem("carrinho")) || [];
+}
+
+function carregarResumo() {
+    const carrinho = obterCarrinho();
+    const frete = Number(localStorage.getItem("frete")) || 0;
+    let subtotal = 0;
+    const resumo = document.getElementById("resumo");
+
+    resumo.innerHTML = "";
+
+    carrinho.forEach(item => {
+        const totalItem = item.preco * item.qtd;
+        subtotal += totalItem;
+
+        resumo.innerHTML += `
+            <div class="resumo-item">
+                <img src="${item.imagem}">
+                <div>
+                    <p><strong>${item.nome}</strong></p>
+                    <span>Qtd: ${item.qtd}</span>
+                </div>
+            </div>
+        `;
+    });
+
+    document.getElementById("total").innerText =
+        `R$ ${(subtotal + frete).toFixed(2)}`;
+}
+
+/* === TROCA CARTÃO / PIX === */
+document.querySelectorAll('input[name="pagamento"]').forEach(radio => {
+    radio.addEventListener("change", () => {
+        const metodo = radio.value;
+        document.getElementById("cartaoCampos").style.display =
+            metodo === "cartao" ? "block" : "none";
+
+        document.getElementById("pixInfo").style.display =
+            metodo === "pix" ? "block" : "none";
+    });
+});
+
+/* === FINALIZAR === */
+function finalizar() {
+    const metodo = document.querySelector('input[name="pagamento"]:checked').value;
+
+    if (metodo === "cartao") {
+        const numero = document.getElementById("numeroCartao").value.trim();
+        const nome = document.getElementById("nomeCartao").value.trim();
+        const validade = document.getElementById("validade").value.trim();
+        const cvv = document.getElementById("cvv").value.trim();
+
+        if (!numero || !nome || !validade || !cvv) {
+            alert("Preencha todos os dados do cartão.");
+            return;
+        }
+    }
+
+    // simula sucesso
+    window.location.href = "pagamento_sucesso.html";
+}
+
+carregarResumo();
+</script>
+
+</body>
+</html>

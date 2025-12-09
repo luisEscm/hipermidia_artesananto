@@ -1,0 +1,240 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f6f7f9;
+    margin: 0;
+}
+
+.top-bar {
+    background: white;
+    padding: 15px 40px;
+    border-bottom: 1px solid #ddd;
+}
+
+.top-bar a {
+    text-decoration: none;
+    color: #1e5eff;
+    font-weight: 600;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 40px auto;
+}
+
+/* ===== STEPS ===== */
+.steps {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 32px;
+}
+
+.step {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    color: #999;
+}
+
+.step.completed {
+    color: #3b82f6;
+}
+
+.step.active {
+    color: #000;
+}
+
+.step-number {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #ddd;
+    color: #555;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+}
+
+.step.completed .step-number {
+    background: #3b82f6;
+    color: #fff;
+}
+
+.step.active .step-number {
+    background: #3b82f6;
+    color: #fff;
+}
+
+.step-line {
+    width: 80px;
+    height: 2px;
+    background: #ddd;
+}
+
+/* ===== LAYOUT ===== */
+.layout {
+    display: flex;
+    gap: 30px;
+}
+
+.card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    width: 100%;
+}
+
+.card h3 {
+    margin-top: 0;
+    margin-bottom: 16px;
+}
+
+/* ===== INPUTS ===== */
+label {
+    display: block;
+    margin-top: 14px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 6px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+input::placeholder {
+    color: #aaa;
+}
+
+.row {
+    display: flex;
+    gap: 10px;
+}
+
+/* ===== BOTÃO ===== */
+.btn-primary {
+    margin-top: 25px;
+    width: 100%;
+    padding: 14px;
+    background: #1e5eff;
+    border: none;
+    color: white;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background: #1548cc;
+}
+
+/* ===== OPÇÕES DE PAGAMENTO ===== */
+.card label input[type="radio"] {
+    margin-right: 8px;
+}
+
+.card label {
+    cursor: pointer;
+}
+
+/* PIX INFO */
+#pixInfo {
+    background: #f1f5ff;
+    padding: 14px;
+    border-radius: 8px;
+    margin-top: 16px;
+    font-size: 14px;
+    color: #333;
+}
+
+/* ===== RESUMO ===== */
+.resumo-items {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.resumo-item {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.resumo-item img {
+    width: 55px;
+    height: 55px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.resumo-item p {
+    margin: 0;
+    font-size: 14px;
+}
+
+.resumo-item span {
+    font-size: 13px;
+    color: #666;
+}
+
+hr {
+    margin: 20px 0;
+}
+
+/* ===== OPÇÕES DE PAGAMENTO ===== */
+.payment-options {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.payment-option {
+    width: 100%;
+}
+
+.payment-option input {
+    display: none;
+}
+
+/* Caixa visual */
+.payment-box {
+    border: 2px solid #ddd;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+
+    transition: 0.2s;
+}
+
+.payment-box img {
+    width: 40px;
+}
+
+/* Texto */
+.payment-box span {
+    font-weight: 600;
+    color: #333;
+}
+
+/* Selecionado */
+.payment-option input:checked + .payment-box {
+    border-color: #3b82f6;
+    background: #edf3ff;
+}
+
+.payment-option input:checked + .payment-box span {
+    color: #1e5eff;
+}
+
