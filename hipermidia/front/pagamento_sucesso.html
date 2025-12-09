@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Pagamento Realizado</title>
+    <link rel="stylesheet" href="pgcomp/pagamento_sucesso.css">
+</head>
+<body>
+
+<div class="success-card">
+    <h2>✅ Pedido Realizado</h2>
+    <p>Seu pagamento foi confirmado com sucesso.</p>
+
+    <button onclick="voltar()">OK</button>
+</div>
+
+<script>
+function voltar() {
+    localStorage.removeItem("carrinho");
+    localStorage.removeItem("checkout");
+    localStorage.removeItem("frete");
+    window.location.href = "compra.html";
+}
+</script>
+
+</body>
+</html>

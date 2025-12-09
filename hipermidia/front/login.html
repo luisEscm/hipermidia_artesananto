@@ -13,7 +13,7 @@
         <!-- Logo e Título -->
         <div class="login-header">
             <div class="logo-icon">
-                <img class="icon-logo-img" src="../venda/storefront.png"></img>
+                <img class="icon-logo-img" src="pgvend/venda/storefront.png"></img>
             </div>
 
             <h1>Art Attack</h1>
@@ -37,7 +37,7 @@
                     <div class="input-box">
                         <img class="icon" src="https://cdn-icons-png.flaticon.com/512/158/158709.png"></img>
                         <input id="senha" type="password" placeholder="••••••••" required>
-                        <img id="olhoIcon" class="icon" src="../compra_imgs/olho.png"></img>
+                        <img id="olhoIcon" class="icon" src="compra_imgs/olho.png"></img>
                     </div>
                 </div>
 
@@ -74,13 +74,13 @@
 
             // alterna ícone
             eyeIcon.src = isPassword 
-                ? "../compra_imgs/olho-fechado.png" 
-                : "../compra_imgs/olho.png";
+                ? "pgcomp/compra_imgs/olho-fechado.png" 
+                : "pgcomp/compra_imgs/olho.png";
         });
 
         function realizar_login(){
             // a gente mete uma verificação aqui depois
-            window.location.href = "compra_publico.html";
+            window.location.href = "compra.html";
         }
     </script>
 

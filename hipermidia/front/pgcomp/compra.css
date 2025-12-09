@@ -108,6 +108,27 @@ body {
 }
 
 /* ========== esta é a parte para as tags ========== */
+.filter-tag {
+    padding: 6px 14px;
+    border-radius: 20px;
+    background: #eee;
+    font-size: 14px;
+    cursor: pointer;
+    white-space: nowrap;
+    border: 2px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.filter-tag:hover {
+    background: #ddd;
+}
+
+.filter-tag.active {
+    background: #1e5eff;
+    color: #fff;
+    border-color: #1e5eff;
+}
+
 .categories {
     background-color: #f1f5f9;
     padding: 10px 32px;

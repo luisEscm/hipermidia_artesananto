@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Compras</title>
-    <link rel="stylesheet" href="compra.css"> 
+    <link rel="stylesheet" href="pgcomp/compra.css"> 
 </head>
 <body>
     <!-- ================= Header ================= -->
@@ -35,7 +35,7 @@
 
     <!-- ============== aqui tem as tags dos produtos ============== -->
     <nav class="categories">
-        <ul class="category-list">
+        <ul class="category-list" id="filterTags">
         </ul>
     </nav>
 
@@ -91,7 +91,7 @@
              produtor: "Cerâmica da Terra",
              preco: "R$ 189,90",
              estoque: 15,
-             imagem: "../imagens trabalho/megaman.png",
+             imagem: "pgcomp/imagens trabalho/megaman.png",
              tags: ["Heroi", "Video game", "Megaman"],
              descricao: "Uma action figure do megaman inspirada no megaman 4 feito a mão.",
              detalhes: ["100% feito à mão", "Qualidad alta", "Articulado", "3 variações de rosto"]
@@ -102,12 +102,14 @@
              produtor: "Couro & Arte",
              preco: "R$ 79,90",
              estoque: 8,
-             imagem: "../imagens trabalho/dr. xavier, magneto.png",
+             imagem: "pgcomp/imagens trabalho/dr. xavier, magneto.png",
              tags: ["Plastico", "X-man", "Vilão", "Heroi"],
              descricao: "Uma action figure do professor xavier e do magneto inspirada no filme X-man feitos a mão.",
              detalhes: ["100% feito à mão", "Produção sustentável", "Materiais naturais", "Entrega em todo o Brasil"]
             }
         ];
+
+        let filtrosSelecionados = new Set();
 
         function criarCardProduto(produto) {
             return `
@@ -148,8 +150,62 @@
             });
         }
 
-        carregarProdutos();
+        function obterTagsUnicas() {
+            const todasTags = prods.flatMap(prod => prod.tags);
+            return [...new Set(todasTags)];
+        }
 
+        function renderizarFiltros() {
+            const container = document.getElementById("filterTags");
+            const tags = obterTagsUnicas();
+
+            container.innerHTML = "";
+
+            tags.forEach(tag => {
+                const li = document.createElement("li");
+                li.className = "filter-tag";
+                li.textContent = tag;
+
+                li.onclick = () => toggleFiltro(tag, li);
+
+                container.appendChild(li);
+            });
+        }
+
+        function toggleFiltro(tag, element) {
+            if (filtrosSelecionados.has(tag)) {
+                filtrosSelecionados.delete(tag);
+                element.classList.remove("active");
+            } else {
+                filtrosSelecionados.add(tag);
+                element.classList.add("active");
+            }
+
+            filtrarProdutos();
+        }
+
+        function filtrarProdutos() {
+            const grid = document.getElementById("Grid_prods");
+            grid.innerHTML = "";
+
+            // Nenhum filtro selecionado → mostra tudo
+            if (filtrosSelecionados.size === 0) {
+                prods.forEach(prod => {
+                    grid.innerHTML += criarCardProduto(prod);
+                });
+                return;
+            }
+
+            const produtosFiltrados = prods.filter(prod =>
+                prod.tags.some(tag => filtrosSelecionados.has(tag))
+            );
+
+            produtosFiltrados.forEach(prod => {
+                grid.innerHTML += criarCardProduto(prod);
+            });
+        }
+
+        // Card de detalhes do produto
         function renderizarTagsModal(tags) {
             const container = document.getElementById("modalTags");
             container.innerHTML = "";
@@ -206,6 +262,9 @@
         function atualizarPagina(pag){
             window.location.href = pag;
         }
+
+        renderizarFiltros();
+        carregarProdutos();
     </script>
 
     <div class="modal" id="productModal">
@@ -251,16 +310,16 @@
 
                     <div class="modal-actions">
                         <button class="btn-primary" onclick="atualizarPagina('login.html')">
-                            <img class="icon-action-prim" src="../compra_imgs/cart.png"></img>
+                            <img class="icon-action-prim" src="pgcomp/compra_imgs/cart.png"></img>
                             <sapn>Adicionar ao Carrinho</sapn>
                         </button>
 
                         <button class="btn-secondary" onclick="atualizarPagina('login.html')">
-                            <img class="icon-action" src="../compra_imgs/heart.png"></img>
+                            <img class="icon-action" src="pgcomp/compra_imgs/heart.png"></img>
                             <span>Favoritar</span>
                         </button>
                         <button class="btn-secondary">
-                            <img class="icon-action" src="../compra_imgs/share.png"></img>
+                            <img class="icon-action" src="pgcomp/compra_imgs/share.png"></img>
                             <span>Compartilhar</span>
                         </button>
                     </div>

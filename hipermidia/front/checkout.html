@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Checkout</title>
-    <link rel="stylesheet" href="checkout.css">
+    <link rel="stylesheet" href="pgcomp/checkout.css">
 </head>
+
 <body>
 
 <header class="top-bar">
@@ -14,9 +15,19 @@
 <main class="container">
 
     <div class="steps">
-        <div class="step active">1 Informações</div>
-        <div class="step">2 Pagamento</div>
+        <div class="step active">
+            <span class="step-number">1</span>
+            <span class="step-text">Informações</span>
+        </div>
+
+        <div class="step-line"></div>
+
+        <div class="step">
+            <span class="step-number">2</span>
+            <span class="step-text">Pagamento</span>
+        </div>
     </div>
+
 
     <div class="layout">
 
@@ -61,7 +72,7 @@
         <div class="card">
             <h3>Resumo do Pedido</h3>
 
-            <div id="items"></div>
+            <div id="items" class="resumo-items"></div>
 
             <hr>
 
@@ -97,11 +108,19 @@ function carregarResumo() {
     itemsDiv.innerHTML = "";
 
     carrinho.forEach(item => {
-        subtotal += item.preco * item.qtd;
+        const totalItem = item.preco * item.qtd;
+        subtotal += totalItem;
 
         itemsDiv.innerHTML += `
-            <p>${item.nome} (x${item.qtd}) - 
-            <strong>R$ ${(item.preco * item.qtd).toFixed(2)}</strong></p>
+            <div class="resumo-item">
+                <img src="${item.imagem}" alt="${item.nome}">
+                
+                <div class="resumo-item-info">
+                    <p><strong>${item.nome}</strong></p>
+                    <span>Qtd: ${item.qtd}</span><br>
+                    <span>R$ ${totalItem.toFixed(2)}</span>
+                </div>
+            </div>
         `;
     });
 
@@ -109,26 +128,29 @@ function carregarResumo() {
     document.getElementById("total").innerText = `R$ ${(subtotal + 15).toFixed(2)}`;
 }
 
-document.getElementById("checkoutForm").addEventListener("submit", e => {
-    e.preventDefault();
+carregarResumo();
 
-    const dados = {
-        nome: nome.value,
-        telefone: telefone.value,
-        email: email.value,
-        endereco: endereco.value,
-        cidade: cidade.value,
-        uf: uf.value,
-        cep: cep.value
+document.getElementById("checkoutForm").addEventListener("submit", function(e) {
+    e.preventDefault(); // impede reload da página
+
+    const dadosEntrega = {
+        nome: document.getElementById("nome").value,
+        telefone: document.getElementById("telefone").value,
+        email: document.getElementById("email").value,
+        endereco: document.getElementById("endereco").value,
+        cidade: document.getElementById("cidade").value,
+        uf: document.getElementById("uf").value,
+        cep: document.getElementById("cep").value
     };
 
-    localStorage.setItem("checkout", JSON.stringify(dados));
+    // salva no localStorage
+    localStorage.setItem("entrega", JSON.stringify(dadosEntrega));
     localStorage.setItem("frete", 15);
 
+    // vai para a página de pagamento
     window.location.href = "pagamento.html";
 });
 
-carregarResumo();
 </script>
 
 </body>

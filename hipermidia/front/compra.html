@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Compras</title>
-    <link rel="stylesheet" href="compra.css"> 
+    <link rel="stylesheet" href="pgcomp/compra.css"> 
 </head>
 <body>
     <!-- ================= Header ================= -->
@@ -23,20 +23,20 @@
 
         <div class="header-right">
             <img 
-                src="../compra_imgs/heart.png"
+                src="pgcomp/compra_imgs/heart.png"
                 alt="Favoritos"
                 class="icon"
             >
 
             <img 
-                src="../compra_imgs/user.png"
+                src="pgcomp/compra_imgs/user.png"
                 alt="Usuário"
                 class="icon"
             >
 
             <a class="cart-icon-wrapper" id="cartLink" title="Ver carrinho" onclick="abrirCarrinho()">
                 <img 
-                    src="../compra_imgs/cart.png"
+                    src="pgcomp/compra_imgs/cart.png"
                     alt="Carrinho"
                     class="icon"
                     id="headerCartIcon"
@@ -44,9 +44,9 @@
                 <span class="cart-badge" id="cartCount">0</span>
             </a>
 
-            <a href="compra.html" class="btn-logout">
+            <a href="compra_publico.html" class="btn-logout">
                 <img 
-                    src="../compra_imgs/out.png"
+                    src="pgcomp/compra_imgs/out.png"
                     alt="Sair"
                     class="icon"
                 >
@@ -57,7 +57,7 @@
 
     <!-- ============== aqui tem as tags dos produtos ============== -->
     <nav class="categories">
-        <ul class="category-list">
+        <ul class="category-list" id="filterTags">
         </ul>
     </nav>
 
@@ -113,7 +113,7 @@
              produtor: "Cerâmica da Terra",
              preco: 189.90,
              estoque: 15,
-             imagem: "../imagens trabalho/megaman.png",
+             imagem: "pgcomp/imagens trabalho/megaman.png",
              tags: ["Heroi", "Video game", "Megaman"],
              descricao: "Uma action figure do megaman inspirada no megaman 4 feito a mão.",
              detalhes: ["100% feito à mão", "Qualidad alta", "Articulado", "3 variações de rosto"]
@@ -124,7 +124,7 @@
              produtor: "Couro & Arte",
              preco: 79.90,
              estoque: 8,
-             imagem: "../imagens trabalho/dr. xavier, magneto.png",
+             imagem: "pgcomp/imagens trabalho/dr. xavier, magneto.png",
              tags: ["Plastico", "X-man", "Vilão", "Heroi"],
              descricao: "Uma action figure do professor xavier e do magneto inspirada no filme X-man feitos a mão.",
              detalhes: ["100% feito à mão", "Produção sustentável", "Materiais naturais", "Entrega em todo o Brasil"]
@@ -132,6 +132,8 @@
         ];
         
         let produtoAtual = null
+        let filtrosSelecionados = new Set();
+        // Funções base dos produtos
         function criarCardProduto(produto) {
             return `
                 <article class="product-card">
@@ -171,6 +173,62 @@
             });
         }
 
+        function obterTagsUnicas() {
+            const todasTags = prods.flatMap(prod => prod.tags);
+            return [...new Set(todasTags)];
+        }
+
+        function renderizarFiltros() {
+            const container = document.getElementById("filterTags");
+            const tags = obterTagsUnicas();
+
+            container.innerHTML = "";
+
+            tags.forEach(tag => {
+                const li = document.createElement("li");
+                li.className = "filter-tag";
+                li.textContent = tag;
+
+                li.onclick = () => toggleFiltro(tag, li);
+
+                container.appendChild(li);
+            });
+        }
+
+        function toggleFiltro(tag, element) {
+            if (filtrosSelecionados.has(tag)) {
+                filtrosSelecionados.delete(tag);
+                element.classList.remove("active");
+            } else {
+                filtrosSelecionados.add(tag);
+                element.classList.add("active");
+            }
+
+            filtrarProdutos();
+        }
+
+        function filtrarProdutos() {
+            const grid = document.getElementById("Grid_prods");
+            grid.innerHTML = "";
+
+            // Nenhum filtro selecionado → mostra tudo
+            if (filtrosSelecionados.size === 0) {
+                prods.forEach(prod => {
+                    grid.innerHTML += criarCardProduto(prod);
+                });
+                return;
+            }
+
+            const produtosFiltrados = prods.filter(prod =>
+                prod.tags.some(tag => filtrosSelecionados.has(tag))
+            );
+
+            produtosFiltrados.forEach(prod => {
+                grid.innerHTML += criarCardProduto(prod);
+            });
+        }
+
+        // Funções base para a compra no carrinho
         function adicionarAoCarrinhoPorId(id) {
             const produto = prods.find(p => p.id === id);
             if (!produto) return;
@@ -178,63 +236,6 @@
             adicionarAoCarrinho(produto);
         }
 
-        carregarProdutos();
-
-        function renderizarTagsModal(tags) {
-            const container = document.getElementById("modalTags");
-            container.innerHTML = "";
-
-            tags.forEach(tag => {
-                const span = document.createElement("span");
-                span.classList.add("tag");
-                span.textContent = tag;
-
-                container.appendChild(span);
-            });
-        }
-
-        function renderizarDetalhes(detalhes){
-            const container = document.getElementById("modalDetalhes");
-            container.innerHTML = "";
-
-            detalhes.forEach(det => {
-                const li = document.createElement("li");
-                li.classList.add("detalhes");
-                li.textContent = det;
-
-                container.appendChild(li);
-            })
-        }
-
-        function openModal(id) {
-            const produto = prods.find(p => p.id === id);
-            console.log(produto)
-            produtoAtual = prods.find(p => p.id === id);
-            if (!produtoAtual) return;
-            if (!produto) return;
-
-            document.getElementById("modalImage").src = produto.imagem;
-            document.getElementById("modalTitle").innerText = produto.nome;
-            document.getElementById("modalAuthor").innerText = produto.produtor;
-            document.getElementById("modalPrice").innerText = `R$ ${produto.preco}`;
-            document.getElementById("modalDescription").innerText = produto.descricao;
-
-
-            document.getElementById("modalEstoque").innerText = produto.estoque
-
-            renderizarTagsModal(produto.tags)
-            renderizarDetalhes(produto.detalhes)
-
-
-            document.getElementById("productModal")
-                .classList.add("active");
-        }
-
-        function closeModal() {
-            document.getElementById("productModal")
-                .classList.remove("active");
-        }
-    
         function obterCarrinho() {
             return JSON.parse(localStorage.getItem("carrinho")) || [];
         }
@@ -349,6 +350,63 @@
             atualizarContadorCarrinho();
         }
 
+        // Funções para o card de detalhes
+        function renderizarTagsModal(tags) {
+            const container = document.getElementById("modalTags");
+            container.innerHTML = "";
+
+            tags.forEach(tag => {
+                const span = document.createElement("span");
+                span.classList.add("tag");
+                span.textContent = tag;
+
+                container.appendChild(span);
+            });
+        }
+
+        function renderizarDetalhes(detalhes){
+            const container = document.getElementById("modalDetalhes");
+            container.innerHTML = "";
+
+            detalhes.forEach(det => {
+                const li = document.createElement("li");
+                li.classList.add("detalhes");
+                li.textContent = det;
+
+                container.appendChild(li);
+            })
+        }
+
+        function openModal(id) {
+            const produto = prods.find(p => p.id === id);
+            console.log(produto)
+            produtoAtual = prods.find(p => p.id === id);
+            if (!produtoAtual) return;
+            if (!produto) return;
+
+            document.getElementById("modalImage").src = produto.imagem;
+            document.getElementById("modalTitle").innerText = produto.nome;
+            document.getElementById("modalAuthor").innerText = produto.produtor;
+            document.getElementById("modalPrice").innerText = `R$ ${produto.preco}`;
+            document.getElementById("modalDescription").innerText = produto.descricao;
+
+
+            document.getElementById("modalEstoque").innerText = produto.estoque
+
+            renderizarTagsModal(produto.tags)
+            renderizarDetalhes(produto.detalhes)
+
+
+            document.getElementById("productModal")
+                .classList.add("active");
+        }
+
+        function closeModal() {
+            document.getElementById("productModal")
+                .classList.remove("active");
+        }
+
+        // Funções para ver os itens que estão no carrinho
         function abrirCarrinho() {
             document.getElementById("cartDrawer").classList.add("open");
             document.getElementById("cartOverlay").classList.add("active");
@@ -363,6 +421,11 @@
         function realizarPagamento(){
             window.location.href = "checkout.html"
         }
+
+        renderizarFiltros();
+        carregarProdutos();
+        atualizarContadorCarrinho();
+        carregarProdutos();
         document.getElementById("cartOverlay").addEventListener("click", fecharCarrinho);
         atualizarContadorCarrinho();
 
@@ -411,16 +474,16 @@
 
                     <div class="modal-actions">
                         <button class="btn-primary" onclick="adicionarAoCarrinho(produtoAtual)">
-                            <img class="icon-action-prim" src="../compra_imgs/cart.png"></img>
+                            <img class="icon-action-prim" src="pgcomp/compra_imgs/cart.png"></img>
                             <sapn>Adicionar ao Carrinho</sapn>
                         </button>
 
                         <button class="btn-secondary">
-                            <img class="icon-action" src="../compra_imgs/heart.png"></img>
+                            <img class="icon-action" src="pgcomp/compra_imgs/heart.png"></img>
                             <span>Favoritar</span>
                         </button>
                         <button class="btn-secondary">
-                            <img class="icon-action" src="../compra_imgs/share.png"></img>
+                            <img class="icon-action" src="pgcomp/compra_imgs/share.png"></img>
                             <span>Compartilhar</span>
                         </button>
                     </div>
