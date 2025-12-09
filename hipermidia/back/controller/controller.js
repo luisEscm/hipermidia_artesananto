@@ -1,4 +1,4 @@
-import postService from '../services/postService.js';
+import postService from '../services/service.js';
 
 class PostController {
   // Criar um novo post

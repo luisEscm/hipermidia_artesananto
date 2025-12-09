@@ -1,51 +1,44 @@
 import db from '../config/database.js';
 
 class PostService {
+  
   // Criar um novo post
-  async createPost(img, description) {
-    const sql = 'INSERT INTO posts (img, description) VALUES (?, ?)';
+  createPost(img, description) {
+    const sql = `
+      INSERT INTO posts (img, description)
+      VALUES (?, ?)
+    `;
 
-    const result = await new Promise((resolve, reject) => {
-      db.run(sql, [img, description], function (err) {
-        if (err) reject(err);
-        else resolve(this);
-      });
-    });
+    const result = db.prepare(sql).run(img, description);
 
-    return { id: result.lastID, img, description };
+    return {
+      id: result.lastInsertRowid,
+      img,
+      description
+    };
   }
 
   // Buscar todos os posts
-  async getAllPosts() {
-    const sql = 'SELECT * FROM posts';
-    return await new Promise((resolve, reject) => {
-      db.all(sql, [], (err, rows) => {
-        if (err) reject(err);
-        else resolve(rows);
-      });
-    });
+  getAllPosts() {
+    const sql = `SELECT * FROM posts`;
+    return db.prepare(sql).all();
   }
 
   // Buscar um post por ID
-  async getPostById(id) {
-    const sql = 'SELECT * FROM posts WHERE id = ?';
-    return await new Promise((resolve, reject) => {
-      db.get(sql, [id], (err, row) => {
-        if (err) reject(err);
-        else resolve(row);
-      });
-    });
+  getPostById(id) {
+    const sql = `SELECT * FROM posts WHERE id = ?`;
+    return db.prepare(sql).get(id);
   }
 
   // Atualizar um post
-  async updatePost(id, img, description) {
-    const sql = 'UPDATE posts SET img = ?, description = ? WHERE id = ?';
-    const result = await new Promise((resolve, reject) => {
-      db.run(sql, [img, description, id], function (err) {
-        if (err) reject(err);
-        else resolve(this);
-      });
-    });
+  updatePost(id, img, description) {
+    const sql = `
+      UPDATE posts
+      SET img = ?, description = ?
+      WHERE id = ?
+    `;
+
+    const result = db.prepare(sql).run(img, description, id);
 
     if (result.changes === 0) {
       return null;
@@ -55,14 +48,10 @@ class PostService {
   }
 
   // Deletar um post
-  async deletePost(id) {
-    const sql = 'DELETE FROM posts WHERE id = ?';
-    const result = await new Promise((resolve, reject) => {
-      db.run(sql, [id], function (err) {
-        if (err) reject(err);
-        else resolve(this);
-      });
-    });
+  deletePost(id) {
+    const sql = `DELETE FROM posts WHERE id = ?`;
+    const result = db.prepare(sql).run(id);
+
     return result.changes > 0;
   }
 }
