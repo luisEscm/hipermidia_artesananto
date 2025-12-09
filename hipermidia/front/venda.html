@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meus Produtos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="pgvend/venda.css">    
+    <link rel="stylesheet" href= "pgvend/pedidos.css">
+    <link rel="stylesheet" href= "pgvend/estatistica.css">
+    <link rel="stylesheet" href= "pgvend/produtos.css">
+</head>
+<body>
+
+    
+    <header>
+        <div class="painel">
+            <div class="img_loja">
+                <img src="pgvend/venda/store48.png" alt="Loja">
+            </div>
+            <h1>Painel do vendedor</h1>
+        </div>
+
+        <nav>
+            <a href="#">
+                <div class="nav_img">
+                    <img src="pgvend/venda/person48.png" alt="Meus Produtos">
+                </div>
+                <h2 class="texto">Perfil</h2>
+            </a>
+            <a href="#">
+                <div class="nav_img" id="loja">
+                    <img src="pgvend/venda/storefront.png" alt="Meus Produtos">
+                </div>
+                <h2 class="texto">Loja</h2>
+            </a>
+            <a href="#">
+                <div class="nav_img">
+                    <img src=" pgvend/venda/login_78.png" alt="Meus Produtos">
+                </div>
+                <h2 class="texto">Sair</h2>
+            </a>    
+        </nav>
+    </header>
+
+    
+    <div class="abas_vendedor">
+        <a href="#" class="aba " data-target="produtos">
+            <img src="pgvend/venda/mprodutos48.png" alt="Foto Produto">
+            <h2>Meus Produtos</h2>
+        </a>
+
+        <a href="#" class="aba ativa ">
+            <img src="pgvend/venda/produtos48.png" alt="Foto Pedido" data-target="pedidos">
+            <h2>Pedidos</h2>
+        </a>
+
+        <a href="#" class="aba" data-target="estatistica">
+            <img src="pgvend/venda/estatistica48.png" alt="Foto Estatistica">
+            <h2>Estatística</h2>
+        </a>
+    </div>
+
+    <div class="aba_produto" id ="produtos">
+        <div class="adiciona_produto">
+            <h3 id="meu_p">Meus produtos </h3>
+            <button class="butao_add" onclick="window.location.href='form.html'">
+                <img src="pgvend/venda/add48.png" alt="Simbolo adição" >
+                <h2 class="texto">Adicionar produto</h2>
+            </button>
+        </div>
+
+        <div class="filtro">
+            <div class="busca">
+                <input id="busca" type="text" placeholder="Buscar por nome do produto"  required>
+                <button class="botao">
+                    <img src="pgvend/venda/itadori.jpg" alt="Buscar" id="itadori">
+                </button>
+            </div>
+            <button class="filtrar" id="filtro">
+                    <img src="pgvend/venda/filter.png" alt="Imagem de um filtro">
+                    <h2 class="texto">Filtros</h2>
+            </button>
+        </div>
+        <div class="lista_produtos" id="lista_produtos">
+            <!--injentar-->
+        </div>   
+    </div>
+
+    <div class="aba_pedidos" id="pedidos">
+        <h2>Pedidos Recebidos</h2>
+        <p class="sub">Acompanhe e gerencie seus pedidos</p>
+
+        <div class="pedido_res">
+            <div class="card_resumo">
+                <div class="card_label">Total de Pedidos</div>
+                <div class="card_valor" id="res_total">0</div>
+            </div>
+            <div class="card_resumo">
+                <div class="card_label">Pendentes</div>
+                <div class="card_valor" id="res_pendentes">0</div>
+            </div>
+            <div class="card_resumo">
+                <div class="card_label">Em Processamento</div>
+                <div class="card_valor" id="res_processando">0</div>
+            </div>
+            <div class="card_resumo">
+                <div class="card_label">Enviados</div>
+                <div class="card_valor" id="res_enviados">0</div>
+            </div>
+        </div>
+        <div class="tabela_pedidos">
+            <table class="tab_pedidos" id="pedidos_tab">
+                <thead>
+                    <tr>
+                        <th>Pedido</th>
+                        <th>Cliente</th>
+                        <th>Produto</th>
+                        <th>Qtd</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th>Data</th>
+                    </tr>
+                </thead>
+                <tbody id="add_tab">
+                    <!--injentar-->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    
+    <div class="aba_estatistica extra">
+        <h2>Suas estatísticas</h2>
+
+        <div class="cartoes">
+            <div class="cartoes_est">
+                <div class="est_incon_fundo roxo ">
+                    <img src="pgvend/venda/mprodutos48.png" alt="produtos">
+                </div>
+                <div class="info_est">
+                    <div class="est_label">Total de Produtos</div>
+                    <div class="est_valor" id="total_produtos">0</div>
+                </div>
+                <div class="est_troca up" id="t_produto">↑ 0%</div>
+            </div>
+
+            <div class="cartoes_est">
+                <div class="est_incon_fundo verde">
+                    <img src="pgvend/venda/money.png" alt="receita">
+                </div>
+                <div class="info_est">
+                    <div class="est_label">Receita Total (3 meses)</div>
+                    <div class="est_valor" id="receita_total">R$ 0</div>
+                </div>
+                <div class="est_troca up" id="t_receita">↑ 0%</div>
+            </div>
+
+            <div class="cartoes_est">
+                <div class="est_incon_fundo azul">
+                    <img src="pgvend/venda/produtos48.png" alt="pedidos">
+                </div>
+                <div class="info_est">
+                    <div class="est_label">Pedidos Concluídos</div>
+                    <div class="est_valor" id="pedidos_concluidos">0</div>
+                </div>
+                <div class="est_troca up" id="t_pedidos">↑ 0%</div>
+            </div>
+
+            <div class="cartoes_est">
+                <div class="est_incon_fundo amarelo">
+                    <img src="pgvend/venda/up.png" alt="média">
+                </div>
+                <div class="info_est">
+                    <div class="est_label">Média Mensal</div>
+                    <div class="est_valor" id="media_mensal">R$ 0</div>
+                </div>
+                <div class="est_troca up" id="t_media">↑ 0%</div>
+            </div>
+
+        </div>
+
+        <div class="top_vendidos">
+            <h2>Produtos Mais Vendidos</h2>
+            <div id="top_vendidos_list" class="top_lista">
+                <!--injentar-->
+            </div>
+        </div>
+        
+    </div>
+</body>
+</html>

@@ -1,0 +1,98 @@
+.aba_pedidos{
+  display:none;
+  padding: 24px;
+}
+
+.aba_pedidos h2{ 
+  margin:0 0 6px 0; 
+  color:#213047; 
+}
+.aba_pedidos .sub{ 
+  color:#6b7280; 
+  margin-bottom:16px; 
+}
+
+.pedido_res{
+  display:flex;
+  gap:16px;
+  margin-bottom:18px;
+  flex-wrap:wrap;
+}
+.card_resumo{ 
+  background:#f8f2f2;
+  border-radius:10px;
+  padding:16px;
+  box-shadow:0 6px 18px rgb(195, 183, 183);
+  min-width:160px;
+  flex:1;
+  
+}
+.card_label{
+  color:#6b7280; 
+  font-size:14px;
+  margin-bottom:8px; 
+}
+.card_valor{
+   font-size:20px;
+   font-weight:700; 
+   color:#13202b; 
+}
+
+.tabela_pedidos{
+  background:#fff;
+  border-radius:12px;
+  padding:8px;
+  box-shadow:0 6px 18px rgba(14,25,40,0.04);
+  overflow:auto;
+}
+
+.tab_pedidos{
+  width:100%;
+  border-collapse:collapse;
+  min-width:900px;
+}
+.tab_pedidos thead th{
+  text-align:left;
+  padding:14px 18px;
+  font-weight:700;
+  color:#415162;
+  border-bottom:1px solid rgba(0,0,0,0.06);
+}
+.tab_pedidos tbody td{
+  padding:14px 18px;
+  vertical-align:middle;
+  border-bottom:1px solid rgba(0,0,0,0.04);
+  color:#333;
+}
+
+/*dados da gtabela*/
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:6px 10px;
+  border-radius:16px;
+  font-size:13px;
+  font-weight:600;
+}
+.badge.entregue{
+   background:#ecfdf3; 
+   color:#10b981; 
+}
+.badge.enviado{ 
+  background:#f3eaff; 
+  color:#7c3aed;
+ }
+.badge.processando{ 
+  background:#eef2ff; 
+  color:#2563eb; 
+}
+.badge.pendente{ 
+  background:#fff7ed; 
+  color:#f59e0b; 
+}
+
+@media (max-width:900px){
+  .tab_pedidos{ min-width:700px; }
+  .card_resumo{ min-width:140px; }
+}
