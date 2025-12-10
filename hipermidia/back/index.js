@@ -122,6 +122,24 @@ app.post("/login", (req, res) => {
   }
 })
 
+app.get("/usuarios/:id", (req, res) => {
+  try {
+    const id = Number(req.params.id);
+    if (!Number.isInteger(id) || id <= 0) {
+      return res.status(400).json({ error: "ID inválido" });
+    }
+
+    const usuario = Service.buscarUsuario(id);
+    if (!usuario) {
+      return res.status(404).json({ error: "Usuário não encontrado" });
+    }
+
+    res.json(usuario);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+})
+
 app.listen(3000, () => {
   console.log("Servidor rodando na porta 3000")
 })
