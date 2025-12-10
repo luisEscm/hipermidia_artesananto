@@ -12,6 +12,12 @@
     padding: 8px 0 16px 0;
 }
 
+.aba_estatistica .sub{
+    margin-top: -8px;
+    color: #6b7280;
+    margin-bottom: 16px;
+}
+
 .cartoes{
     display: grid;
     box-shadow: 5px 2px 4px rgb(215, 215, 215);
@@ -24,7 +30,7 @@
 .cartoes_est{
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 15px;
     background: #f8f4f4;
     border-radius: 10px;
     padding: 18px;
@@ -68,16 +74,6 @@
     font-size: 17px;
     font-weight: 600;
 }
-
-.est_troca{
-    font-size: 14px;
-    color: #10b981;
-    font-weight: 600;
-    margin-left: 8px;
-}
-
-.est_troca.up { color: #10b981; }
-.est_troca.down { color: #ef4444; }
 
 
 /* tabela para injecao*/

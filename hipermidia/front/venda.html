@@ -63,7 +63,7 @@
         </a>
     </div>
 
-    <div class="aba_produto extra" id ="produtos">
+    <div class="aba_produto" id ="produtos">
         <div class="adiciona_produto">
             <h3 id="meu_p">Meus produtos </h3>
             <button class="butao_add" onclick="window.location.href='form.html'">
@@ -91,7 +91,7 @@
 
     <div class="aba_pedidos" id="pedidos">
         <h2>Pedidos Recebidos</h2>
-        <p class="sub">Acompanhe e gerencie seus pedidos</p>
+        <p class="sub" id="qtd_meses">Acompanhe e gerencie seus pedidos</p>
 
         <div class="pedido_res">
             <div class="card_resumo">
@@ -132,9 +132,9 @@
     </div>
 
     
-    <div class="aba_estatistica">
+    <div class="aba_estatistica extra">
         <h2>Suas estatísticas</h2>
-
+        <p class="sub">Estatísticas dos últimos 3 meses do ano</p>
         <div class="cartoes">
             <div class="cartoes_est">
                 <div class="est_incon_fundo roxo ">
@@ -144,7 +144,6 @@
                     <div class="est_label">Total de Produtos</div>
                     <div class="est_valor" id="total_produtos">0</div>
                 </div>
-                <div class="est_troca up" id="t_produto">↑ 0%</div>
             </div>
 
             <div class="cartoes_est">
@@ -152,10 +151,9 @@
                     <img src="pgvend/venda/money.png" alt="receita">
                 </div>
                 <div class="info_est">
-                    <div class="est_label">Receita Total (3 meses)</div>
+                    <div class="est_label">Receita Total</div>
                     <div class="est_valor" id="receita_total">R$ 0</div>
                 </div>
-                <div class="est_troca up" id="t_receita">↑ 0%</div>
             </div>
 
             <div class="cartoes_est">
@@ -166,7 +164,6 @@
                     <div class="est_label">Pedidos Concluídos</div>
                     <div class="est_valor" id="pedidos_concluidos">0</div>
                 </div>
-                <div class="est_troca up" id="t_pedidos">↑ 0%</div>
             </div>
 
             <div class="cartoes_est">
@@ -174,10 +171,9 @@
                     <img src="pgvend/venda/up.png" alt="média">
                 </div>
                 <div class="info_est">
-                    <div class="est_label">Média Mensal</div>
+                    <div class="est_label">Média dos Meses</div>
                     <div class="est_valor" id="media_mensal">R$ 0</div>
                 </div>
-                <div class="est_troca up" id="t_media">↑ 0%</div>
             </div>
 
         </div>
