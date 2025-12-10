@@ -1,11 +1,18 @@
 import Database from 'better-sqlite3';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import fs from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const dbPath = path.join(__dirname, '..', 'database.sqlite');
+const pastaBanco = path.join(__dirname, 'banco');
+
+if (!fs.existsSync(pastaBanco)) {
+  fs.mkdirSync(pastaBanco, { recursive: true });
+}
+
+const dbPath = path.join(pastaBanco, 'database.sqlite');
 
 // Conecta ao banco
 const database = new Database(dbPath);

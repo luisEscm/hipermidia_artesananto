@@ -6,13 +6,13 @@ class Service {
   obterEstatisticas(qtd_meses = 3, vendedorId) {
 
     const qtdmeses = Number(qtd_meses);
-    const qtd_meses = qtdmeses <= 0 ? 0 : qtdmeses > 12 ? 12 : qtdmeses;
+    const qtdMeses = qtdmeses <= 0 ? 0 : qtdmeses > 12 ? 12 : qtdmeses;
     const agora = new Date();
     const anoAtual = String(agora.getFullYear());
     const mesAtual = agora.getMonth() + 1;
 
     const mesesSelecionados = [];
-    for (let i = 0; i < qtd_meses; i += 1) {
+    for (let i = 0; i < qtdMeses; i += 1) {
       const mes = mesAtual - i;
       if (mes <= 0) break;
       mesesSelecionados.push(String(mes).padStart(2, '0'));
