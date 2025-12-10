@@ -56,6 +56,7 @@ function initDatabase() {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       vendedor_id INTEGER NOT NULL,
       nome TEXT NOT NULL,
+      descricao TEXT,
       preco REAL NOT NULL,
       quantidade_estoque INTEGER NOT NULL,
       url_imagem TEXT,
@@ -88,22 +89,21 @@ function initDatabase() {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       comprador_id INTEGER NOT NULL,
       vendedor_id INTEGER NOT NULL,
-      produto_id INTEGER NOT NULL,
+      produto_nome TEXT NOT NULL,
+      produto_url_imagem TEXT,
       quantidade INTEGER NOT NULL,
-      preco_unitario REAL NOT NULL,
+      preco REAL NOT NULL,
       valor_total REAL NOT NULL,
       data_pedido TEXT NOT NULL,
       status TEXT NOT NULL,
       FOREIGN KEY (comprador_id) REFERENCES Usuarios(id),
-      FOREIGN KEY (vendedor_id) REFERENCES Vendedor(id),
-      FOREIGN KEY (produto_id) REFERENCES Produtos(id)
+      FOREIGN KEY (vendedor_id) REFERENCES Vendedor(id)
     );
   `).run();
 
   //facilitar a consulta
   database.prepare(`CREATE INDEX IF NOT EXISTS idx_pedidos_comprador ON Pedidos (comprador_id);`).run();
   database.prepare(`CREATE INDEX IF NOT EXISTS idx_pedidos_vendedor ON Pedidos (vendedor_id);`).run();
-  database.prepare(`CREATE INDEX IF NOT EXISTS idx_pedidos_produto ON Pedidos (produto_id);`).run();
   database.prepare(`CREATE INDEX IF NOT EXISTS idx_pedidos_status ON Pedidos (status);`).run();
   database.prepare(`CREATE INDEX IF NOT EXISTS idx_pedidos_data ON Pedidos (data_pedido);`).run();
 

@@ -51,71 +51,31 @@ const seed = db.transaction(() => {
 
   // Produtos por vendedor
   const insProd = db.prepare(`
-    INSERT INTO Produtos (vendedor_id, nome, preco, quantidade_estoque, url_imagem)
-    VALUES (?, ?, ?, ?, ?)
+    INSERT INTO Produtos (vendedor_id, nome, descricao, preco, quantidade_estoque, url_imagem)
+    VALUES (?, ?, ?, ?, ?, ?)
   `);
 
   const produtos = [];
 
+  function addProd(vendId, nome, descricao, preco, qtd, url, tags) {
+    const id = insProd.run(vendId, nome, descricao, preco, qtd, url).lastInsertRowid;
+    produtos.push({ id, vendedor_id: vendId, nome, descricao, preco, url_imagem: url, tags });
+  }
+
   // Ana
-  produtos.push({
-    id: insProd.run(vendedores.ana, 'Miniatura Elfa Arqueira', 120.00, 10, 'https://img.exemplo/elfa.jpg').lastInsertRowid,
-    vendedor_id: vendedores.ana,
-    tags: ['action figure', 'rpg', 'feito à mão'],
-    preco: 120.00
-  });
-  produtos.push({
-    id: insProd.run(vendedores.ana, 'Guerreiro de Madeira', 90.00, 8, 'https://img.exemplo/guerreiro.jpg').lastInsertRowid,
-    vendedor_id: vendedores.ana,
-    tags: ['feito à mão', 'rpg'],
-    preco: 90.00
-  });
-  produtos.push({
-    id: insProd.run(vendedores.ana, 'Mascote Anime em Feltro', 60.00, 15, 'https://img.exemplo/mascote.jpg').lastInsertRowid,
-    vendedor_id: vendedores.ana,
-    tags: ['anime', 'feito à mão'],
-    preco: 60.00
-  });
+  addProd(vendedores.ana, 'Miniatura Elfa Arqueira', 'Miniatura detalhada de elfa arqueira, pintada à mão.', 120.00, 10, 'https://img.exemplo/elfa.jpg', ['action figure', 'rpg', 'feito à mão']);
+  addProd(vendedores.ana, 'Guerreiro de Madeira', 'Escultura rústica de guerreiro feita em madeira nobre.', 90.00, 8, 'https://img.exemplo/guerreiro.jpg', ['feito à mão', 'rpg']);
+  addProd(vendedores.ana, 'Mascote Anime em Feltro', 'Boneco de feltro fofinho inspirado em animes.', 60.00, 15, 'https://img.exemplo/mascote.jpg', ['anime', 'feito à mão']);
 
   // Bruno
-  produtos.push({
-    id: insProd.run(vendedores.bruno, 'Knight 3D Print', 150.00, 12, 'https://img.exemplo/knight.jpg').lastInsertRowid,
-    vendedor_id: vendedores.bruno,
-    tags: ['action figure', 'impressao 3d', 'rpg'],
-    preco: 150.00
-  });
-  produtos.push({
-    id: insProd.run(vendedores.bruno, 'Dragon Bust 3D', 200.00, 5, 'https://img.exemplo/dragon.jpg').lastInsertRowid,
-    vendedor_id: vendedores.bruno,
-    tags: ['impressao 3d', 'rpg'],
-    preco: 200.00
-  });
-  produtos.push({
-    id: insProd.run(vendedores.bruno, 'Anime Mecha Kit', 180.00, 7, 'https://img.exemplo/mecha.jpg').lastInsertRowid,
-    vendedor_id: vendedores.bruno,
-    tags: ['anime', 'impressao 3d'],
-    preco: 180.00
-  });
+  addProd(vendedores.bruno, 'Knight 3D Print', 'Cavaleiro impresso em 3D com alta resolução.', 150.00, 12, 'https://img.exemplo/knight.jpg', ['action figure', 'impressao 3d', 'rpg']);
+  addProd(vendedores.bruno, 'Dragon Bust 3D', 'Busto de dragão impresso em 3D, ideal para pintura.', 200.00, 5, 'https://img.exemplo/dragon.jpg', ['impressao 3d', 'rpg']);
+  addProd(vendedores.bruno, 'Anime Mecha Kit', 'Kit para montar e pintar de robô estilo anime.', 180.00, 7, 'https://img.exemplo/mecha.jpg', ['anime', 'impressao 3d']);
 
   // Carla
-  produtos.push({
-    id: insProd.run(vendedores.carla, 'Mage Resin Figure', 160.00, 9, 'https://img.exemplo/mage.jpg').lastInsertRowid,
-    vendedor_id: vendedores.carla,
-    tags: ['action figure', 'rpg'],
-    preco: 160.00
-  });
-  produtos.push({
-    id: insProd.run(vendedores.carla, 'Chibi Anime Resin', 110.00, 14, 'https://img.exemplo/chibi.jpg').lastInsertRowid,
-    vendedor_id: vendedores.carla,
-    tags: ['anime', 'feito à mão'],
-    preco: 110.00
-  });
-  produtos.push({
-    id: insProd.run(vendedores.carla, 'Set Dados RPG em Madeira', 70.00, 20, 'https://img.exemplo/dados.jpg').lastInsertRowid,
-    vendedor_id: vendedores.carla,
-    tags: ['rpg', 'feito à mão'],
-    preco: 70.00
-  });
+  addProd(vendedores.carla, 'Mage Resin Figure', 'Figura de mago em resina translúcida.', 160.00, 9, 'https://img.exemplo/mage.jpg', ['action figure', 'rpg']);
+  addProd(vendedores.carla, 'Chibi Anime Resin', 'Personagem estilo Chibi feito em resina.', 110.00, 14, 'https://img.exemplo/chibi.jpg', ['anime', 'feito à mão']);
+  addProd(vendedores.carla, 'Set Dados RPG em Madeira', 'Conjunto de dados para RPG artesanais em madeira.', 70.00, 20, 'https://img.exemplo/dados.jpg', ['rpg', 'feito à mão']);
 
   // Associa tags aos produtos
   const insPT = db.prepare('INSERT OR IGNORE INTO Produto_Tags (produto_id, tag_id) VALUES (?, ?)');
@@ -128,8 +88,8 @@ const seed = db.transaction(() => {
 
   // Pedidos (clientes comprando produtos dos vendedores)
   const insPed = db.prepare(`
-    INSERT INTO Pedidos (comprador_id, vendedor_id, produto_id, quantidade, preco_unitario, valor_total, data_pedido, status)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO Pedidos (comprador_id, vendedor_id, produto_nome, produto_url_imagem, quantidade, preco, valor_total, data_pedido, status)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
   `);
 
   const hoje = new Date();
@@ -139,26 +99,28 @@ const seed = db.transaction(() => {
   const pedidos = [
     // Diego compra de Ana
     { comprador: usuarios.diego, prodIdx: 0, qtd: 2, data: doisMesesAtras, status: 'concluido' },
-    { comprador: usuarios.diego, prodIdx: 1, qtd: 1, data: mesPassado, status: 'concluido' },
+    { comprador: usuarios.diego, prodIdx: 1, qtd: 1, data: mesPassado, status: 'enviado' },
     // Eva compra de Bruno
     { comprador: usuarios.eva, prodIdx: 3, qtd: 1, data: mesPassado, status: 'concluido' },
-    { comprador: usuarios.eva, prodIdx: 4, qtd: 2, data: hoje, status: 'concluido' },
+    { comprador: usuarios.eva, prodIdx: 4, qtd: 2, data: hoje, status: 'processado' },
     // Diego compra de Carla
-    { comprador: usuarios.diego, prodIdx: 8, qtd: 3, data: hoje, status: 'concluido' },
-    // Um pendente para exemplo
-    { comprador: usuarios.eva, prodIdx: 2, qtd: 1, data: hoje, status: 'pendente' },
+    { comprador: usuarios.diego, prodIdx: 8, qtd: 3, data: hoje, status: 'processado' },
+    // Mais exemplos
+    { comprador: usuarios.eva, prodIdx: 2, qtd: 1, data: hoje, status: 'enviado' },
+    { comprador: usuarios.diego, prodIdx: 5, qtd: 1, data: doisMesesAtras, status: 'concluido' },
+    { comprador: usuarios.eva, prodIdx: 6, qtd: 1, data: mesPassado, status: 'processado' },
   ];
 
   for (const ped of pedidos) {
     const p = produtos[ped.prodIdx];
-    const preco = p.preco;
-    const total = preco * ped.qtd;
+    const total = p.preco * ped.qtd;
     insPed.run(
       ped.comprador,
       p.vendedor_id,
-      p.id,
+      p.nome,
+      p.url_imagem,
       ped.qtd,
-      preco,
+      p.preco,
       total,
       fmtData(ped.data),
       ped.status

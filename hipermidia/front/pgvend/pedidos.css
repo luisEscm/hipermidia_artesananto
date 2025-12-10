@@ -65,8 +65,8 @@
   color:#333;
 }
 
-/*dados da gtabela*/
-.badge{
+/*dados da tabela*/
+.icone{
   display:inline-flex;
   align-items:center;
   gap:8px;
@@ -75,19 +75,19 @@
   font-size:13px;
   font-weight:600;
 }
-.badge.entregue{
+.icone.concluido{
    background:#ecfdf3; 
    color:#10b981; 
 }
-.badge.enviado{ 
+.icone.enviado{ 
   background:#f3eaff; 
   color:#7c3aed;
  }
-.badge.processando{ 
+.icone.processando{ 
   background:#eef2ff; 
   color:#2563eb; 
 }
-.badge.pendente{ 
+.icone.pendente{ 
   background:#fff7ed; 
   color:#f59e0b; 
 }

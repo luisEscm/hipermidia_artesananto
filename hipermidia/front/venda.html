@@ -13,8 +13,6 @@
     <link rel="stylesheet" href= "pgvend/produtos.css">
 </head>
 <body>
-
-    
     <header>
         <div class="painel">
             <div class="img_loja">
@@ -47,23 +45,23 @@
 
     
     <div class="abas_vendedor">
-        <a href="#" class="aba " data-target="produtos">
+        <a href="#" class="aba ativa" data-target="produtos">
             <img src="pgvend/venda/mprodutos48.png" alt="Foto Produto">
             <h2>Meus Produtos</h2>
         </a>
 
-        <a href="#" class="aba ">
+        <a href="#" class="aba">
             <img src="pgvend/venda/produtos48.png" alt="Foto Pedido" data-target="pedidos">
             <h2>Pedidos</h2>
         </a>
 
-        <a href="#" class="aba ativa" data-target="estatistica">
+        <a href="#" class="aba" data-target="estatistica">
             <img src="pgvend/venda/estatistica48.png" alt="Foto Estatistica">
             <h2>Estatística</h2>
         </a>
     </div>
 
-    <div class="aba_produto" id ="produtos">
+    <div class="aba_produto extra" id ="produtos">
         <div class="adiciona_produto">
             <h3 id="meu_p">Meus produtos </h3>
             <button class="butao_add" onclick="window.location.href='form.html'">
@@ -86,12 +84,12 @@
         </div>
         <div class="lista_produtos" id="lista_produtos">
             <!--injentar-->
-        </div>   
+        </div>
     </div>
 
     <div class="aba_pedidos" id="pedidos">
         <h2>Pedidos Recebidos</h2>
-        <p class="sub" id="qtd_meses">Acompanhe e gerencie seus pedidos</p>
+        <p class="sub" id="qtd_meses">Acompanhe seus produtos </p>
 
         <div class="pedido_res">
             <div class="card_resumo">
@@ -132,7 +130,7 @@
     </div>
 
     
-    <div class="aba_estatistica extra">
+    <div class="aba_estatistica">
         <div class="info_est">
             <div class="texto_titulo">
                 <h2>Suas estatísticas</h2>
@@ -195,5 +193,7 @@
         
     </div>
     <script src="pgvend/estatistica.js"></script>
+    <script src="pgvend/pedidos.js"></script>
+    <script src="pgvend/produtos.js"></script>
 </body>
 </html>

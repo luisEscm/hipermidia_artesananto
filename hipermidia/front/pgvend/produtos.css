@@ -1,6 +1,5 @@
 .aba_produto{
   display: none;
- 
 }
 
 .aba_produto#meu_p{
@@ -15,6 +14,7 @@
   margin-top: 10px;
   align-items: center;
   justify-content: space-between;
+ 
 }
 
 .adiciona_produto .butao_add{
@@ -142,8 +142,8 @@
 }
 
 .img_produto {
-    width: 180px;
-    height: 180px;
+    width: 155px;
+    height: 155px;
     object-fit: cover;
     border-radius: 8px;
 }
@@ -179,6 +179,7 @@
     justify-content: space-between;
     margin-bottom: 12px;
     font-size: 16px;
+    align-items: center ;
 }
 
 .preco {
@@ -188,7 +189,11 @@
 
 .estoque {
     color: #666;
-    font-size: 14px;
+    font-size: 16px;
+    margin-right: 20px;
+    padding: 4px;
+
+    
 }
 
 .botoes_produto {

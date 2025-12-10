@@ -83,6 +83,16 @@ app.post("/produtos", (req, res) => {
   }
 })
 
+// Criar Pedido
+app.post("/pedidos", (req, res) => {
+  try {
+    const novoPedido = Service.criarPedido(req.body);
+    res.status(201).json(novoPedido);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+})
+
 // Deletar Produto
 app.delete("/produtos/:id", (req, res) => {
   try {

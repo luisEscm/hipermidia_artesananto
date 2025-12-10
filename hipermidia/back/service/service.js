@@ -29,7 +29,7 @@ class Service {
 
     if (mesesSelecionados.length > 0) {
       const marcadores = mesesSelecionados.map(() => '?').join(', ');
-      const parametros = [anoAtual, ...mesesSelecionados, vendedorId, 'concluido'];
+      const parametros = [anoAtual, ...mesesSelecionados, vendedorId];
 
       const estatisticasPeriodo = db.prepare(`
         SELECT 
@@ -40,7 +40,7 @@ class Service {
         WHERE strftime('%Y', data_pedido) = ?
           AND strftime('%m', data_pedido) IN (${marcadores})
           AND vendedor_id = ?
-          AND status = ?
+          AND status IN ('concluido', 'enviado', 'processado')
       `).get(...parametros) || {};
 
       receita = estatisticasPeriodo.receita || 0;
@@ -62,27 +62,26 @@ class Service {
   obterProdutosMaisVendidos(vendedorId) {
     const sql = `
       SELECT 
-        p.id,
-        p.nome,
-        SUM(ped.quantidade) AS vendidos,
-        SUM(ped.valor_total) AS total,
-        p.preco AS unit,
-        p.url_imagem AS imagem
-      FROM Pedidos ped
-      JOIN Produtos p ON ped.produto_id = p.id
-      WHERE ped.vendedor_id = ?
-      GROUP BY p.id
+        produto_nome AS nome,
+        SUM(quantidade) AS vendidos,
+        SUM(valor_total) AS total,
+        preco AS unit,
+        produto_url_imagem AS imagem
+      FROM Pedidos
+      WHERE vendedor_id = ?
+      GROUP BY produto_nome
       ORDER BY vendidos DESC
     `;
     return db.prepare(sql).all(vendedorId);
   }
 
-  // Listar todos os produtos
+  // Listar todos os produtos do vendedor
   obterTodosProdutos(vendedorId) {
     const produtos = db.prepare(`
       SELECT 
         id, 
         nome, 
+        descricao,
         preco, 
         quantidade_estoque AS quantidade, 
         url_imagem AS imagem 
@@ -103,8 +102,36 @@ class Service {
         tags: tags.map((tag) => tag.nome)
       };
     });
- } 
+  } 
 
+   // Listar todos os produtos
+  obterTodos() {
+    const produtos = db.prepare(`
+      SELECT 
+        id, 
+        nome, 
+        descricao,
+        preco, 
+        quantidade_estoque AS quantidade, 
+        url_imagem AS imagem,
+        vendedor_id
+      FROM Produtos
+    `).all();
+
+    return produtos.map((produto) => {
+      const tags = db.prepare(`
+        SELECT t.nome 
+        FROM Tags t
+        JOIN Produto_Tags pt ON t.id = pt.tag_id
+        WHERE pt.produto_id = ?
+      `).all(produto.id);
+
+      return {
+        ...produto,
+        tags: tags.map((tag) => tag.nome)
+      };
+    });
+  } 
 
   //lista de pedidos realizados
    obterPedidos(vendedorId) {
@@ -112,14 +139,13 @@ class Service {
       SELECT 
         ped.id,
         u.nome AS cliente,
-        p.nome AS produto,
+        ped.produto_nome AS produto,
         ped.quantidade AS qtd,
         ped.valor_total AS total,
         ped.status,
         ped.data_pedido AS data
       FROM Pedidos ped
         JOIN Usuarios u ON ped.comprador_id = u.id
-        JOIN Produtos p ON ped.produto_id = p.id
       WHERE ped.vendedor_id = ?
       ORDER BY ped.data_pedido DESC
     `;
@@ -130,13 +156,14 @@ class Service {
   //cria o produto e adiciona no banco
   criarProduto(dados) {
     const inserirProduto = db.prepare(`
-      INSERT INTO Produtos (vendedor_id, nome, preco, quantidade_estoque, url_imagem)
-      VALUES (?, ?, ?, ?, ?)
+      INSERT INTO Produtos (vendedor_id, nome, descricao, preco, quantidade_estoque, url_imagem)
+      VALUES (?, ?, ?, ?, ?, ?)
     `);
 
     const resultado = inserirProduto.run(
       dados.vendedor_id,
       dados.nome,
+      dados.descricao,
       dados.preco,
       dados.quantidade,
       dados.imagem
@@ -178,10 +205,65 @@ class Service {
     return {
       id: idProduto,
       nome: dados.nome,
+      descricao: dados.descricao,
       preco: dados.preco,
       quantidade: dados.quantidade,
       imagem: dados.imagem,
       tags: dados.tags
+    };
+  }
+
+  // Cria um novo pedido
+  criarPedido(dados) {
+    // Busca dados do produto para congelar no pedido
+    const produto = db.prepare('SELECT * FROM Produtos WHERE id = ?').get(dados.produto_id);
+    if (!produto) {
+      throw new Error('Produto não encontrado');
+    }
+
+    // Calcula totais
+    const preco = produto.preco;
+    const quantidade = Number(dados.quantidade);
+    const total = preco * quantidade;
+    
+    // Data atual YYYY-MM-DD
+    const data = new Date().toISOString().split('T')[0];
+    const status = 'processado';
+
+    const stmt = db.prepare(`
+      INSERT INTO Pedidos (
+        comprador_id, 
+        vendedor_id, 
+        produto_nome, 
+        produto_url_imagem, 
+        quantidade, 
+        preco, 
+        valor_total, 
+        data_pedido, 
+        status
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `);
+
+    const info = stmt.run(
+      dados.comprador_id,
+      produto.vendedor_id,
+      produto.nome,
+      produto.url_imagem,
+      quantidade,
+      preco,
+      total,
+      data,
+      status
+    );
+
+    return {
+      id: info.lastInsertRowid,
+      comprador_id: dados.comprador_id,
+      vendedor_id: produto.vendedor_id,
+      produto_nome: produto.nome,
+      quantidade,
+      valor_total: total,
+      status
     };
   }
 
@@ -249,11 +331,5 @@ class Service {
     return usuariosemsenha;
   }
 }
-
-
-
-
-
-
 
 export default new Service();

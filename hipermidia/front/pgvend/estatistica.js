@@ -16,6 +16,7 @@ function atualizarEstatisticas(stats = {}) {
 
 }
 
+
 async function buscarEAtualizarEstatisticas(meses = 3) {
   try {
     
@@ -35,7 +36,55 @@ async function buscarEAtualizarEstatisticas(meses = 3) {
   }
 }
 
+async function fetchTopVendidos() {
+  try {
+    const res = await fetch('http://localhost:3000/produtos/mais-vendidos/1');
+    if (!res.ok) throw new Error('erro ao buscar top vendidos');
+    const data = await res.json();
+    return data;
+  }
+  catch (e) {
+    console.warn('Não foi possível obter top vendidos:', e);
+    return [];
+  }
+}
+
+function renderTopVendidos(items){
+  const container = document.getElementById('top_vendidos_list');
+  if(!container) return;
+  container.innerHTML = '';
+
+  if (!items || items.length === 0) {
+    const emptyHtml = `<div class="empty_top">Você ainda não vendeu nehum produto até o momento</div>`;
+    container.insertAdjacentHTML('beforeend', emptyHtml);
+    return;
+  }
+
+  items.forEach((p, i) => {
+    const rank = `${i+1}º`;
+    const html = `
+      <div class="top_item">
+        <div class="top_rank">${rank}</div>
+        <img class="top_img" src="${p.imagem}" alt="${p.nome}">
+        <div class="top_info">
+          <div class="top_nome">${p.nome}</div>
+          <div class="top_sub">${p.vendidos} unidade(s) vendidas</div>
+        </div>
+        <div class="top_precos">
+          <div class="top_total">${formatarMoeda(p.total)}</div>
+          <div class="top_unit">${formatarMoeda(p.unit)}/un</div>
+        </div>
+      </div>
+    `;
+    container.insertAdjacentHTML('beforeend', html);
+  });
+}
+
+
 document.addEventListener('DOMContentLoaded', () => {
+
+  fetchTopVendidos().then(renderTopVendidos);
+
   const inputMeses = document.getElementById('meses_input');
   const textoMeses = document.getElementById('inj_meses');
 
