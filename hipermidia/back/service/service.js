@@ -239,7 +239,7 @@ class Service {
     const { senha, ...usuariosemsenha } = usuario;
 
     if (usuario.tipo === 'vendedor') {
-      const buscarVendedor = db.prepare('SELECT * FROM Vendedor WHERE id = ?');
+      const buscarVendedor = db.prepare('SELECT * FROM Vendedor WHERE usuario_id = ?');
       const vendedor = buscarVendedor.get(id);
       if (vendedor) {
         return { ...usuariosemsenha, vendedor };

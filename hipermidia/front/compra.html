@@ -29,11 +29,13 @@
                 class="icon"
             >
 
-            <img 
-                src="pgcomp/compra_imgs/user.png"
-                alt="Usuário"
-                class="icon"
-            >
+            <a href="perfil.html">
+                <img
+                    src="pgcomp/compra_imgs/user.png"
+                    alt="Usuário"
+                    class="icon"
+                >
+            </a>
 
             <a class="cart-icon-wrapper" id="cartLink" title="Ver carrinho" onclick="abrirCarrinho()">
                 <img 
@@ -44,7 +46,18 @@
                 >
                 <span class="cart-badge" id="cartCount">0</span>
             </a>
+
+            <!--Esse botão leva ao perfil da loja-->
+            <a href="perfil_loja.html" 
+                class="btn-loja" 
+                id="btnLoja" 
+                style="display: none;">
+                    <img src="pgcomp/compra_imgs/shop.png" 
+                        alt="Loja" 
+                        class="icon">
+            </a>
             
+            <!--Esse botão leva até as informações da loja, como produtos vendidos e tals-->
             <a href="venda.html"
                 class="btn-login"
                 id="btnEspecial"
@@ -54,10 +67,10 @@
                         alt="Painel"
                         class="login-icon"
                     >
-                    Painel
+                    Dashboard
             </a>
 
-            <a href="compra_publico.html" class="btn-logout">
+            <a href="compra_publico.html" class="btn-logout" onclick="sairConta()">
                 <img 
                     src="pgcomp/compra_imgs/out.png"
                     alt="Sair"
@@ -68,9 +81,9 @@
         </div>
     </header>
 
-    <!-- ============== aqui tem as tags dos produtos ============== -->
-    <nav class="categories">
-        <ul class="category-list" id="filterTags">
+    <!-- ============== aqui é onde vão estar as tags para filtragem ============== -->
+    <nav class="tags-filter">
+        <ul class="tag-list" id="filterTags">
         </ul>
     </nav>
 
@@ -84,37 +97,6 @@
 
         <!-- ============== Aqui vai ficar a grid dos produtos ============== -->
         <section class="product-grid" id="Grid_prods">
-
-            <!-- os produtos vão ficar aqui dentro colocados pelo loop -->
-
-            <!-- Exemplo de como é pra estar escrito os blocos dos cards
-            <article class="product-card">
-                <div class="product-image">
-                    <img src="caminho imagem" alt="Titulo da imagem do card">
-                    <button class="favorite-btn">♡</button> Botão de favorito
-                </div>
-
-                <div class="product-info">
-                    <h3>Titulo do produto</h3>
-                    <span class="producer">por [nome da loja]</span>
-
-                    <div class="tags">
-                        lista de tags do produto
-                        <span class="tag">Joias</span>
-                        <span class="tag">Prata</span>
-                        <span class="tag">+1</span>
-                    </div>
-
-                    <div class="price-stock">
-                        Preço e quantidade dos stocks
-                        <span class="price">R$ 245,00</span>
-                        <span class="stock">8 disponíveis</span>
-                    </div>
-
-                    <button class="btn-cart">Adicionar ao Carrinho</button>
-                </div>
-            </article>
-            -->
 
         </section>
     </main>
@@ -144,9 +126,10 @@
             }
         ];
         
-        let produtoAtual = null
-        let filtrosSelecionados = new Set();
-        let textoBusca = "";
+        let produtoAtual = null // produto atual que pode ser inserido no carrinho
+        let filtrosSelecionados = new Set(); // filtros escolhidos
+        let textoBusca = ""; //texto de busca
+
         // Funções base dos produtos
         function criarCardProduto(produto) {
             return `
@@ -203,14 +186,14 @@
                 li.className = "filter-tag";
                 li.textContent = tag;
 
-                li.onclick = () => toggleFiltro(tag, li);
+                li.onclick = () => ligarFiltro(tag, li);
 
                 container.appendChild(li);
             });
         }
 
         // Funções de busca e filtragem
-        function toggleFiltro(tag, element) {
+        function ligarFiltro(tag, element) {
             if (filtrosSelecionados.has(tag)) {
                 filtrosSelecionados.delete(tag);
                 element.classList.remove("active");
@@ -260,7 +243,9 @@
         }
 
 
-        // Funções base para a compra no carrinho
+        // =================== Funções base para a compra no carrinho ===================
+        
+        // Essa versão é utilizada no botão do minicard dos produtos
         function adicionarAoCarrinhoPorId(id) {
             const produto = prods.find(p => p.id === id);
             if (!produto) return;
@@ -272,10 +257,13 @@
             return JSON.parse(localStorage.getItem("carrinho")) || [];
         }
 
+        // Salva o carrinho atual no localstorage
         function salvarCarrinho(carrinho) {
             localStorage.setItem("carrinho", JSON.stringify(carrinho));
         }
 
+        // função de adicionar no carrinho utilizando um objeto de produto
+        // é utilizado no card do produto em detalhes, e reaproveitado no adicioanrAoCarrinhoPorId
         function adicionarAoCarrinho(produto) {
             const carrinho = obterCarrinho();
 
@@ -355,13 +343,13 @@
             totalEl.innerText = `R$ ${total.toFixed(2)}`;
         }
 
-        function alterarQtd(id, delta) {
+        function alterarQtd(id, qtd_alt) {
             const carrinho = obterCarrinho();
             const item = carrinho.find(p => p.id === id);
 
             if (!item) return;
 
-            item.qtd += delta;
+            item.qtd += qtd_alt;
 
             if (item.qtd <= 0) {
                 removerItem(id);
@@ -382,7 +370,7 @@
             atualizarContadorCarrinho();
         }
 
-        // Funções para o card de detalhes
+        // =================== Funções para o card de detalhes ===================
         function renderizarTagsModal(tags) {
             const container = document.getElementById("modalTags");
             container.innerHTML = "";
@@ -418,7 +406,7 @@
 
             document.getElementById("modalImage").src = produto.imagem;
             document.getElementById("modalTitle").innerText = produto.nome;
-            document.getElementById("modalAuthor").innerText = produto.produtor;
+            document.getElementById("modalvendedor").innerText = produto.produtor;
             document.getElementById("modalPrice").innerText = `R$ ${produto.preco}`;
             document.getElementById("modalDescription").innerText = produto.descricao;
 
@@ -438,7 +426,7 @@
                 .classList.remove("active");
         }
 
-        // Funções para ver os itens que estão no carrinho
+        // =================== Funções para ver os itens que estão no carrinho ===================
         function abrirCarrinho() {
             document.getElementById("cartDrawer").classList.add("open");
             document.getElementById("cartOverlay").classList.add("active");
@@ -450,33 +438,41 @@
             document.getElementById("cartOverlay").classList.remove("active");
         }
         
+        // Vai para o fluxo de pagamento, indo pro checkout e depois o pagamento
         function realizarPagamento(){
             window.location.href = "checkout.html"
         }
 
+        // Verifica se o usuario no localstorage é um vendedor pra mostar o botão de loja
         function verificarUsuario() {
             const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
             const btnEspecial = document.getElementById("btnEspecial");
+            const btnLoja = document.getElementById("btnLoja");
 
-            if (!usuario || !btnEspecial) return;
+            if (!usuario) return;
 
-            // 👉 categoria que pode ver o botão
-            if (usuario.categoria === "vendedor") {
-                btnEspecial.style.display = "flex";
+            if (usuario.tipo === "vendedor") {
+                if (btnEspecial) btnEspecial.style.display = "flex";
+                if (btnLoja) btnLoja.style.display = "flex";
             }
         }
 
-        verificarUsuario();
+        // Desloga e apaga tudo
+        function sairConta(){
+            localStorage.clear()
+            window.location.href = "compra_publico.html"
+        }
 
+        verificarUsuario();
         renderizarFiltros();
         filtrarProdutos();
-        atualizarContadorCarrinho();
         carregarProdutos();
         document.getElementById("cartOverlay").addEventListener("click", fecharCarrinho);
         atualizarContadorCarrinho();
 
     </script>
 
+    <!--========================== O card mais detalhado do produto ==========================-->
     <div class="modal" id="productModal">
         <div class="modal-content">
 
@@ -491,10 +487,11 @@
                 <!-- Informações -->
                 <div class="modal-info">
                     <h2 id="modalTitle"></h2>
-                    <p class="modal-author">
-                        por <span id="modalAuthor"></span>
+                    <p class="modal-vendedor">
+                        por <span id="modalvendedor"></span>
                     </p>
 
+                    <!-- Aqui tem umas tags de placeholder-->
                     <div class="tags" id="modalTags">
                         <span>Cerâmica</span>
                         <span>Decoração</span>
@@ -518,6 +515,7 @@
                     <ul id="modalDetalhes">
                     </ul>
 
+                    <!-- os botões de interação, só o botão de compra possui interação-->
                     <div class="modal-actions">
                         <button class="btn-primary" onclick="adicionarAoCarrinho(produtoAtual)">
                             <img class="icon-action-prim" src="pgcomp/compra_imgs/cart.png"></img>
@@ -538,10 +536,10 @@
         </div>
     </div>
 
-        <!-- OVERLAY -->
+        <!-- Overlay -->
     <div id="cartOverlay" class="cart-overlay"></div>
 
-    <!-- DRAWER DO CARRINHO -->
+    <!--========================== Coluna do carrinho ==========================-->
     <aside class="cart-drawer" id="cartDrawer">
         <div class="cart-header">
             <h2>Carrinho de Compras</h2>

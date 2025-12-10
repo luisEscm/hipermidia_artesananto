@@ -83,7 +83,6 @@ body {
     display: inline-flex;
 }
 
-/* classe para esconder */
 .cart-badge.hidden {
     display: none;
 }
@@ -100,7 +99,7 @@ body {
 }
 
 .btn-logout:hover {
-    color: #2563eb; /*não sei se isso ficou legal */
+    color: #2563eb;
 }
 
 .btn-logout:hover .icon {
@@ -129,20 +128,20 @@ body {
     border-color: #1e5eff;
 }
 
-.categories {
+.tags-filter {
     background-color: #f1f5f9;
     padding: 10px 32px;
     overflow-x: auto;
 }
 
-.category-list {
+.tag-list {
     display: flex;
     gap: 12px;
     list-style: none;
     white-space: nowrap;
 }
 
-.category-list li {
+.tag-list li {
     background-color: #ffffff;
     padding: 8px 16px;
     border-radius: 999px;
@@ -151,7 +150,7 @@ body {
     border: 1px solid #e5e7eb;
 }
 
-.category-list li:hover {
+.tag-list li:hover {
     background-color: #e0e7ff;
 }
 
@@ -198,7 +197,7 @@ body {
 .product-image img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
 }
 
 .favorite-btn {
@@ -230,7 +229,7 @@ body {
     color: #666;
 }
 
-/* Tags */
+/* Tags do mini card de produto */
 .tags {
     display: flex;
     gap: 6px;
@@ -245,7 +244,7 @@ body {
     font-size: 12px;
 }
 
-/* Preço e estoque */
+/* Preço e estoque do mini card do produto */
 .price-stock {
     display: flex;
     justify-content: space-between;
@@ -280,7 +279,6 @@ body {
     background-color: #1e40af;
 }
 
-/* ========== responsivo ========== */
 @media (max-width: 768px) {
     .header {
         flex-direction: column;
@@ -310,7 +308,7 @@ body {
 }
 
 .btn-login:hover {
-    background: #1e40af;     /* ✅ mais escuro */
+    background: #1e40af;
 }
 
 .btn-login:active {
@@ -321,7 +319,7 @@ body {
 .login-icon {
     width: 22px;
     height: 22px;
-    filter: brightness(0) invert(1); /* ícone branco */
+    filter: brightness(0) invert(1);
 }
 
 .btn-login {
@@ -330,7 +328,6 @@ body {
 }
 
 /*=========================================== card de detalhes do produto ====================================================*/
-/* ===== OVERLAY ===== */
 
 .modal {
     position: fixed;
@@ -350,7 +347,7 @@ body {
 }
 
 
-/* ===== CONTAINER PRINCIPAL ===== */
+/* ===== Card principal ===== */
 
 .modal-content {
     background: #ffffff;
@@ -363,7 +360,7 @@ body {
     position: relative;
 }
 
-/* ===== BOTÃO FECHAR ===== */
+/* ===== Botão de fechar ===== */
 
 .modal-close {
     position: absolute;
@@ -375,7 +372,7 @@ body {
     cursor: pointer;
 }
 
-/* ===== IMAGEM ===== */
+/* ===== Imagem ===== */
 
 .modal-body {
     display: flex;
@@ -395,7 +392,7 @@ body {
     border-radius: 14px;
 }
 
-/* ===== INFORMAÇÕES ===== */
+/* ===== Informações ===== */
 
 .modal-info {
     flex: 1;
@@ -404,7 +401,7 @@ body {
     gap: 16px;
 }
 
-/* ===== TÍTULO ===== */
+/* ===== Titulo ===== */
 
 .modal-info h2 {
     font-size: 22px;
@@ -412,23 +409,23 @@ body {
     margin-bottom: 6px;
 }
 
-/* ===== AUTOR ===== */
+/* ===== Parte do vendedor ===== */
 
-.modal-author {
+.modal-vendedor {
     font-size: 15px;
     color: #6b7280;
 }
 
-.modal-author a {
+.modal-vendedor a {
     color: #2563eb;
     text-decoration: none;
 }
 
-.modal-author a:hover {
+.modal-vendedor a:hover {
     text-decoration: underline;
 }
 
-/* ===== TAGS ===== */
+/* ===== Tags ===== */
 
 .tags {
     display: flex;
@@ -445,17 +442,7 @@ body {
     font-weight: 500;
 }
 
-/* ===== DISPONIBILIDADE ===== */
-
-.availability {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 14.5px;
-    color: #16a34a;
-}
-
-/* ===== PREÇO ===== */
+/* ===== Preço ===== */
 
 .price {
     font-size: 24px;
@@ -464,14 +451,14 @@ body {
     margin: 16px 0 8px;
 }
 
-/* ===== SUBTÍTULOS ===== */
+/* ===== Subtitulo ===== */
 
 .modal-info h3 {
     font-size: 17px;
     margin-bottom: 6px;
 }
 
-/* ===== DESCRIÇÃO ===== */
+/* ===== Descrição do produto ===== */
 
 .description {
     font-size: 15px;
@@ -479,7 +466,7 @@ body {
     color: #374151;
 }
 
-/* ===== LISTA DE DETALHES ===== */
+/* ===== A lista de detalhes ===== */
 
 .modal-info ul {
     padding-left: 18px;
@@ -492,7 +479,7 @@ body {
     color: #374151;
 }
 
-/* ===== AÇÕES ===== */
+/* ===== "Ações"/botões ===== */
 
 .modal-actions {
     display: flex;
@@ -500,7 +487,7 @@ body {
     margin-top: 16px;
 }
 
-/* ===== BOTÃO PRINCIPAL ===== */
+/* ===== Botão principal/comprar ===== */
 
 .btn-primary {
     display: flex;
@@ -520,7 +507,7 @@ body {
     background: #1e4fd6;
 }
 
-/* ===== BOTÕES SECUNDÁRIOS ===== */
+/* ===== Botões secundários/compartilhar e favoritar ===== */
 
 .btn-secondary {
     display: flex;
@@ -551,7 +538,6 @@ body {
 
 /*=================================== card do carrinho =========================================*/
 
-/* ================= OVERLAY ================= */
 .cart-overlay {
     position: fixed;
     inset: 0;
@@ -567,7 +553,7 @@ body {
     pointer-events: all;
 }
 
-/* ================= DRAWER ================= */
+/* ================= Barra lateral ================= */
 .cart-drawer {
     position: fixed;
     top: 0;
@@ -585,7 +571,7 @@ body {
     right: 0;
 }
 
-/* ================= HEADER ================= */
+/* ================= Header ================= */
 .cart-header {
     display: flex;
     justify-content: space-between;
@@ -605,14 +591,14 @@ body {
     cursor: pointer;
 }
 
-/* ================= ITEMS ================= */
+/* ================= lista de itens escolhidos ================= */
 .cart-items {
     flex: 1;
     padding: 15px;
     overflow-y: auto;
 }
 
-/* ================= ITEM ================= */
+/* ================= Item especifico ================= */
 .cart-item {
     display: flex;
     align-items: center;
@@ -623,7 +609,6 @@ body {
     margin-bottom: 12px;
 }
 
-/* ✅ IMAGEM (CORRETO AGORA) */
 .cart-item-img {
     width: 64px !important;
     height: 64px !important;
@@ -632,7 +617,7 @@ body {
     flex-shrink: 0;
 }
 
-/* ================= INFO ================= */
+/* ================= Info ================= */
 .cart-item-info {
     flex: 1;
     display: flex;
@@ -650,7 +635,7 @@ body {
     color: #2563eb;
 }
 
-/* ================= AÇÕES ================= */
+/* ================= Ações ================= */
 .cart-item-actions {
     display: flex;
     align-items: center;
@@ -672,7 +657,6 @@ body {
     text-align: center;
 }
 
-/* ✅ BOTÃO REMOVER */
 .remove-btn {
     margin-left: auto;
     background: none;
@@ -682,7 +666,7 @@ body {
     font-size: 12px;
 }
 
-/* ================= FOOTER ================= */
+/* ================= Footer ================= */
 .cart-footer {
     border-top: 1px solid #eee;
     padding: 15px;
@@ -694,6 +678,7 @@ body {
     margin-bottom: 12px;
 }
 
+/* =================== o botão de ir para o pagamento =================== */
 .checkout-btn {
     width: 100%;
     background: #2563eb;

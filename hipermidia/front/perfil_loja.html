@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Perfil da Loja | Art Attack</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="perfil.css">
+</head>
+<body>
+
+<header class="top-bar">
+    <a href="compra.html">← Voltar</a>
+</header>
+
+<main class="container">
+
+    <div class="profile-card">
+
+        <!-- Botões de ação -->
+        <div class="actions">
+            <button id="btnEditar" class="btn-outline" onclick="ativarEdicao()">Editar Loja</button>
+            <button id="btnSalvar" class="btn-primary hidden" onclick="salvarLoja()">Salvar alterações</button>
+            <button id="btnCancelar" class="btn-cancel hidden" onclick="cancelarEdicao()">Cancelar</button>
+        </div>
+
+        <div class="profile-header">
+            <div class="avatar"><img src="pgcomp/compra_imgs/user.png" alt="Avatar da loja"></div>
+            <div>
+                <h2 id="nomeLoja"></h2>
+                <span id="nomeDono" class="badge"></span>
+            </div>
+        </div>
+
+        <div class="profile-section">
+            <h3>Informações da Loja</h3>
+            <div class="info-grid">
+                <div><strong>Nome da Loja:</strong> <span id="nome_loja"></span></div>
+                <div><strong>Endereço:</strong> <span id="endereco_loja"></span></div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<script>
+    let lojaBackup = null;
+
+    // carrega os dados do back para mostrar as informações da loja
+    async function carregarPerfilLoja() {
+        const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
+
+        if (!usuario) {
+            window.location.href = "login.html"; // retorna se não estiver logado
+            return;
+        }
+
+        if (usuario.tipo !== "vendedor") {
+            alert("Acesso permitido apenas para vendedores."); //inpede de entrar caso não seja um vendedor
+            window.location.href = "compra.html";
+            return;
+        }
+
+        try {
+            const res = await fetch(`http://localhost:3000/usuarios/${usuario.id}`);
+            if (!res.ok) throw new Error("Erro ao buscar dados da loja");
+            const data = await res.json();
+
+            // Armazena os dados da loja
+            lojaBackup = { ...data.vendedor };
+
+            // Preenche os campos
+            document.getElementById("nomeLoja").innerText = data.vendedor?.nome_loja || "-";
+            document.getElementById("nome_loja").innerText = data.vendedor?.nome_loja || "-";
+            document.getElementById("endereco_loja").innerText = data.vendedor?.endereco_loja || "-";
+            document.getElementById("nomeDono").innerText = data.nome || "-";
+
+        } catch (err) {
+            console.error(err);
+            alert("Não foi possível carregar os dados da loja.");
+        }
+    }
+
+    /* ===== Ativa o modo de ediçaõ das informações ===== */
+    function ativarEdicao() {
+        trocarSpanPorInput("nome_loja");
+        trocarSpanPorInput("endereco_loja");
+
+        document.getElementById("btnEditar").classList.add("hidden");
+        document.getElementById("btnSalvar").classList.remove("hidden");
+        document.getElementById("btnCancelar").classList.remove("hidden");
+    }
+
+    function trocarSpanPorInput(id) {
+        const span = document.getElementById(id);
+        const input = document.createElement("input");
+        input.className = "edit-input";
+        input.value = span.innerText === "-" ? "" : span.innerText;
+        span.replaceWith(input);
+        input.id = id;
+    }
+
+    /* ===== Salva isso ainda não esta implementado no back ===== */
+    async function salvarLoja() {
+        const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
+
+        const nomeLoja = document.getElementById("nome_loja").value.trim();
+        const enderecoLoja = document.getElementById("endereco_loja").value.trim();
+
+        try {
+            const res = await fetch(`http://localhost:3000/vendedores/${usuario.id}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ nome_loja: nomeLoja, endereco_loja: enderecoLoja })
+            });
+
+            if (!res.ok) throw new Error("Erro ao atualizar dados da loja");
+
+            // Atualiza localStorage
+            usuario.vendedor.nome_loja = nomeLoja;
+            usuario.vendedor.endereco_loja = enderecoLoja;
+            localStorage.setItem("usuarioLogado", JSON.stringify(usuario));
+
+            alert("Perfil da loja atualizado com sucesso!");
+            location.reload();
+
+        } catch (err) {
+            console.error(err);
+            alert("Não foi possível salvar os dados da loja.");
+        }
+    }
+
+    /* ===== Cancela a edição das informações e volta a como estava antes ===== */
+    function cancelarEdicao() {
+        if (!lojaBackup) return;
+
+        document.getElementById("nome_loja").replaceWith(criarSpan("nome_loja", lojaBackup.nome_loja));
+        document.getElementById("endereco_loja").replaceWith(criarSpan("endereco_loja", lojaBackup.endereco_loja));
+
+        document.getElementById("btnEditar").classList.remove("hidden");
+        document.getElementById("btnSalvar").classList.add("hidden");
+        document.getElementById("btnCancelar").classList.add("hidden");
+    }
+
+    function criarSpan(id, valor) {
+        const span = document.createElement("span");
+        span.id = id;
+        span.innerText = valor || "-";
+        return span;
+    }
+
+    carregarPerfilLoja();
+</script>
+
+</body>
+</html>

@@ -1,3 +1,4 @@
+/*============== Base ==============*/
 * {
     margin: 0;
     padding: 0;
@@ -19,7 +20,7 @@ body {
     text-align: center;
 }
 
-/* ===== HEADER ===== */
+/* ===== Header ===== */
 .login-header {
     margin-bottom: 32px;
 }
@@ -49,7 +50,7 @@ body {
     color: #666;
 }
 
-/* ===== CARD ===== */
+/* ===== Card de login ===== */
 .login-card {
     background-color: #ffffff;
     border-radius: 20px;
@@ -57,7 +58,7 @@ body {
     box-shadow: 0 10px 30px rgba(0,0,0,0.12);
 }
 
-/* ===== CAMPOS ===== */
+/* ===== Campos de input ===== */
 .field {
     text-align: left;
     margin-bottom: 18px;
@@ -87,8 +88,8 @@ body {
 }
 
 .icon {
-    width: 18px;   /* largura */
-    height: 18px;  /* altura */
+    width: 18px;
+    height: 18px;
     font-size: 16px;
     color: #777;
 }
@@ -97,7 +98,7 @@ body {
     cursor: pointer;
 }
 
-/* ===== OPÇÕES ===== */
+/* ===== Opções gerais ===== */
 .options {
     display: flex;
     justify-content: space-between;
@@ -111,7 +112,7 @@ body {
     text-decoration: none;
 }
 
-/* ===== BOTÃO ===== */
+/* ===== Botão padrão ===== */
 .btn-submit {
     width: 100%;
     padding: 14px;
@@ -124,7 +125,7 @@ body {
     cursor: pointer;
 }
 
-/* ===== CADASTRO ===== */
+/* ===== "Botão" de cadastro ===== */
 .register {
     margin-top: 16px;
     font-size: 14px;

@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Checkout</title>
-    <link rel="stylesheet" href="pgcomp/checkout.css">
+    <link rel="stylesheet" href="pgcomp/pagamento.css">
 </head>
 
 <body>
-
+<!--================= Essa pagina coleta o endereço CEP e tals =================-->
 <header class="top-bar">
     <a href="compra.html">← Voltar ao carrinho</a>
 </header>
 
 <main class="container">
-
+    <!--Avanço das etapas-->
     <div class="steps">
         <div class="step active">
             <span class="step-number">1</span>
@@ -31,11 +31,11 @@
 
     <div class="layout">
 
-        <!-- FORMULÁRIO -->
+        <!-- Formulário -->
         <div class="card">
             <h3>Informações de Entrega</h3>
 
-            <form id="checkoutForm">
+            <form id="checkoutForm" onsubmit="irPagamento(event)">
                 <label>Nome Completo</label>
                 <input id="nome" required>
 
@@ -55,7 +55,7 @@
                     </div>
                     <div>
                         <label>UF</label>
-                        <input id="uf" maxlength="2" required>
+                        <input id="uf" maxlength="2" required style="text-transform: uppercase;">
                     </div>
                 </div>
 
@@ -68,7 +68,7 @@
             </form>
         </div>
 
-        <!-- RESUMO -->
+        <!-- informações do pedido -->
         <div class="card">
             <h3>Resumo do Pedido</h3>
 
@@ -96,60 +96,63 @@
 </main>
 
 <script>
-function obterCarrinho() {
-    return JSON.parse(localStorage.getItem("carrinho")) || [];
-}
+    // pegando o carrinho atual
+    function obterCarrinho() {
+        return JSON.parse(localStorage.getItem("carrinho")) || [];
+    }
 
-function carregarResumo() {
-    const carrinho = obterCarrinho();
-    let subtotal = 0;
-    const itemsDiv = document.getElementById("items");
+    // Gera o resumo usando os itens no carrinho
+    function carregarResumo() {
+        const carrinho = obterCarrinho();
+        let subtotal = 0;
+        const itemsDiv = document.getElementById("items");
 
-    itemsDiv.innerHTML = "";
+        itemsDiv.innerHTML = "";
 
-    carrinho.forEach(item => {
-        const totalItem = item.preco * item.qtd;
-        subtotal += totalItem;
+        carrinho.forEach(item => {
+            const totalItem = item.preco * item.qtd;
+            subtotal += totalItem;
 
-        itemsDiv.innerHTML += `
-            <div class="resumo-item">
-                <img src="${item.imagem}" alt="${item.nome}">
-                
-                <div class="resumo-item-info">
-                    <p><strong>${item.nome}</strong></p>
-                    <span>Qtd: ${item.qtd}</span><br>
-                    <span>R$ ${totalItem.toFixed(2)}</span>
+            itemsDiv.innerHTML += `
+                <div class="resumo-item">
+                    <img src="${item.imagem}" alt="${item.nome}">
+                    
+                    <div class="resumo-item-info">
+                        <p><strong>${item.nome}</strong></p>
+                        <span>Qtd: ${item.qtd}</span><br>
+                        <span>R$ ${totalItem.toFixed(2)}</span>
+                    </div>
                 </div>
-            </div>
-        `;
-    });
+            `;
+        });
 
-    document.getElementById("subtotal").innerText = `R$ ${subtotal.toFixed(2)}`;
-    document.getElementById("total").innerText = `R$ ${(subtotal + 15).toFixed(2)}`;
-}
+        document.getElementById("subtotal").innerText = `R$ ${subtotal.toFixed(2)}`;
+        document.getElementById("total").innerText = `R$ ${(subtotal + 15).toFixed(2)}`;
+    }
 
-carregarResumo();
+    carregarResumo();
+    
+    // função de envio do formulario
+    function irPagamento(event) {
+        event.preventDefault();
 
-document.getElementById("checkoutForm").addEventListener("submit", function(e) {
-    e.preventDefault(); // impede reload da página
+        const dadosEntrega = {
+            nome: document.getElementById("nome").value,
+            telefone: document.getElementById("telefone").value,
+            email: document.getElementById("email").value,
+            endereco: document.getElementById("endereco").value,
+            cidade: document.getElementById("cidade").value,
+            uf: document.getElementById("uf").value,
+            cep: document.getElementById("cep").value
+        };
 
-    const dadosEntrega = {
-        nome: document.getElementById("nome").value,
-        telefone: document.getElementById("telefone").value,
-        email: document.getElementById("email").value,
-        endereco: document.getElementById("endereco").value,
-        cidade: document.getElementById("cidade").value,
-        uf: document.getElementById("uf").value,
-        cep: document.getElementById("cep").value
-    };
+        // salva no localStorage
+        localStorage.setItem("entrega", JSON.stringify(dadosEntrega));
+        localStorage.setItem("frete", 15);
 
-    // salva no localStorage
-    localStorage.setItem("entrega", JSON.stringify(dadosEntrega));
-    localStorage.setItem("frete", 15);
-
-    // vai para a página de pagamento
-    window.location.href = "pagamento.html";
-});
+        // vai para a página de pagamento
+        window.location.href = "pagamento.html";
+    }
 
 </script>
 

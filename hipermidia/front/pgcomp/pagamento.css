@@ -1,3 +1,4 @@
+/*==================== Base ====================*/
 body {
     font-family: Arial, sans-serif;
     background: #f6f7f9;
@@ -21,7 +22,7 @@ body {
     margin: 40px auto;
 }
 
-/* ===== STEPS ===== */
+/* ===== Steps ===== */
 .steps {
     display: flex;
     align-items: center;
@@ -74,7 +75,7 @@ body {
     background: #ddd;
 }
 
-/* ===== LAYOUT ===== */
+/* ===== Layout dos cards ===== */
 .layout {
     display: flex;
     gap: 30px;
@@ -92,7 +93,7 @@ body {
     margin-bottom: 16px;
 }
 
-/* ===== INPUTS ===== */
+/* ===== Inputs ===== */
 label {
     display: block;
     margin-top: 14px;
@@ -112,12 +113,22 @@ input::placeholder {
     color: #aaa;
 }
 
+/* colunas ajeitadas */
 .row {
     display: flex;
     gap: 10px;
 }
 
-/* ===== BOTÃO ===== */
+.row > div {
+    flex: 1;
+}
+
+.row input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* ===== Botões ===== */
 .btn-primary {
     margin-top: 25px;
     width: 100%;
@@ -134,60 +145,7 @@ input::placeholder {
     background: #1548cc;
 }
 
-/* ===== OPÇÕES DE PAGAMENTO ===== */
-.card label input[type="radio"] {
-    margin-right: 8px;
-}
-
-.card label {
-    cursor: pointer;
-}
-
-/* PIX INFO */
-#pixInfo {
-    background: #f1f5ff;
-    padding: 14px;
-    border-radius: 8px;
-    margin-top: 16px;
-    font-size: 14px;
-    color: #333;
-}
-
-/* ===== RESUMO ===== */
-.resumo-items {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.resumo-item {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-}
-
-.resumo-item img {
-    width: 55px;
-    height: 55px;
-    border-radius: 8px;
-    object-fit: cover;
-}
-
-.resumo-item p {
-    margin: 0;
-    font-size: 14px;
-}
-
-.resumo-item span {
-    font-size: 13px;
-    color: #666;
-}
-
-hr {
-    margin: 20px 0;
-}
-
-/* ===== OPÇÕES DE PAGAMENTO ===== */
+/* ===== Opções de pagamento ===== */
 .payment-options {
     display: flex;
     gap: 16px;
@@ -236,5 +194,49 @@ hr {
 
 .payment-option input:checked + .payment-box span {
     color: #1e5eff;
+}
+
+/* info para o pix */
+#pixInfo {
+    background: #f1f5ff;
+    padding: 14px;
+    border-radius: 8px;
+    margin-top: 16px;
+    font-size: 14px;
+    color: #333;
+}
+
+/* ===== Resumo da compra preços e tals ===== */
+.resumo-items {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.resumo-item {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.resumo-item img {
+    width: 55px;
+    height: 55px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.resumo-item p {
+    margin: 0;
+    font-size: 14px;
+}
+
+.resumo-item span {
+    font-size: 13px;
+    color: #666;
+}
+
+hr {
+    margin: 20px 0;
 }
 

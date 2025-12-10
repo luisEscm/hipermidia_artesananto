@@ -47,14 +47,14 @@
                         Lembrar-me
                     </label>
 
-                    <a href="#" class="forgot">Esqueceu a senha?</a> <!--tem de colocaro link certo aqui-->
+                    <a href="#" class="forgot">Esqueceu a senha?</a>
                 </div>
 
                 <!-- Botão -->
                 <button class="btn-submit" type="submit">Entrar</button>
             </form>
 
-            <!-- Cadastro -->
+            <!-- Cadastro não leva a lugar algum -->
             <p class="register">
                 Não tem uma conta? <a href="#">Cadastre-se</a>
             </p>
@@ -79,22 +79,41 @@
         });
 
         function realizar_login(event){
-            // a gente mete uma verificação aqui depois
             event.preventDefault();
-            const valor = document.getElementById("email").value;
-            if(valor === "vendedor@gmail.com"){
-                localStorage.setItem("usuarioLogado", JSON.stringify({
-                    nome: "João",
-                    categoria: "vendedor"
-                })); // depois é só ajustar as informações
-            }else{
-                localStorage.setItem("usuarioLogado", JSON.stringify({
-                    nome: "João2",
-                    categoria: "comprador"
-                })); // depois é só ajustar as informações
-            }
-            window.location.href = "compra.html";
+            const email = document.getElementById("email").value.trim();
+            const senha = document.getElementById("senha").value.trim();
+            console.log(senha)
+
+            // chama o back pra buscar o usuario e verificar se o login foi feito com sucesso
+            fetch("http://localhost:3000/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    email,
+                    senha
+                })
+            })
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error("Credenciais inválidas");
+                }
+                return res.json();
+            })
+            .then(data => {
+                // salva usuário
+                localStorage.setItem("usuarioLogado", JSON.stringify(data));
+
+                // redireciona
+                window.location.href = "compra.html";
+            })
+            .catch(err => {
+                alert("Email ou senha inválidos");
+                console.error(err);
+            });
         }
+
     </script>
 
 </body>

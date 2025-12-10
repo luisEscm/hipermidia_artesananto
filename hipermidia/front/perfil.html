@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Meu Perfil | Art Attack</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="perfil.css">
+</head>
+<body>
+<!--====================== pagina para visualizar o perfil do usuario ======================-->
+<header class="top-bar">
+    <a href="compra.html">← Voltar</a>
+</header>
+
+<main class="container">
+
+    <div class="profile-card">
+        <!--botões de ação-->
+        <div class="actions">
+            <button id="btnEditar" class="btn-outline" onclick="ativarEdicao()">
+                Editar perfil
+            </button>
+
+            <button id="btnSalvar" class="btn-primary hidden" onclick="salvarPerfil()">
+                Salvar alterações
+            </button>
+
+            <button id="btnCancelar" class="btn-cancel hidden" onclick="cancelarEdicao()">
+                Cancelar
+            </button>
+        </div>
+
+        <div class="profile-header">
+            <div class="avatar"><img src="pgcomp/compra_imgs/user.png"></img></div>
+            <div>
+                <h2 id="nome"></h2>
+                <span id="categoria" class="badge"></span>
+            </div>
+        </div>
+
+        <div class="profile-section">
+            <h3>Informações Pessoais</h3>
+
+            <div class="info-grid">
+                <div><strong>Email:</strong> <span id="email"></span></div>
+                <div><strong>Telefone:</strong> <span id="telefone"></span></div>
+                <div><strong>Empresa:</strong> <span id="empresa"></span></div>
+            </div>
+        </div>
+
+        <div class="profile-section">
+            <h3>Endereço</h3>
+
+            <div class="info-grid">
+                <div><strong>Endereço:</strong> <span id="endereco"></span></div>
+                <div><strong>Cidade:</strong> <span id="cidade"></span></div> <!-- tem os outros dados do endereço, mas no back só tem o endereço bruto-->
+                <div><strong>Estado:</strong> <span id="estado"></span></div>
+                <div><strong>CEP:</strong> <span id="cep"></span></div>
+            </div>
+        </div>
+
+        <div class="profile-section">
+            <h3>Sobre mim</h3>
+            <p id="sobre"></p>
+        </div>
+
+    </div>
+
+</main>
+
+<script>
+    let usuarioBackup = null;
+
+    // carrega o perfil do localstorage
+    function carregarPerfil() {
+        const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
+
+        if (!usuario) {
+            window.location.href = "login.html";
+            return;
+        }
+
+        usuarioBackup = { ...usuario };
+
+        document.getElementById("nome").innerText = usuario.nome || "-";
+        document.getElementById("email").innerText = usuario.email || "-";
+        document.getElementById("empresa").innerText = usuario.empresa || "—";
+        document.getElementById("telefone").innerText = usuario.telefone || "-";
+        document.getElementById("endereco").innerText = usuario.endereco || "-";
+        document.getElementById("cidade").innerText = usuario.cidade || "-";
+        document.getElementById("estado").innerText = usuario.estado || "-";
+        document.getElementById("cep").innerText = usuario.cep || "-";
+        document.getElementById("sobre").innerText =
+            usuario.sobre || "Nenhuma descrição informada.";
+
+        const badge = document.getElementById("categoria");
+        badge.innerText = usuario.categoria || "usuário";
+    }
+
+    /* ===== Ativa o modo de edição ===== */
+    function ativarEdicao() {
+        usuarioBackup = JSON.parse(localStorage.getItem("usuarioLogado"));
+
+        trocarSpanPorInput("email");
+        trocarSpanPorInput("telefone");
+        trocarSpanPorInput("empresa");
+        trocarSpanPorInput("endereco");
+        trocarSpanPorInput("cidade");
+        trocarSpanPorInput("estado");
+        trocarSpanPorInput("cep");
+        trocarParagrafoPorTextarea("sobre");
+
+        document.getElementById("btnEditar").classList.add("hidden");
+        document.getElementById("btnSalvar").classList.remove("hidden");
+        document.getElementById("btnCancelar").classList.remove("hidden");
+    }
+
+    // troca o formato de span para visualização para um input
+    function trocarSpanPorInput(id) {
+        const span = document.getElementById(id);
+        const input = document.createElement("input");
+
+        input.className = "edit-input";
+        input.value = span.innerText === "-" || span.innerText === "—" ? "" : span.innerText;
+
+        span.replaceWith(input);
+        input.id = id;
+    }
+
+    function trocarParagrafoPorTextarea(id) {
+        const p = document.getElementById(id);
+        const textarea = document.createElement("textarea");
+
+        textarea.className = "edit-textarea";
+        textarea.value = p.innerText.includes("Nenhuma") ? "" : p.innerText;
+
+        p.replaceWith(textarea);
+        textarea.id = id;
+    }
+
+    /* ===== Salva as alterações feitas, ainda não implementado no back ===== */
+    function salvarPerfil() {
+        const usuario = JSON.parse(localStorage.getItem("usuarioLogado")) || {};
+
+        [
+            "email", "telefone", "empresa",
+            "endereco", "cidade", "estado",
+            "cep", "sobre"
+        ].forEach(campo => {
+            const el = document.getElementById(campo);
+            usuario[campo] = el.value;
+        });
+
+        localStorage.setItem("usuarioLogado", JSON.stringify(usuario));
+
+        alert("Perfil atualizado com sucesso!");
+        location.reload();
+    }
+
+    /* ===== Cancela a edição e volta a como estava antes ===== */
+    function cancelarEdicao() {
+        localStorage.setItem(
+            "usuarioLogado",
+            JSON.stringify(usuarioBackup)
+        );
+        location.reload();
+    }
+
+    carregarPerfil();
+</script>
+
+
+</body>
+</html>

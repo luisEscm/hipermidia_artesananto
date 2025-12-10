@@ -8,19 +8,20 @@
 <body>
 
 <div class="success-card">
-    <h2>✅ Pedido Realizado</h2>
+    <h2>Pedido Realizado</h2>
     <p>Seu pagamento foi confirmado com sucesso.</p>
 
-    <button onclick="voltar()">OK</button>
+    <button class="btn-ok" onclick="voltar()">OK</button>
 </div>
 
 <script>
-function voltar() {
-    localStorage.removeItem("carrinho");
-    localStorage.removeItem("checkout");
-    localStorage.removeItem("frete");
-    window.location.href = "compra.html";
-}
+    // limpando o localstorage
+    function voltar() {
+        localStorage.removeItem("carrinho");
+        localStorage.removeItem("checkout");
+        localStorage.removeItem("frete");
+        window.location.href = "compra.html";
+    }
 </script>
 
 </body>
