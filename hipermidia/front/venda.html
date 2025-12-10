@@ -133,15 +133,23 @@
 
     
     <div class="aba_estatistica extra">
-        <h2>Suas estatísticas</h2>
-        <p class="sub">Estatísticas dos últimos 3 meses do ano</p>
+        <div class="info_est">
+            <div class="texto_titulo">
+                <h2>Suas estatísticas</h2>
+                <p class="sub" id="inj_meses">Estatísticas dos últimos 3 meses do ano</p>
+            </div>
+            <div class="qtd_meses">
+                <input type="number" id="meses_input" min="1" max="12" value="3">                                                        
+            </div>
+        </div>
+        
         <div class="cartoes">
             <div class="cartoes_est">
                 <div class="est_incon_fundo roxo ">
                     <img src="pgvend/venda/mprodutos48.png" alt="produtos">
                 </div>
                 <div class="info_est">
-                    <div class="est_label">Total de Produtos</div>
+                    <div class="est_label">Total de Produtos Vendidos</div>
                     <div class="est_valor" id="total_produtos">0</div>
                 </div>
             </div>
@@ -186,5 +194,6 @@
         </div>
         
     </div>
+    <script src="pgvend/estatistica.js"></script>
 </body>
 </html>

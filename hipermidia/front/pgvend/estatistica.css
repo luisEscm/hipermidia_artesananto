@@ -18,6 +18,42 @@
     margin-bottom: 16px;
 }
 
+.info_est {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#meses_input {
+    width: 70px;
+    height: 42px;
+    padding: 0 12px;
+    border: 2px solid #af9e9e;
+    border-radius: 8px;
+    font-size: 18px;
+    text-align: center;
+    background: #f3f2f4;
+    color: #333;
+    font-weight: 700;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+
+    appearance: auto;
+}
+
+#meses_input:focus {
+    border-color: #7B2CFF;
+    box-shadow: 0 0 0 4px rgba(106, 103, 206, 0.25);
+    outline: none;
+}
+
+
+#meses_input:hover {
+    border-color: #b8b8ff;
+    border: 2px solid  #7654a3 ;
+}
+
+
 .cartoes{
     display: grid;
     box-shadow: 5px 2px 4px rgb(215, 215, 215);
