@@ -1,6 +1,6 @@
 import db from '../config/database.js';
 
-class StoreService {
+class Service {
 
   // Estatísticas do vendedor
   obterEstatisticas(qtd_meses = 3, vendedorId) {
@@ -212,10 +212,43 @@ class StoreService {
     return tag;
   }
 
+  //consulta usuario para login
+  consultarUsuario(email, senha) {
+    const buscarUsuario = db.prepare('SELECT * FROM Usuarios WHERE email = ?');
+    const usuario = buscarUsuario.get(email);
+
+    if (usuario && usuario.senha === senha) {
+      const { senha, ...usuariosemsenha } = usuario;
+      return usuariosemsenha;
+    }
+
+    return null;
+  }
+
+  buscarUsuario(id) {
+    const buscarUsuario = db.prepare('SELECT * FROM Usuarios WHERE id = ?');
+    const usuario = buscarUsuario.get(id);
+
+    if (!usuario) return null;
+
+    const { senha, ...usuariosemsenha } = usuario;
+
+    if (usuario.tipo === 'vendedor') {
+      const buscarVendedor = db.prepare('SELECT * FROM Vendedor WHERE id = ?');
+      const vendedor = buscarVendedor.get(id);
+      if (vendedor) {
+        return { ...usuariosemsenha, vendedor };
+      }
+    }
+
+    return usuariosemsenha;
+  }
 }
 
 
 
 
 
-export default new StoreService();
+
+
+export default new Service();
