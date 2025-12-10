@@ -1,8 +1,13 @@
 import db from '../config/database.js';
 
+function trucarfinal2(n) {
+  return Math.floor(n * 100) / 100;
+}
+
 class Service {
 
   // Estatísticas do vendedor
+  
   obterEstatisticas(qtd_meses = 3, vendedorId) {
 
     const qtdmeses = Number(qtd_meses);
@@ -46,10 +51,10 @@ class Service {
     const mediaMensal = mesesSelecionados.length > 0 ? receita / mesesSelecionados.length : 0;
 
     return {
-      receita,
+      receita : trucarfinal2(receita),
       pedidos,
       quantidadeVendida,
-      mediaMensal
+      mediaMensal: trucarfinal2(mediaMensal)
     };
   }
 
