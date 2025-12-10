@@ -49,3 +49,4 @@ dist/
 build/
 .vscode
 ant.txt
+banco/
