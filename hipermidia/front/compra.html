@@ -102,33 +102,26 @@
     </main>
 
     <script>
-        const prods = [
-            {id: 1,
-             nome: "Megaman",
-             produtor: "Cerâmica da Terra",
-             preco: 189.90,
-             estoque: 15,
-             imagem: "pgcomp/imagens trabalho/megaman.png",
-             tags: ["Heroi", "Video game", "Megaman"],
-             descricao: "Uma action figure do megaman inspirada no megaman 4 feito a mão.",
-             detalhes: ["100% feito à mão", "Qualidad alta", "Articulado", "3 variações de rosto"]
-            },
-            {
-             id: 2,
-             nome: "xavier e magneto",
-             produtor: "Couro & Arte",
-             preco: 79.90,
-             estoque: 8,
-             imagem: "pgcomp/imagens trabalho/dr. xavier, magneto.png",
-             tags: ["Plastico", "X-man", "Vilão", "Heroi"],
-             descricao: "Uma action figure do professor xavier e do magneto inspirada no filme X-man feitos a mão.",
-             detalhes: ["100% feito à mão", "Produção sustentável", "Materiais naturais", "Entrega em todo o Brasil"]
-            }
-        ];
+        const prods = [];
         
         let produtoAtual = null // produto atual que pode ser inserido no carrinho
         let filtrosSelecionados = new Set(); // filtros escolhidos
         let textoBusca = ""; //texto de busca
+
+        async function carregarProdutos() {
+            try {
+                const resposta = await fetch("http://localhost:3000/produtos");
+                const lista = await resposta.json();
+
+                prods.push(...lista);
+
+                renderizarFiltros();
+                filtrarProdutos();
+                verificarUsuario();
+            } catch (error) {
+                console.error("Erro ao buscar produtos da API:", error);
+            }
+        }
 
         // Funções base dos produtos
         function criarCardProduto(produto) {
@@ -152,7 +145,7 @@
 
                         <div class="price-stock">
                             <span class="price">R$ ${produto.preco}</span>
-                            <span class="stock">${produto.estoque} disponíveis</span>
+                            <span class="stock">${produto.quantidade} disponíveis</span>
                         </div>
 
                         <button class="btn-cart" onclick="adicionarAoCarrinhoPorId(${produto.id})">Adicionar ao Carrinho</button>
@@ -161,7 +154,7 @@
             `;
         }
 
-        function carregarProdutos() {
+        function carregarProdutos_grid() {
             const grid = document.getElementById("Grid_prods");
             grid.innerHTML = "";
 
@@ -384,19 +377,6 @@
             });
         }
 
-        function renderizarDetalhes(detalhes){
-            const container = document.getElementById("modalDetalhes");
-            container.innerHTML = "";
-
-            detalhes.forEach(det => {
-                const li = document.createElement("li");
-                li.classList.add("detalhes");
-                li.textContent = det;
-
-                container.appendChild(li);
-            })
-        }
-
         function openModal(id) {
             const produto = prods.find(p => p.id === id);
             console.log(produto)
@@ -411,11 +391,9 @@
             document.getElementById("modalDescription").innerText = produto.descricao;
 
 
-            document.getElementById("modalEstoque").innerText = produto.estoque
+            document.getElementById("modalEstoque").innerText = produto.quantidade
 
             renderizarTagsModal(produto.tags)
-            renderizarDetalhes(produto.detalhes)
-
 
             document.getElementById("productModal")
                 .classList.add("active");
@@ -463,9 +441,6 @@
             window.location.href = "compra_publico.html"
         }
 
-        verificarUsuario();
-        renderizarFiltros();
-        filtrarProdutos();
         carregarProdutos();
         document.getElementById("cartOverlay").addEventListener("click", fecharCarrinho);
         atualizarContadorCarrinho();
@@ -510,10 +485,6 @@
 
                     <h3>Descrição</h3>
                     <p class="description" id="modalDescription"></p>
-
-                    <h3>Detalhes</h3>
-                    <ul id="modalDetalhes">
-                    </ul>
 
                     <!-- os botões de interação, só o botão de compra possui interação-->
                     <div class="modal-actions">

@@ -38,6 +38,16 @@ app.get("/produtos/:vendedorId", (req, res) => {
   }
 })
 
+// Lista de Produtos do Vendedor
+app.get("/produtos", (req, res) => {
+  try {
+    const products = Service.obterTodos();
+    res.json(products);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+})
+
 // Lista de Pedidos do Vendedor
 app.get("/pedidos/:vendedorId", (req, res) => {
   try {
