@@ -1,5 +1,7 @@
-import { formatarMoeda, buscarUsuarioLogado} from './repete_funcoes.js';
-const usuarioLogado = buscarUsuarioLogado();  
+import { formatarMoeda, envLogin} from './repete_funcoes.js';  
+
+const usuarioLogado = envLogin();
+
 function atualizarEstatisticas(stats = {}) {
 
   const elTotal = document.getElementById('total_produtos');
@@ -14,11 +16,9 @@ function atualizarEstatisticas(stats = {}) {
 
 }
 
-
+//atualiza as metricas do vendedor
 async function buscarEAtualizarEstatisticas(meses = 3) {
   try {
-    
-    //const url = `http://localhost:3000/estatisticas${vendorSegment}?meses=${encodeURIComponent(meses)}`;
     const res = await fetch(`http://localhost:3000/estatisticas/${usuarioLogado.id}?meses=${meses}`);  
     if (!res.ok) throw new Error('erro ao buscar os dados');
     const data = await res.json();
@@ -47,6 +47,7 @@ async function fetchTopVendidos() {
   }
 }
 
+//renderiza o rank de produtos vendidos
 function renderTopVendidos(items){
   const container = document.getElementById('top_vendidos_list');
   if(!container) return;
@@ -80,10 +81,6 @@ function renderTopVendidos(items){
 
 
 document.addEventListener('DOMContentLoaded', () => {
-  if (usuarioLogado === null) {  
-    window.location.href = '../login.html';
-    return;
-  }
   fetchTopVendidos().then(renderTopVendidos);
 
   const inputMeses = document.getElementById('meses_input');

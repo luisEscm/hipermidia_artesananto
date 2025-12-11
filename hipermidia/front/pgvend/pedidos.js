@@ -1,5 +1,5 @@
-import { formatarMoeda, buscarUsuarioLogado} from './repete_funcoes.js';
-const usuarioLogado = buscarUsuarioLogado();
+import { formatarMoeda, envLogin} from './repete_funcoes.js';
+
 function formatarData(data){
   if (!data) return '';
   const s = String(data).trim();
@@ -60,10 +60,7 @@ function renderPedidos(pedidos){
 }
 
 async function fetcheRender(){
-  if (usuarioLogado === null) {  
-    window.location.href = '../login.html';
-    return;
-  }
+  const usuarioLogado = envLogin();
   try {
 
     const res = await fetch(`http://localhost:3000/pedidos/${usuarioLogado.id}`);

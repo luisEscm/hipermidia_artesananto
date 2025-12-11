@@ -1,17 +1,12 @@
-import { formatarMoeda, buscarUsuarioLogado} from './repete_funcoes.js';
-
-const usuarioLogado = buscarUsuarioLogado();  
-
+import { formatarMoeda} from './repete_funcoes.js';  
+const usuarioLogado = envLogin();
 function renderizarProdutos(produtos) {
-    if (!usuarioLogado) {
-        console.warn('Usuário não logado');
-        return;
-    }
     const container = document.getElementById('lista_produtos')
     if (!container) return;
 
     container.innerHTML = '';
 
+    //adicionar os produtos vindos do banco na pagina
     produtos.forEach(produto => {
         const tags = (produto.tags || []).map(tag => `<span class="tag_produto">${tag}</span>`).join('');
 
@@ -36,13 +31,15 @@ function renderizarProdutos(produtos) {
         container.insertAdjacentHTML('beforeend', html);
     });
 
-    //eventos
+    //evento de editar
      container.querySelectorAll('.btn_editar').forEach(btn => {
       btn.addEventListener('click', (e) => {
         const id = Number(e.currentTarget.dataset.id);
         editarProduto(id);
       });
     });
+
+    //evento de excluir
     container.querySelectorAll('.btn_excluir').forEach(btn => {
       btn.addEventListener('click', (e) => {
         const id = Number(e.currentTarget.dataset.id);
@@ -105,11 +102,7 @@ async function fetchProdutosFromApi(){
 
 
 document.addEventListener('DOMContentLoaded', async () => {
-  if (usuarioLogado === null) {
-    window.location.href = '../login.html';
-    return;
-  }
-   const apiProdutos = await fetchProdutosFromApi();
-    renderizarProdutos(apiProdutos);
+  const apiProdutos = await fetchProdutosFromApi();
+  renderizarProdutos(apiProdutos);
   
 });
