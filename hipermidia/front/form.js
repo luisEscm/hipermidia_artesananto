@@ -5,22 +5,39 @@ const btnAddTag = document.getElementById('adicionar_tag');
 
 let tags = [];
 
+carregarTags();
+async function carregarTags(){
+  try {
+    const res = await window.fetch('http://localhost:3000/tags');
+    if(!res.ok) throw new Error('erro ao buscar as tags');
+    const idNome = await res.json();
+    Object.entries(idNome).forEach(([id, nome]) => {
+      tags.push(nome.nome)
+    });
+    
+    renderTags();
+  } catch (err) {
+    console.error('Erro ao carregar as tags', err);
+  }
+}
+
 // Adicionar tag
 btnAddTag.addEventListener('click', () => {
   const nome = inputTag.value.trim();
   if (nome && !tags.includes(nome)) {
     tags.push(nome);
     renderTags();
-    inputTag.value = '';
   }
+  inputTag.value = '';
 });
 
 function renderTags() {
   tagContainer.innerHTML = '';
   tags.forEach(tag => {
     const span = document.createElement('span');
-    span.className = 'tag_produto';
-    span.textContent = tag;
+    span.className = 'tag';
+    span.textContent = `${'+ '+ tag}`;
+    console.log(tag)
     span.style.cursor = 'pointer';
     span.title = 'Clique para remover';
     span.onclick = () => removerTag(tag);
@@ -38,7 +55,7 @@ form.addEventListener('submit', async (e) => {
   e.preventDefault();
 
   const produto = {
-    vendedor_id: 1, // Hardcoded por enquanto
+    vendedor_id: 1, 
     nome: document.getElementById('nome_produto').value,
     descricao: document.getElementById('descricao_produto').value,
     preco: Number(document.getElementById('preco_produto').value),
@@ -48,17 +65,17 @@ form.addEventListener('submit', async (e) => {
   };
 
   try {
-    const res = await fetch('http://localhost:3000/produtos', {
+    const resTag = await fetch('http://localhost:3000/produtos', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(produto)
     });
 
-    if (res.ok) {
+    if (resTag.ok) {
       alert('Produto salvo com sucesso!');
       window.location.href = 'venda.html';
     } else {
-      const err = await res.json();
+      const err = await resTag.json();
       alert('Erro ao salvar: ' + (err.error || 'Erro desconhecido'));
     }
   } catch (error) {
