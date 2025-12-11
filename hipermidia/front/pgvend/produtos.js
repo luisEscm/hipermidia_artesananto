@@ -1,9 +1,12 @@
+import { formatarMoeda, buscarUsuarioLogado} from './repete_funcoes.js';
 
-function formatarMoeda(value){
-  return Number(value).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-}
+const usuarioLogado = buscarUsuarioLogado();  
 
 function renderizarProdutos(produtos) {
+    if (!usuarioLogado) {
+        console.warn('Usuário não logado');
+        return;
+    }
     const container = document.getElementById('lista_produtos')
     if (!container) return;
 
@@ -58,7 +61,7 @@ function editarProduto(id){
 async function excluirProduto(id){
 
   try {
-    const res = await fetch(`http://localhost:3000/produtos/${id}`, { method: 'DELETE' });
+    const res = await fetch(`http://localhost:3000/produtos/${usuarioLogado.id}`, { method: 'DELETE' });
     if (!res.ok) {
       const err = await res.json().catch(()=>({ error: 'Erro' }));
       throw new Error(err.error || 'Falha ao excluir');
@@ -102,6 +105,10 @@ async function fetchProdutosFromApi(){
 
 
 document.addEventListener('DOMContentLoaded', async () => {
+  if (usuarioLogado === null) {
+    window.location.href = '../login.html';
+    return;
+  }
    const apiProdutos = await fetchProdutosFromApi();
     renderizarProdutos(apiProdutos);
   

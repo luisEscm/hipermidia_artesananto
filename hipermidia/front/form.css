@@ -60,10 +60,10 @@ form#form_produtos textarea:focus {
 .tags .tag {
     display: inline-block;
     border: 1px solid #e3e6ee;
-    border-radius: 16px;
-    padding: 6px 16px;
+    border-radius: 12px;
+    padding: 6px 10px;
     margin: 4px 4px 0 0;
-    font-size: 15px;
+    font-size: 13px;
     background: #fff;
     color: #222;
     cursor: pointer;
@@ -80,6 +80,11 @@ form#form_produtos textarea:focus {
     gap: 8px;
     margin-bottom: 12px;
 }
+
+.tag.selecionada {
+    background: #0d6efd;
+    color: #fff;
+}   
 
 #nova_tag {
     border: 1px solid #e3e6ee;

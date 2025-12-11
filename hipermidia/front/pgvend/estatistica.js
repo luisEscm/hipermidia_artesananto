@@ -1,7 +1,5 @@
-function formatarMoeda(value){
-  return Number(value).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-}
-
+import { formatarMoeda, buscarUsuarioLogado} from './repete_funcoes.js';
+const usuarioLogado = buscarUsuarioLogado();  
 function atualizarEstatisticas(stats = {}) {
 
   const elTotal = document.getElementById('total_produtos');
@@ -21,7 +19,7 @@ async function buscarEAtualizarEstatisticas(meses = 3) {
   try {
     
     //const url = `http://localhost:3000/estatisticas${vendorSegment}?meses=${encodeURIComponent(meses)}`;
-    const res = await fetch(`http://localhost:3000/estatisticas/2?meses=${meses}`);  
+    const res = await fetch(`http://localhost:3000/estatisticas/${usuarioLogado.id}?meses=${meses}`);  
     if (!res.ok) throw new Error('erro ao buscar os dados');
     const data = await res.json();
     
@@ -38,7 +36,7 @@ async function buscarEAtualizarEstatisticas(meses = 3) {
 
 async function fetchTopVendidos() {
   try {
-    const res = await fetch('http://localhost:3000/produtos/mais-vendidos/1');
+    const res = await fetch(`http://localhost:3000/produtos/mais-vendidos/${usuarioLogado.id}`);
     if (!res.ok) throw new Error('erro ao buscar top vendidos');
     const data = await res.json();
     return data;
@@ -82,7 +80,10 @@ function renderTopVendidos(items){
 
 
 document.addEventListener('DOMContentLoaded', () => {
-
+  if (usuarioLogado === null) {  
+    window.location.href = '../login.html';
+    return;
+  }
   fetchTopVendidos().then(renderTopVendidos);
 
   const inputMeses = document.getElementById('meses_input');

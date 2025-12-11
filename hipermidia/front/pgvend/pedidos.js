@@ -1,7 +1,5 @@
-function formatarMoeda(value){
-  return Number(value).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-}
-
+import { formatarMoeda, buscarUsuarioLogado} from './repete_funcoes.js';
+const usuarioLogado = buscarUsuarioLogado();
 function formatarData(data){
   if (!data) return '';
   const s = String(data).trim();
@@ -62,9 +60,13 @@ function renderPedidos(pedidos){
 }
 
 async function fetcheRender(){
+  if (usuarioLogado === null) {  
+    window.location.href = '../login.html';
+    return;
+  }
   try {
 
-    const res = await fetch('http://localhost:3000/pedidos/1');
+    const res = await fetch(`http://localhost:3000/pedidos/${usuarioLogado.id}`);
     if(!res.ok) throw new Error('erro ao buscar pedidos');
     const data = await res.json();
     renderPedidos(data);

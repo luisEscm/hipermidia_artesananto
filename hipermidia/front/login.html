@@ -65,6 +65,7 @@
     <script>
         const passwordInput = document.getElementById("senha");
         const eyeIcon = document.getElementById("olhoIcon");
+        localStorage.clear();
 
         eyeIcon.addEventListener("click", () => {
             const isPassword = passwordInput.type === "password";

@@ -4,6 +4,7 @@ const inputTag = document.getElementById('nova_tag');
 const btnAddTag = document.getElementById('adicionar_tag');
 
 let tags = [];
+let tagsSelecionadas = []; 
 
 carregarTags();
 async function carregarTags(){
@@ -21,32 +22,51 @@ async function carregarTags(){
   }
 }
 
-// Adicionar tag
-btnAddTag.addEventListener('click', () => {
+btnAddTag.addEventListener('click', async () => {
   const nome = inputTag.value.trim();
   if (nome && !tags.includes(nome)) {
-    tags.push(nome);
-    renderTags();
+    try {
+      const res = await fetch('http://localhost:3000/tags', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nome })
+      });
+      
+      if (!res.ok) throw new Error('Erro ao salvar a tag');
+      tags.push(nome);
+      renderTags();
+    } catch (err) {
+      console.error('Erro ao adicionar tag', err);
+      alert('Erro ao salvar a tag: ' + err.message);
+    }
   }
   inputTag.value = '';
 });
 
 function renderTags() {
   tagContainer.innerHTML = '';
+  console.log(tags);
   tags.forEach(tag => {
     const span = document.createElement('span');
     span.className = 'tag';
+
+    if (tagsSelecionadas.includes(tag)) {
+      span.classList.add('selecionada');
+    }
     span.textContent = `${'+ '+ tag}`;
-    console.log(tag)
     span.style.cursor = 'pointer';
-    span.title = 'Clique para remover';
-    span.onclick = () => removerTag(tag);
+    span.title = 'Clique para selcionar';
+    span.onclick = () => selecionarTag(tag);
     tagContainer.appendChild(span);
   });
 }
 
-function removerTag(tag) {
-  tags = tags.filter(t => t !== tag);
+function selecionarTag(tag) {
+  if (tagsSelecionadas.includes(tag)) {
+    tagsSelecionadas = tagsSelecionadas.filter(t => t !== tag);
+  } else {
+    tagsSelecionadas.push(tag);
+  }
   renderTags();
 }
 
@@ -61,7 +81,7 @@ form.addEventListener('submit', async (e) => {
     preco: Number(document.getElementById('preco_produto').value),
     quantidade: Number(document.getElementById('quantidade_produto').value),
     imagem: document.getElementById('url_imagem').value,
-    tags: tags
+    tags: tagsSelecionadas
   };
 
   try {
