@@ -230,6 +230,74 @@
     background: #ffe6e6;
 }
 
+/*aba para exclusao*/
+.confirmacao {
+    display: none;
+    position: fixed;
+    top: 0; 
+    left: 0;
+    width: 100%; 
+    height: 100%;
+    background: rgba(0,0,0,0.55);
+    align-items: center;
+    justify-content: center;
+    z-index: 2000; 
+}
+
+.confirmar_conteudo {
+    background: white;
+    padding: 30px 28px;
+    border-radius: 14px;
+    width: 340px;      
+    text-align: center;
+}
+
+.confirmar_conteudo h3{
+    margin-bottom: 15px;
+    font-weight: 600;
+    font-size: 20px; 
+    color: #213047;
+}
+
+.botoes {
+    display: flex;
+    justify-content: center;
+    gap: 15px; 
+    margin-top: 10px;
+}
+
+.confirmar_conteudo button {
+    border: 2px solid #7B2CFF;
+    border-radius: 8px;
+    padding: 10px 20px;   
+    font-weight: 600;
+    font-size: 16px;       
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+#btnSim {
+    color: #538161;
+    border-color: #538161;
+}
+
+#btnSim:hover {
+    border: 2px solid #7B2CFF;
+    background-color: #538161;
+    color: white;
+}
+
+#btnNao {
+    color: #884039;
+    border-color: #884039;
+}
+
+#btnNao:hover {
+  border: 2px solid #7B2CFF;
+  background-color: #884039;
+  color: white;
+}
+
 
 .extra{
   display: block;

@@ -43,7 +43,7 @@ function renderizarProdutos(produtos) {
     container.querySelectorAll('.btn_excluir').forEach(btn => {
       btn.addEventListener('click', (e) => {
         const id = Number(e.currentTarget.dataset.id);
-        excluirProduto(id);
+        abrirExclusao(id);
       });
     });
 }
@@ -56,7 +56,6 @@ function editarProduto(id){
 
 
 async function excluirProduto(id){
-  if(!confirm('Confirma exclusão do produto #' + id + '?')) return;
 
   try {
     const res = await fetch(`http://localhost:3000/produtos/${id}`, { method: 'DELETE' });
@@ -72,6 +71,22 @@ async function excluirProduto(id){
   }
 }
 
+function abrirExclusao(id) {
+    const modal = document.getElementById("confirmar");
+    modal.style.display = "flex";
+
+    document.getElementById("btnSim").onclick = () => {
+        modal.style.display = "none";
+        excluirProduto(id);
+    };
+
+    document.getElementById("btnNao").onclick = () => {
+        modal.style.display = "none";
+    };
+}
+
+
+
 async function fetchProdutosFromApi(){
     try{
         const res = await window.fetch('http://localhost:3000/produtos/1');
@@ -83,6 +98,8 @@ async function fetchProdutosFromApi(){
         return [];
     }
 }
+
+
 
 document.addEventListener('DOMContentLoaded', async () => {
    const apiProdutos = await fetchProdutosFromApi();

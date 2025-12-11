@@ -50,8 +50,8 @@
             <h2>Meus Produtos</h2>
         </a>
 
-        <a href="#" class="aba">
-            <img src="pgvend/venda/produtos48.png" alt="Foto Pedido" data-target="pedidos">
+        <a href="#" class="aba" data-target="pedidos">
+            <img src="pgvend/venda/produtos48.png" alt="Foto Pedido">
             <h2>Pedidos</h2>
         </a>
 
@@ -61,7 +61,7 @@
         </a>
     </div>
 
-    <div class="aba_produto extra" id ="produtos">
+    <div class="aba_produto extra" id ="id_produto">
         <div class="adiciona_produto">
             <h3 id="meu_p">Meus produtos </h3>
             <button class="butao_add" onclick="window.location.href='form.html'">
@@ -85,9 +85,20 @@
         <div class="lista_produtos" id="lista_produtos">
             <!--injentar-->
         </div>
+
+        <div id="confirmar" class="confirmacao">
+            <div class="confirmar_conteudo">
+                <h3>Tem certeza que deseja excluir?</h3>
+                <div class="botoes">
+                    <button id="btnSim">Sim</button>
+                    <button id="btnNao">Não</button>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-    <div class="aba_pedidos" id="pedidos">
+    <div class="aba_pedidos" id="id_pedido">
         <h2>Pedidos Recebidos</h2>
         <p class="sub" id="qtd_meses">Acompanhe seus produtos </p>
 
@@ -130,7 +141,7 @@
     </div>
 
     
-    <div class="aba_estatistica">
+    <div class="aba_estatistica" id="id_estatistica"   >
         <div class="info_est">
             <div class="texto_titulo">
                 <h2>Suas estatísticas</h2>
@@ -195,5 +206,6 @@
     <script src="pgvend/estatistica.js"></script>
     <script src="pgvend/pedidos.js"></script>
     <script src="pgvend/produtos.js"></script>
+    <script src="pgvend/venda.js"></script>
 </body>
 </html>

@@ -104,7 +104,7 @@ class Service {
     });
   } 
 
-   // Listar todos os produtos
+   // Listar todos os produtos do banco
   obterTodos() {
     const produtos = db.prepare(`
       SELECT 
