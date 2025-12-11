@@ -28,12 +28,4 @@ document.addEventListener("DOMContentLoaded", () => {
             if (target) ativarAba(target, aba);
         });
     });
-
-    // ativa a primeira ou a que já tem .ativa
-    const inicial = document.querySelector(".aba.ativa") || abas[0];
-    const targetInicial =
-        inicial.dataset.target ||
-        inicial.querySelector("[data-target]")?.dataset.target;
-
-    ativarAba(targetInicial, inicial);
 });
