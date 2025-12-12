@@ -127,6 +127,24 @@ app.post("/tags", (req, res) => {
   }
 })
 
+// Adicionar usuarios
+app.post("/usuarios", (req, res) => {
+  try {
+    const dados = req.body;
+
+    const id = Service.adicionarUsuario(dados);
+
+    if (id === -1) {
+      return res.status(400).json({ erro: "Email já está em uso." });
+    }
+
+    res.json({ sucesso: true, id });
+    
+  } catch (err) {
+    res.status(500).json({ erro: err.message });
+  }
+});
+
 // Login
 app.post("/login", (req, res) => {
   try {

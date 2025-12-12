@@ -1,0 +1,176 @@
+/* ============================================================ Fundo da Página ============================================================ */
+body {
+    font-family: 'Inter', sans-serif;
+    background: #f4f6ff;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* ============================================================ Header e Logo ============================================================ */
+.logo-container {
+    text-align: center;
+    margin-bottom: 25px;
+    margin-top: 10px;
+}
+
+.logo-icon {
+    background: #1e5eff;
+    width: 70px;
+    height: 70px;
+    border-radius: 18px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-icon img {
+    width: 40px;
+    height: 40px;
+}
+
+.title {
+    margin-top: 12px;
+    margin-bottom: 4px;
+    font-size: 22px;
+    font-weight: bold;
+    color: #000;
+}
+
+.subtitle {
+    color: #666;
+    font-size: 14px;
+    margin-top: 0;
+}
+
+/* ============================================================ Card do Formulario ============================================================ */
+.container {
+    width: 420px;
+    background: white;
+    padding: 35px 35px 45px;
+    border-radius: 18px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+    text-align: center;
+    margin: 40px auto;
+}
+
+.container h2 {
+    margin: 0;
+}
+
+.sub {
+    color: #6b6b6b;
+    margin-bottom: 20px;
+}
+
+/* ============================================================ Labels ============================================================ */
+label {
+    display: block;
+    text-align: left;
+    margin: 10px 0 4px;
+    font-weight: 500;
+}
+
+/* ============================================================ Inputs e Textareas ============================================================ */
+
+.input-group {
+    width: 100%;
+}
+
+.input-group input,
+textarea {
+    width: 100%;
+    height: 48px;
+    padding: 12px;
+    font-size: 15px;
+    border: 1px solid #dcdcdc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    outline: none;
+    background: #fff;
+}
+
+.input-group input:focus,
+textarea:focus {
+    border-color: #4a6cff;
+    box-shadow: 0 0 3px rgba(74,108,255,0.5);
+}
+
+/* ============================================================ Botões de Tipo de Conta ============================================================ */
+.tipo-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    gap: 10px;
+}
+
+.tipo-btn {
+    flex: 1;
+    padding: 12px 0;
+    border-radius: 10px;
+    border: 2px solid #e4e4e4;
+    background: white;
+    cursor: pointer;
+    font-weight: 500;
+    text-align: center;
+}
+
+.tipo-btn:hover {
+    border-color: #7a61ff;
+}
+
+.tipo-btn.ativo {
+    border-color: #8b53ff;
+    background: #f4eaff;
+}
+
+/* ============================================================ Campos de Vendedor ============================================================ */
+.vendedorExtra {
+    display: none;
+}
+
+/* ============================================================ Botão Principal ============================================================ */
+button {
+    width: 100%;
+    margin-top: 20px;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background: #235cff;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+button:hover {
+    filter: brightness(1.1);
+}
+
+/* ============================================================ Link para Login ============================================================ */
+.login-link {
+    margin-top: 18px;
+    color: #666;
+}
+
+.login-link a {
+    text-decoration: none;
+    color: #235cff;
+}
+
+.toggle-pass {
+    width: 22px;
+    height: 22px;
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.6;
+    cursor: pointer;
+}
+
+.toggle-pass:hover {
+    opacity: 1;
+}
