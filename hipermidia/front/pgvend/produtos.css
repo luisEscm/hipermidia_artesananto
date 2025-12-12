@@ -101,14 +101,13 @@
   border-radius: 10px;
   align-items: center;
   justify-content: center;
-   border: 2px solid grey;
+   border: 2px solid rgb(83, 5, 5);
    padding: 4px 3px;
 }
 
 .filtro .filtrar img{
   width: 30px;
   height: 30px;
-  aspect-ratio: 1 / 1;
   object-fit: contain;
 }
 

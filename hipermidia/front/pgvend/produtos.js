@@ -1,4 +1,4 @@
-import { formatarMoeda, envLogin} from './repete_funcoes.js';  
+import { formatarMoeda, envLogin, atualizarBusca} from './repete_funcoes.js';  
 const usuarioLogado = envLogin();
 function renderizarProdutos(produtos) {
     const container = document.getElementById('lista_produtos')
@@ -11,7 +11,7 @@ function renderizarProdutos(produtos) {
         const tags = (produto.tags || []).map(tag => `<span class="tag_produto">${tag}</span>`).join('');
 
         const html = `
-            <div class="cartao_produto">
+            <div class="cartao_produto produto-item" data-nome="${produto.nome}">
                 <img src="${produto.imagem}" alt="${produto.nome}" class="img_produto">
                 <div class="info_produto">
                     <h3>${produto.nome}</h3>
@@ -101,4 +101,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   const apiProdutos = await fetchProdutosFromApi();
   renderizarProdutos(apiProdutos);
   
+  const inputBusca = document.getElementById('busca');
+  if(inputBusca){
+      inputBusca.addEventListener('input', (e) => atualizarBusca(e.target.value));
+  }
 });

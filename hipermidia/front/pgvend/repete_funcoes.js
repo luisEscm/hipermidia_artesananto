@@ -10,7 +10,7 @@ function buscarUsuarioLogado() {
 export function envLogin(){
   const usuarioLogado = buscarUsuarioLogado();
   if (usuarioLogado === null) {  
-    window.location.href = '../compra_publico.html';
+    window.location.href = '../index.html';
     return;
   }
   return usuarioLogado;
@@ -18,5 +18,19 @@ export function envLogin(){
 
 export function sairConta(){
     localStorage.clear()
-    window.location.href = "../compra_publico.html"
+    window.location.href = "../index.html"
+}
+
+//para o filtro de busca da aba de produtos
+function normalizar(str) {
+  return (str || "").toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+}
+
+export function atualizarBusca(valor) {
+  const termo = normalizar(valor);
+  const itens = document.querySelectorAll('.produto-item'); // ajuste ao seu seletor
+  itens.forEach(item => {
+    const nome = normalizar(item.dataset.nome || item.querySelector('.produto-nome')?.textContent);
+    item.style.display = nome.includes(termo) ? '' : 'none';
+  });
 }
