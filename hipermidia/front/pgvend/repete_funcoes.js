@@ -28,7 +28,7 @@ function normalizar(str) {
 
 export function atualizarBusca(valor) {
   const termo = normalizar(valor);
-  const itens = document.querySelectorAll('.produto-item'); // ajuste ao seu seletor
+  const itens = document.querySelectorAll('.produto-item'); 
   itens.forEach(item => {
     const nome = normalizar(item.dataset.nome || item.querySelector('.produto-nome')?.textContent);
     item.style.display = nome.includes(termo) ? '' : 'none';

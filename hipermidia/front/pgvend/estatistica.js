@@ -1,4 +1,4 @@
-import { formatarMoeda, envLogin} from './repete_funcoes.js';  
+import { formatarMoeda, envLogin, mostrarAvisos} from './repete_funcoes.js';  
 
 const usuarioLogado = envLogin();
 
@@ -30,7 +30,7 @@ async function buscarEAtualizarEstatisticas(meses = 3) {
       mediaMensal: data.mediaMensal,
     });
   } catch (e) {
-    console.warn('Não foi possível obter estatísticas:', e);
+    mostrarAvisos('Erro', 'Não foi possível carregar as estatísticas: ' + e.message);
   }
 }
 
@@ -42,7 +42,7 @@ async function fetchTopVendidos() {
     return data;
   }
   catch (e) {
-    console.warn('Não foi possível obter top vendidos:', e);
+    mostrarAvisos('Erro', 'Não foi possível carregar os produtos mais vendidos: ' + e.message);
     return [];
   }
 }

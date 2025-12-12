@@ -48,7 +48,6 @@ function renderizarProdutos(produtos) {
     });
 }
 
-// placeholders simples — substitua pela lógica real
 function editarProduto(id){
   window.location.href = `../form.html?id=${id}`;
 }
@@ -91,7 +90,7 @@ async function fetchProdutosFromApi(){
         const data = await res.json();
         return Array.isArray(data) ? data : [];
     }catch(e){
-        console.warn('Não foi possível obter produtos:', e);
+        mostrarAvisos('Erro', 'Não foi possível carregar os produtos: ' + e.message);
         return [];
     }
 }

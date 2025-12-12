@@ -226,7 +226,17 @@
     <script type="module" src="pgvend/produtos.js"></script>
     <script type="module" src="pgvend/venda.js"></script>
     <script type="module">
-        import { sairConta } from './pgvend/repete_funcoes.js';
+        import { sairConta ,  mostrarAvisos} from './pgvend/repete_funcoes.js';
+        document.addEventListener('DOMContentLoaded', () => {
+            const avisoJson = sessionStorage.getItem('aviso');
+            if (avisoJson) {
+                try {
+                    const { titulo, mensagem } = JSON.parse(avisoJson);
+                    mostrarAvisos(titulo, mensagem);
+                } catch (e) {  }
+                sessionStorage.removeItem('aviso');
+            }
+        });
         document.getElementById('sair').addEventListener('click', (e) => { e.preventDefault(); sairConta(); });
     </script>
 </body>

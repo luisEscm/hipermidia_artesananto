@@ -1,4 +1,4 @@
-import { envLogin} from './pgvend/repete_funcoes.js'; 
+import { envLogin, mostrarAvisos} from './pgvend/repete_funcoes.js'; 
 
 const form = document.getElementById('form_produtos');
 const tagContainer = document.getElementById('tag_container');
@@ -25,7 +25,7 @@ async function carregarTags(){
     
     renderTags();
   } catch (err) {
-    console.error('Erro ao carregar as tags', err);
+    mostrarAvisos('Erro', 'Não foi possível carregar as tags: ' + err.message);
   }
 }
 
@@ -46,7 +46,7 @@ btnAddTag.addEventListener('click', async () => {
       renderTags();
     } catch (err) {
       console.error('Erro ao adicionar tag', err);
-      alert('Erro ao salvar a tag: ' + err.message);
+      mostrarAvisos('Erro', 'Não foi possível adicionar a tag: ' + err.message);  
     }
   }
   inputTag.value = '';
@@ -93,7 +93,7 @@ form.addEventListener('submit', async (e) => {
     tags: tagsSelecionadas
   };
  
-  
+  let mensagemOp = "Produto cadastrado";
   try {
       let resTag;
       if (id) {
@@ -102,6 +102,7 @@ form.addEventListener('submit', async (e) => {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(produto)
         }); 
+        mensagemOp = "Produto editado";
       }else {
         resTag = await fetch('http://localhost:3000/produtos', {
           method: 'POST',
@@ -111,10 +112,14 @@ form.addEventListener('submit', async (e) => {
       }
 
     if (resTag.ok) {
-      alert('Produto salvo com sucesso!');
-      window.location.href = 'venda.html';
+      sessionStorage.setItem('aviso', JSON.stringify({
+        titulo: 'Sucesso',
+        mensagem: mensagemOp + ' com sucesso!'
+      }));
+      window.location.href = "venda.html";
     } else {
       const err = await resTag.json();
+
       alert('Erro ao salvar: ' + (err.error || 'Erro desconhecido'));
     }
   } catch (error) {
@@ -151,5 +156,6 @@ async function edicaoProduto() {
 
   } catch (err) {
     console.error('Erro ao carregar produto para edição', err);
+    mostrarAvisos('Erro', 'Não foi possível carregar o produto para edição: ' + err.message);
   }
 }
