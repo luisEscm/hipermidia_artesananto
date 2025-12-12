@@ -126,9 +126,12 @@ class Service {
         WHERE pt.produto_id = ?
       `).all(produto.id);
 
+      const produtor = db.prepare(`select nome_loja from Vendedor where usuario_id = ?`).get(produto.vendedor_id);
+
       return {
         ...produto,
-        tags: tags.map((tag) => tag.nome)
+        tags: tags.map((tag) => tag.nome),
+        produtor: produtor ? produtor.nome_loja : "Indefinido"
       };
     });
   } 
