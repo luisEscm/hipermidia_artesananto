@@ -34,3 +34,34 @@ export function atualizarBusca(valor) {
     item.style.display = nome.includes(termo) ? '' : 'none';
   });
 }
+
+//avisos na pagina do vendedor
+export function mostrarAvisos(titulo, mensagem) {
+  const container = document.querySelector('.aviso_geral');
+  const elTitulo = document.getElementById('info_aviso');
+  const elTexto = document.getElementById('info_texto');
+  const btn = document.getElementById('bt_aviso');
+  if (!container || !elTitulo || !elTexto || !btn) return;
+
+  elTitulo.textContent = titulo;
+  elTexto.textContent = mensagem;
+
+  const t = String(titulo || '').toLowerCase();
+  if (t.includes('erro')) {
+    elTitulo.style.backgroundColor = '#e74c3c';
+  } else if (t.includes('conclu') || t.includes('sucesso') || t.includes('ok')) {
+    elTitulo.style.backgroundColor = '#2ecc71';
+  } else {
+    elTitulo.style.backgroundColor = 'aqua'; 
+  }
+
+  container.style.display = 'flex';
+
+  const fechar = () => {
+    container.style.display = 'none';
+    btn.onclick = null;
+  };
+
+  btn.onclick = fechar;
+}
+window.mostrarAvisos = mostrarAvisos;

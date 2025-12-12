@@ -1,4 +1,4 @@
-import { formatarMoeda, envLogin, atualizarBusca} from './repete_funcoes.js';  
+import { formatarMoeda, envLogin, atualizarBusca, mostrarAvisos} from './repete_funcoes.js';  
 const usuarioLogado = envLogin();
 function renderizarProdutos(produtos) {
     const container = document.getElementById('lista_produtos')
@@ -59,13 +59,13 @@ async function excluirProduto(id){
   try {
    const res = await fetch(`http://localhost:3000/produtos/${id}`, { method: 'DELETE' } );
    if (!res.ok) throw new Error('Produto não encontrado');
-
+    mostrarAvisos('Sucesso', 'Produto exluido com sucesso!');
     await res.json();
     // Recarrega a lista do banco
     const produtos = await fetchProdutosFromApi();
     renderizarProdutos(produtos);
   } catch (e) {
-    alert('Não foi possível excluir o produto: ' + e.message);
+    mostrarAvisos('Erro', 'Não foi possível excluir o produto: ' + e.message);
   }
 }
 

@@ -104,7 +104,7 @@ form.addEventListener('submit', async (e) => {
         }); 
       }else {
         resTag = await fetch('http://localhost:3000/produtos', {
-          method: metodo,
+          method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(produto)
         }); 

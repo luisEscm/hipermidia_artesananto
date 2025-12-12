@@ -150,40 +150,74 @@ nav a:hover{
   left: 0;
   width: 100%;
   height: 100%;
-  display: flex;
-   position: fixed;
+  display: none;
+  position: fixed;
   align-items: center;
   z-index: 2000;
   align-items: center;
   justify-content: center;
-  background-color: #3b35af;
+  background: rgba(0,0,0,0.55);
 }
 
-.aviso_geral .aviso{
+.aviso_geral .aviso {
+  display: flex;
+  flex-direction: column;
   background: white;
   border-radius: 10px;
-  padding: 0px 15px;
-  box-shadow: #7B2CFF 0px 0px 10px;
-  height: 130px;
-  width: 400px;
+  padding: 0px 5px 4px 5px;
+  box-shadow: 0 0 10px #9360ec;
   text-align: center;
+  width: 400px;
+  height: auto;
 }
 
-.aviso #info_aviso{
+
+.aviso #info_aviso {
   background-color: aqua;
   margin-top: 8px;
   border-radius: 25px 0px;
-  font-size: 18px;
+  font-size: 20px;
   color: #213047;
-  font-weight: 600;
-  
+  font-weight: 700;
+  padding: 8px;
 }
 
-.aviso .div_info{
-  height: 60%;
+
+.aviso .div_info {
   background-color: blue;
-  margin-top: 5px;
+  margin-top: 2px;
+  border-radius: 0px 25px 0px 25px;
+  display: flex;
+  flex-direction: column;
+  height: 95px;
+  padding: 10px;
+  color: white;
 }
+
+.div_info .botao_aviso {
+  margin-top: 3px;
+  display: flex;
+  justify-content: right;  
+}
+
+.botao_aviso #bt_aviso{
+  background-color: #612bbe;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;  
+  border: 2px solid rgb(255, 255, 255);
+}
+
+#bt_aviso:hover {
+  background-color: #7B2CFF;
+  border: 2px solid #7B2CFF;
+  transition: 0.2s;
+} 
+
 
 @media(max-width: 450px){
   .painel{
