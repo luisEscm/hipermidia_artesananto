@@ -152,6 +152,26 @@ class Service {
     return db.prepare(sql).all(vendedorId);
   }
 
+  //busca um produto especifico
+  buscarProduto(id) {
+  if (!id) return null;
+    const produto = db.prepare(`
+      SELECT id, nome, descricao, preco, quantidade_estoque AS quantidade, url_imagem AS imagem
+      FROM Produtos
+      WHERE id = ?
+    `).get(Number(id));
+
+    const tags = db.prepare(`   
+      SELECT t.nome 
+      FROM Tags t
+      JOIN Produto_Tags pt ON t.id = pt.tag_id  
+      WHERE pt.produto_id = ?
+    `).all(Number(id));
+    if (produto) {
+      produto.tags = tags.map((tag) => tag.nome);
+    }
+    return produto || null;
+  }
 
   //cria o produto e adiciona no banco
   criarProduto(dados) {
@@ -211,6 +231,58 @@ class Service {
       imagem: dados.imagem,
       tags: dados.tags
     };
+  }
+
+  atualizarProduto(id, dados) {
+    const produtoId = Number(id);
+    if (!Number.isInteger(produtoId) || produtoId <= 0) {
+      throw new Error('ID de produto inválido');
+    }
+
+    const existente = db.prepare('SELECT id FROM Produtos WHERE id = ?').get(produtoId);
+    if (!existente) {
+      throw new Error('Produto não encontrado');
+    }
+
+    // Atualiza campos básicos
+    const atualizar = db.prepare(`
+      UPDATE Produtos
+      SET nome = ?, descricao = ?, preco = ?, quantidade_estoque = ?, url_imagem = ?
+      WHERE id = ?
+    `);
+    atualizar.run(
+      dados.nome,
+      dados.descricao ?? null,
+      Number(dados.preco),
+      Number(dados.quantidade),
+      dados.imagem ?? null,
+      produtoId
+    );
+
+    if (Array.isArray(dados.tags)) {
+      const removerTags = db.prepare('DELETE FROM Produto_Tags WHERE produto_id = ?');
+      removerTags.run(produtoId);
+
+      if (dados.tags.length > 0) {
+        const buscarTag = db.prepare('SELECT id FROM Tags WHERE nome = ?');
+        const associarTag = db.prepare(`
+          INSERT OR IGNORE INTO Produto_Tags (produto_id, tag_id)
+          VALUES (?, ?)
+        `);
+
+        const transacao = db.transaction((tags) => {
+          const unicas = [...new Set(tags)];
+          unicas.forEach((nomeTag) => {
+            const nomeNormalizado = String(nomeTag).trim().toLowerCase();
+            if (!nomeNormalizado) return;
+            const tag = buscarTag.get(nomeNormalizado);
+            if (tag) associarTag.run(produtoId, tag.id);
+          });
+        });
+        transacao(dados.tags);
+      }
+    }
+    return this.buscarProduto(produtoId);
   }
 
   // Cria um novo pedido

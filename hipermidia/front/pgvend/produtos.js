@@ -1,4 +1,4 @@
-import { formatarMoeda} from './repete_funcoes.js';  
+import { formatarMoeda, envLogin} from './repete_funcoes.js';  
 const usuarioLogado = envLogin();
 function renderizarProdutos(produtos) {
     const container = document.getElementById('lista_produtos')
@@ -54,17 +54,15 @@ function editarProduto(id){
 }
 
 
-
 async function excluirProduto(id){
 
   try {
-    const res = await fetch(`http://localhost:3000/produtos/${usuarioLogado.id}`, { method: 'DELETE' });
-    if (!res.ok) {
-      const err = await res.json().catch(()=>({ error: 'Erro' }));
-      throw new Error(err.error || 'Falha ao excluir');
-    }
+   const res = await fetch(`http://localhost:3000/produtos/${id}`, { method: 'DELETE' } );
+   if (!res.ok) throw new Error('Produto não encontrado');
+
+    await res.json();
     // Recarrega a lista do banco
-    produtos = await fetchProdutosFromApi();
+    const produtos = await fetchProdutosFromApi();
     renderizarProdutos(produtos);
   } catch (e) {
     alert('Não foi possível excluir o produto: ' + e.message);
@@ -86,10 +84,9 @@ function abrirExclusao(id) {
 }
 
 
-
 async function fetchProdutosFromApi(){
     try{
-        const res = await window.fetch('http://localhost:3000/produtos/1');
+        const res = await fetch('http://localhost:3000/produtos/'+usuarioLogado.id);
         if(!res.ok) throw new Error('Erro ao buscar produtos');
         const data = await res.json();
         return Array.isArray(data) ? data : [];
@@ -98,7 +95,6 @@ async function fetchProdutosFromApi(){
         return [];
     }
 }
-
 
 
 document.addEventListener('DOMContentLoaded', async () => {

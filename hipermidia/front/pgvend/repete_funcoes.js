@@ -10,8 +10,13 @@ function buscarUsuarioLogado() {
 export function envLogin(){
   const usuarioLogado = buscarUsuarioLogado();
   if (usuarioLogado === null) {  
-    window.location.href = '../login.html';
+    window.location.href = '../compra_publico.html';
     return;
   }
   return usuarioLogado;
+}
+
+export function sairConta(){
+    localStorage.clear()
+    window.location.href = "../compra_publico.html"
 }

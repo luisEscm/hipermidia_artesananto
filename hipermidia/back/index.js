@@ -93,6 +93,22 @@ app.post("/produtos", (req, res) => {
   }
 })
 
+
+//buscar produto
+app.get("/produtos/detalhes/:id", (req, res) => {
+  try {        
+    const produto = Service.buscarProduto(req.params.id);
+    
+    if (produto) {
+      res.json(produto);
+    } else {
+      res.status(404).json({ error: "Produto não encontrado" });      
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });         
+  }
+});
+
 // Criar Pedido
 app.post("/pedidos", (req, res) => {
   try {
@@ -102,6 +118,23 @@ app.post("/pedidos", (req, res) => {
     res.status(500).json({ error: error.message });
   }
 })
+
+
+//alterar Produto 
+app.put("/produtos/:id", (req, res) => {
+  try {
+    const atualizado = Service.atualizarProduto(req.params.id, req.body);
+    res.json(atualizado);
+  } catch (error) {
+    if (error.message === 'Produto não encontrado') {
+      return res.status(404).json({ error: error.message });
+    }
+    if (error.message.includes('inválido')) {
+      return res.status(400).json({ error: error.message });
+    }
+    res.status(500).json({ error: error.message });
+  }
+});
 
 // Deletar Produto
 app.delete("/produtos/:id", (req, res) => {
@@ -142,23 +175,6 @@ app.post("/login", (req, res) => {
   }
 })
 
-app.get("/usuarios/:id", (req, res) => {
-  try {
-    const id = Number(req.params.id);
-    if (!Number.isInteger(id) || id <= 0) {
-      return res.status(400).json({ error: "ID inválido" });
-    }
-
-    const usuario = Service.buscarUsuario(id);
-    if (!usuario) {
-      return res.status(404).json({ error: "Usuário não encontrado" });
-    }
-
-    res.json(usuario);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-})
 
 app.listen(3000, () => {
   console.log("Servidor rodando na porta 3000")

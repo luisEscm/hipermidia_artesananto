@@ -22,8 +22,8 @@
         </div>
 
         <nav>
-            <a href="#">
-                <div class="nav_img">
+            <a href="perfil.html">
+                <div class="nav_img" id="perfil">
                     <img src="pgvend/venda/person48.png" alt="Meus Produtos">
                 </div>
                 <h2 class="texto">Perfil</h2>
@@ -34,7 +34,7 @@
                 </div>
                 <h2 class="texto">Loja</h2>
             </a>
-            <a href="#">
+            <a href="#" id="sair">
                 <div class="nav_img">
                     <img src=" pgvend/venda/login_78.png" alt="Meus Produtos">
                 </div>
@@ -218,8 +218,12 @@
     
     <script type="module"src="pgvend/repete_funcoes.js"></script>
     <script type="module" src="pgvend/estatistica.js"></script>
-<script type="module" src="pgvend/pedidos.js"></script>
-<script type="module" src="pgvend/produtos.js"></script>
+    <script type="module" src="pgvend/pedidos.js"></script>
+    <script type="module" src="pgvend/produtos.js"></script>
     <script type="module" src="pgvend/venda.js"></script>
+    <script type="module">
+        import { sairConta } from './pgvend/repete_funcoes.js';
+        document.getElementById('sair').addEventListener('click', (e) => { e.preventDefault(); sairConta(); });
+    </script>
 </body>
 </html>

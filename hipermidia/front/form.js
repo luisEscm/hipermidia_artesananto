@@ -1,15 +1,22 @@
+import { envLogin} from './pgvend/repete_funcoes.js'; 
+
 const form = document.getElementById('form_produtos');
 const tagContainer = document.getElementById('tag_container');
 const inputTag = document.getElementById('nova_tag');
 const btnAddTag = document.getElementById('adicionar_tag');
-
+const usuarioLogado = envLogin();
+const params = new URLSearchParams(window.location.search);
+ 
+const id = params.get('id');
 let tags = [];
 let tagsSelecionadas = []; 
 
-carregarTags();
+
+carregarTags().then(() => edicaoProduto()).catch(()=>edicaoProduto());
+
 async function carregarTags(){
   try {
-    const res = await window.fetch('http://localhost:3000/tags');
+    const res = await fetch('http://localhost:3000/tags');
     if(!res.ok) throw new Error('erro ao buscar as tags');
     const idNome = await res.json();
     Object.entries(idNome).forEach(([id, nome]) => {
@@ -22,12 +29,14 @@ async function carregarTags(){
   }
 }
 
+//cadasttra uma nova tag
 btnAddTag.addEventListener('click', async () => {
   const nome = inputTag.value.trim();
+
   if (nome && !tags.includes(nome)) {
     try {
       const res = await fetch('http://localhost:3000/tags', {
-        method: 'POST',
+        method: 'POST'  ,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ nome })
       });
@@ -43,9 +52,9 @@ btnAddTag.addEventListener('click', async () => {
   inputTag.value = '';
 });
 
+//rendereizas as tags do form
 function renderTags() {
   tagContainer.innerHTML = '';
-  console.log(tags);
   tags.forEach(tag => {
     const span = document.createElement('span');
     span.className = 'tag';
@@ -75,7 +84,7 @@ form.addEventListener('submit', async (e) => {
   e.preventDefault();
 
   const produto = {
-    vendedor_id: 1, 
+    vendedor_id: usuarioLogado.id, 
     nome: document.getElementById('nome_produto').value,
     descricao: document.getElementById('descricao_produto').value,
     preco: Number(document.getElementById('preco_produto').value),
@@ -83,13 +92,23 @@ form.addEventListener('submit', async (e) => {
     imagem: document.getElementById('url_imagem').value,
     tags: tagsSelecionadas
   };
-
+ 
+  
   try {
-    const resTag = await fetch('http://localhost:3000/produtos', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(produto)
-    });
+      let resTag;
+      if (id) {
+        resTag = await fetch(`http://localhost:3000/produtos/${id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(produto)
+        }); 
+      }else {
+        resTag = await fetch('http://localhost:3000/produtos', {
+          method: metodo,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(produto)
+        }); 
+      }
 
     if (resTag.ok) {
       alert('Produto salvo com sucesso!');
@@ -102,3 +121,35 @@ form.addEventListener('submit', async (e) => {
     alert('Erro de conexão: ' + error.message);
   }
 });
+
+
+//para realizar a edição do produto
+async function edicaoProduto() {
+  if (!id) return; 
+
+  try {
+    const res = await fetch(`http://localhost:3000/produtos/detalhes/${id}`);
+    if (!res.ok) throw new Error('Produto não encontrado');
+    console.log(res);
+    const produto = await res.json();
+    console.log('Dados do produto para edição:', produto);
+
+    const elNome = document.getElementById('nome_produto');
+    const elDescricao = document.getElementById('descricao_produto');
+    const elPreco = document.getElementById('preco_produto');
+    const elQuantidade = document.getElementById('quantidade_produto');
+    const elImagem = document.getElementById('url_imagem');
+
+    if (elNome) elNome.value = produto.nome || '';
+    if (elDescricao) elDescricao.value = produto.descricao || '';
+    if (elPreco) elPreco.value = produto.preco ?? '';
+    if (elQuantidade) elQuantidade.value = produto.quantidade ?? '';
+    if (elImagem) elImagem.value = produto.imagem || '';
+
+    tagsSelecionadas = Array.isArray(produto.tags) ? [...produto.tags] : [];
+    renderTags();
+
+  } catch (err) {
+    console.error('Erro ao carregar produto para edição', err);
+  }
+}
