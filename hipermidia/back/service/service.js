@@ -371,6 +371,50 @@ class Service {
     return tag;
   }
 
+  //adiciona um usuario no sistema
+  adicionarUsuario(dados) {
+
+    const nomeNormalizado = dados.nome.trim().toLowerCase();
+
+    const insUser = db.prepare(`
+      INSERT INTO Usuarios (nome, email, senha, tipo, telefone, endereco)
+      VALUES (?, ?, ?, ?, ?, ?)`);
+    
+    const insVend = db.prepare(`
+      INSERT INTO Vendedor (usuario_id, nome_loja, endereco_loja)
+      VALUES (?, ?, ?)
+    `);
+
+    const findUsuario = db.prepare('SELECT * FROM Usuarios WHERE email = ?');
+
+    let usuario = findUsuario.get(dados.email);
+
+    if (!usuario) {
+
+      const resultado = insUser.run(
+        nomeNormalizado,
+        dados.email,
+        dados.senha,
+        dados.tipo,
+        dados.telefone,
+        dados.endereco
+      );
+      
+      const idUsuario = resultado.lastInsertRowid;
+      if(dados.tipo === "vendedor"){
+        const resultadovend = insVend.run(
+          idUsuario,
+          dados.nome_loja,
+          dados.endereco_loja
+        )
+      }
+      return idUsuario;
+    }else{
+      const idUsuario = -1;
+      return idUsuario;
+    }
+  }
+
   //consulta usuario para login
   consultarUsuario(email, senha) {
     const buscarUsuario = db.prepare('SELECT * FROM Usuarios WHERE email = ?');

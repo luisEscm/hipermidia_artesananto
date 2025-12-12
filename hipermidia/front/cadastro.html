@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro</title>
+    <link rel="stylesheet" href="cadastro.css">
+</head>
+<body>
+
+    <div class="container">
+
+        <div class="login-header">
+            <div class="logo-icon">
+                <img class="icon-logo-img" src="pgvend/venda/storefront.png"></img>
+            </div>
+
+            <h1>Art Attack</h1>
+            <p>Entre para continuar</p>
+        </div>
+
+        <form id="formCadastro">
+
+            <!-- Nome -->
+            <label>Nome Completo</label>
+            <div class="input-group">
+                <input type="text" id="nome" required>
+            </div>
+
+            <!-- Telefone -->
+            <label>Telefone</label>
+            <div class="input-group">
+                <input type="text" id="telefone" required>
+            </div>
+
+            <!-- Endereço -->
+            <label>Endereço</label>
+            <div class="input-group">
+                <input type="text" id="endereco" required>
+            </div>
+
+            <!-- Campos extras para vendedor -->
+            <div class="vendedorExtra" id="empresaCampos">
+
+                <label>Nome da Empresa</label>
+                <div class="input-group">
+                    <input type="text" id="nome_loja">
+                </div>
+
+                <label>Endereço da Loja</label>
+                <div class="input-group">
+                    <input type="text" id="endereco_loja">
+                </div>
+            </div>
+
+            <!-- Email -->
+            <label>E-mail</label>
+            <div class="input-group">
+                <input type="email" id="email" required>
+            </div>
+
+            <!-- Senha -->
+            <label>Senha</label>
+            <div class="input-group" style="position: relative;">
+                <input type="password" id="senha" placeholder="••••••••" required>
+                <img class="toggle-pass" id="toggleSenha" src="pgcomp/compra_imgs/olho.png">
+            </div>
+
+            <label>Confirmar Senha</label>
+            <div class="input-group" style="position: relative;">
+                <input type="password" id="confirmarSenha" placeholder="••••••••" required>
+                <img class="toggle-pass" id="toggleConfirmar" src="pgcomp/compra_imgs/olho.png">
+            </div>
+
+            <!-- Tipo de Conta -->
+            <label>Tipo de Conta</label>
+            <div class="tipo-container">
+                <div class="tipo-btn ativo" id="btnComprador"><img src=""> Comprador</div>
+                <div class="tipo-btn" id="btnVendedor"><img src=""> Vendedor</div>
+            </div>
+
+            <button type="submit">Criar Conta</button>
+
+            <p class="login-link">
+                Já tem uma conta?
+                <a href="login.html">Entrar</a>
+            </p>
+        </form>
+
+    </div>
+
+<script>
+    let tipo = "cliente";
+
+    const btnComprador = document.getElementById("btnComprador");
+    const btnVendedor = document.getElementById("btnVendedor");
+    const empresaCampos = document.getElementById("empresaCampos");
+
+    // Alternar tipo
+    btnComprador.onclick = () => {
+        tipo = "cliente";
+        btnComprador.classList.add("ativo");
+        btnVendedor.classList.remove("ativo");
+        empresaCampos.style.display = "none";
+    };
+
+    btnVendedor.onclick = () => {
+        tipo = "vendedor";
+        btnVendedor.classList.add("ativo");
+        btnComprador.classList.remove("ativo");
+        empresaCampos.style.display = "block";
+    };
+
+    // ====== Envio para o backend ======
+    document.getElementById("formCadastro").addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const nome = document.getElementById("nome").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const senha = document.getElementById("senha").value;
+        const confirmarSenha = document.getElementById("confirmarSenha").value;
+        const telefone = document.getElementById("telefone").value.trim();
+        const endereco = document.getElementById("endereco").value.trim();
+
+        const nome_loja = document.getElementById("nome_loja").value.trim();
+        const endereco_loja = document.getElementById("endereco_loja").value.trim();
+
+        if (senha !== confirmarSenha) {
+            alert("As senhas não coincidem!");
+            return;
+        }
+
+        const payload = {
+            nome,
+            email,
+            senha,
+            telefone,
+            endereco,
+            tipo,
+            nome_loja: tipo === "vendedor" ? nome_loja : "",
+            endereco_loja: tipo === "vendedor" ? endereco_loja : ""
+        };
+        console.log("Tudo lido do input:", payload);
+
+        try {
+            const resposta = await fetch("http://localhost:3000/usuarios", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
+
+            const dados = await resposta.json();
+
+            if (resposta.ok) {
+                alert("Conta criada com sucesso!");
+                window.location.href = "login.html";
+            } else {
+                alert(dados.error || "Erro ao criar conta.");
+            }
+
+        } catch (erro) {
+            console.error("Erro ao cadastrar:", erro);
+            alert(`Erro ao enviar os dados. ${erro}.`);
+        }
+    });
+
+    function configurarToggleSenha(inputId, iconId) {
+        const input = document.getElementById(inputId);
+        const icon = document.getElementById(iconId);
+
+        icon.addEventListener("click", () => {
+            const isPassword = input.type === "password";
+
+            input.type = isPassword ? "text" : "password";
+            icon.src = isPassword
+                ? "pgcomp/compra_imgs/olho-fechado.png"
+                : "pgcomp/compra_imgs/olho.png";
+        });
+    }
+
+    configurarToggleSenha("senha", "toggleSenha");
+    configurarToggleSenha("confirmarSenha", "toggleConfirmar");
+
+</script>
+
+</body>
+</html>
