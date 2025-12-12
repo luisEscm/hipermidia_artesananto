@@ -240,7 +240,7 @@
     background: rgba(0,0,0,0.55);
     align-items: center;
     justify-content: center;
-    z-index: 2000; 
+    z-index: 1000; 
 }
 
 .confirmar_conteudo {
