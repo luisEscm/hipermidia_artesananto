@@ -1,5 +1,5 @@
 import db from '../config/database.js';
-
+//arquivo para popular o banco
 function fmtData(d = new Date()) {
   const y = d.getFullYear();
   const m = String(d.getMonth() + 1).padStart(2, '0');
@@ -9,7 +9,7 @@ function fmtData(d = new Date()) {
 
 const seed = db.transaction(() => {
   console.log('Iniciando limpeza do banco de dados...');
-  // Limpa dados (ordem respeitando FKs para evitar erros de constraint)
+  //reseta o banco
   db.prepare('DELETE FROM Produto_Tags').run();
   db.prepare('DELETE FROM Pedidos').run();
   db.prepare('DELETE FROM Produtos').run();
@@ -17,9 +17,7 @@ const seed = db.transaction(() => {
   db.prepare('DELETE FROM Usuarios').run();
   db.prepare('DELETE FROM Tags').run();
 
-  // ---------------------------------------------------------
-  // 1. TAGS
-  // ---------------------------------------------------------
+  //começara inserindo as tags
   console.log('Inserindo Tags...');
   const tags = [
     'action figure', 'rpg', 'anime', 'feito à mão', 
@@ -30,9 +28,10 @@ const seed = db.transaction(() => {
 
   const getTag = db.prepare('SELECT id FROM Tags WHERE nome = ?');
 
-  // ---------------------------------------------------------
-  // 2. USUÁRIOS
-  // ---------------------------------------------------------
+  
+  //inseri os usuarios vendedor e clientes
+  //nos teste usa esses ou se cadastrar, o sistema não permite entrar sem logar
+
   console.log('Inserindo Usuários...');
   const insUser = db.prepare(`
     INSERT INTO Usuarios (nome, email, senha, tipo, telefone, endereco)
@@ -40,22 +39,20 @@ const seed = db.transaction(() => {
   `);
 
   const usuarios = {
-    // Vendedores
+    ///vendedores
     ana:   insUser.run('Ana Artesã', 'ana@exemplo.com', '123456', 'vendedor', '11999990001', 'Rua das Flores, 10').lastInsertRowid,
     bruno: insUser.run('Bruno Maker', 'bruno@exemplo.com', '123456', 'vendedor', '11999990002', 'Av. Impressão, 200').lastInsertRowid,
     carla: insUser.run('Carla 3D', 'carla@exemplo.com', '123456', 'vendedor', '11999990003', 'Rua Resina, 300').lastInsertRowid,
     fabio: insUser.run('Fábio Pinturas', 'fabio@exemplo.com', '123456', 'vendedor', '11999990006', 'Travessa das Cores, 55').lastInsertRowid, // Novo Vendedor
     
-    // Clientes
+    //clientes
     diego: insUser.run('Diego Cliente', 'diego@exemplo.com', '123456', 'cliente', '11999990004', 'Rua Comprador, 400').lastInsertRowid,
     eva:   insUser.run('Eva Cliente', 'eva@exemplo.com', '123456', 'cliente', '11999990005', 'Av. Cliente, 500').lastInsertRowid,
     gina:  insUser.run('Gina Gamer', 'gina@exemplo.com', '123456', 'cliente', '11999990007', 'Praça dos Jogos, 88').lastInsertRowid, // Novo Cliente
     hugo:  insUser.run('Hugo Colecionador', 'hugo@exemplo.com', '123456', 'cliente', '11999990008', 'Alameda Rara, 99').lastInsertRowid // Novo Cliente
   };
 
-  // ---------------------------------------------------------
-  // 3. PERFIL DE VENDEDOR
-  // ---------------------------------------------------------
+  //perfil vendedor
   const insVend = db.prepare(`
     INSERT INTO Vendedor (usuario_id, nome_loja, endereco_loja)
     VALUES (?, ?, ?)
@@ -68,9 +65,7 @@ const seed = db.transaction(() => {
     fabio: insVend.run(usuarios.fabio, 'Fábio Miniaturas & Cores', 'Travessa das Cores, 55').lastInsertRowid,
   };
 
-  // ---------------------------------------------------------
-  // 4. PRODUTOS (Com imagens reais do Unsplash)
-  // ---------------------------------------------------------
+  //produtos
   console.log('Inserindo Produtos...');
   const insProd = db.prepare(`
     INSERT INTO Produtos (vendedor_id, nome, descricao, preco, quantidade_estoque, url_imagem)
@@ -84,7 +79,7 @@ const seed = db.transaction(() => {
     produtos.push({ id, vendedor_id: vendId, nome, descricao, preco, url_imagem: url, tags });
   }
 
-  // --- Catálogo da Ana (Foco: Artesanato e RPG) ---
+  //adionar produto com vendedor e tags
   addProd(
     vendedores.ana, 
     'Miniatura Elfa Arqueira', 
@@ -110,7 +105,7 @@ const seed = db.transaction(() => {
     ['anime', 'feito à mão']
   );
 
-  // --- Catálogo do Bruno (Foco: Impressão 3D Tecnológica) ---
+ 
   addProd(
     vendedores.bruno, 
     'Cavaleiro 3D Print High-Res', 
@@ -136,7 +131,6 @@ const seed = db.transaction(() => {
     ['anime', 'impressao 3d', 'action figure']
   );
 
-  // --- Catálogo da Carla (Foco: Resina e RPG) ---
   addProd(
     vendedores.carla, 
     'Mago com capa Azul', 
@@ -162,7 +156,6 @@ const seed = db.transaction(() => {
     ['rpg', 'feito à mão', 'acessorios']
   );
 
-  // --- Catálogo do Fábio (Novo Vendedor - Foco: Cenários e Cyberpunk) ---
   addProd(
     vendedores.fabio, 
     'Cenário Ruínas Medievais', 
@@ -188,9 +181,7 @@ const seed = db.transaction(() => {
     ['acessorios', 'rpg', 'impressao 3d']
   );
 
-  // ---------------------------------------------------------
-  // 5. ASSOCIAÇÃO TAGS -> PRODUTOS
-  // ---------------------------------------------------------
+  //associar tag e produto
   console.log('Associando Tags aos Produtos...');
   const insPT = db.prepare('INSERT OR IGNORE INTO Produto_Tags (produto_id, tag_id) VALUES (?, ?)');
   for (const p of produtos) {
@@ -200,9 +191,7 @@ const seed = db.transaction(() => {
     }
   }
 
-  // ---------------------------------------------------------
-  // 6. PEDIDOS
-  // ---------------------------------------------------------
+  //pedidos
   console.log('Gerando Pedidos...');
   const insPed = db.prepare(`
     INSERT INTO Pedidos (comprador_id, vendedor_id, produto_nome, produto_url_imagem, quantidade, preco, valor_total, data_pedido, status)
@@ -216,32 +205,28 @@ const seed = db.transaction(() => {
   const doisMesesAtras = new Date(hoje.getFullYear(), hoje.getMonth() - 2, hoje.getDate());
 
   const pedidos = [
-    // Diego (Cliente Fiel)
-    { comprador: usuarios.diego, prodIdx: 0, qtd: 2, data: doisMesesAtras, status: 'concluido' }, // Elfa
-    { comprador: usuarios.diego, prodIdx: 1, qtd: 1, data: mesPassado, status: 'enviado' },      // Guerreiro
-    { comprador: usuarios.diego, prodIdx: 8, qtd: 3, data: hoje, status: 'processado' },         // Dados RPG
-    { comprador: usuarios.diego, prodIdx: 5, qtd: 1, data: doisMesesAtras, status: 'concluido' }, // Mecha
+    
+    { comprador: usuarios.diego, prodIdx: 0, qtd: 2, data: doisMesesAtras, status: 'concluido' }, 
+    { comprador: usuarios.diego, prodIdx: 1, qtd: 1, data: mesPassado, status: 'enviado' },     
+    { comprador: usuarios.diego, prodIdx: 8, qtd: 3, data: hoje, status: 'processado' },        
+    { comprador: usuarios.diego, prodIdx: 5, qtd: 1, data: doisMesesAtras, status: 'concluido' }, 
 
-    // Eva (Cliente Casual)
-    { comprador: usuarios.eva, prodIdx: 3, qtd: 1, data: mesPassado, status: 'concluido' },      // Knight 3D
-    { comprador: usuarios.eva, prodIdx: 4, qtd: 2, data: hoje, status: 'processado' },           // Dragon Bust
-    { comprador: usuarios.eva, prodIdx: 2, qtd: 1, data: hoje, status: 'enviado' },              // Mascote
-    { comprador: usuarios.eva, prodIdx: 6, qtd: 1, data: mesPassado, status: 'cancelado' },      // Mage Resin (Cancelou)
+    { comprador: usuarios.eva, prodIdx: 3, qtd: 1, data: mesPassado, status: 'concluido' },     
+    { comprador: usuarios.eva, prodIdx: 4, qtd: 2, data: hoje, status: 'processado' },           
+    { comprador: usuarios.eva, prodIdx: 2, qtd: 1, data: hoje, status: 'enviado' },            
+    { comprador: usuarios.eva, prodIdx: 6, qtd: 1, data: mesPassado, status: 'concluido' },     
 
-    // Gina (Cliente Nova - Foco em Cyberpunk e Cenários)
-    { comprador: usuarios.gina, prodIdx: 10, qtd: 1, data: semanaPassada, status: 'concluido' }, // Cyberpunk Bust
-    { comprador: usuarios.gina, prodIdx: 9, qtd: 2, data: ontem, status: 'enviado' },            // Cenário Ruínas
-    { comprador: usuarios.gina, prodIdx: 11, qtd: 1, data: hoje, status: 'pendente' },           // Torre Dados
+    { comprador: usuarios.gina, prodIdx: 10, qtd: 1, data: semanaPassada, status: 'concluido' }, 
+    { comprador: usuarios.gina, prodIdx: 9, qtd: 2, data: ontem, status: 'enviado' },           
+    { comprador: usuarios.gina, prodIdx: 11, qtd: 1, data: hoje, status: 'pendente' },          
 
-    // Hugo (Colecionador - Compra itens caros)
-    { comprador: usuarios.hugo, prodIdx: 10, qtd: 1, data: mesPassado, status: 'devolvido' },    // Cyberpunk Bust (Não gostou)
-    { comprador: usuarios.hugo, prodIdx: 3, qtd: 5, data: doisMesesAtras, status: 'concluido' }, // Knight 3D (Exército)
-    { comprador: usuarios.hugo, prodIdx: 7, qtd: 3, data: hoje, status: 'processado' },          // Chibi Anime
-  ];
-
+   
+    { comprador: usuarios.hugo, prodIdx: 10, qtd: 1, data: mesPassado, status: 'processado' },  
+    { comprador: usuarios.hugo, prodIdx: 3, qtd: 5, data: doisMesesAtras, status: 'concluido' }, 
+    { comprador: usuarios.hugo, prodIdx: 7, qtd: 3, data: hoje, status: 'processado' },        
+  ]
   for (const ped of pedidos) {
     const p = produtos[ped.prodIdx];
-    // Verifica se o produto existe (segurança caso altere o array produtos)
     if (!p) {
         console.warn(`Produto index ${ped.prodIdx} não encontrado para pedido de ${ped.comprador}`);
         continue;

@@ -290,7 +290,7 @@ class Service {
 
   // Cria um novo pedido
   criarPedido(dados) {
-    // Busca dados do produto para congelar no pedido
+    // Busca dados do produto copia para o pedido
     const produto = db.prepare('SELECT * FROM Produtos WHERE id = ?').get(dados.produto_id);
     if (!produto) {
       throw new Error('Produto não encontrado');
@@ -301,7 +301,7 @@ class Service {
     const quantidade = Number(dados.quantidade);
     const total = preco * quantidade;
     
-    // Data atual YYYY-MM-DD
+
     const data = new Date().toISOString().split('T')[0];
     const status = 'processado';
 

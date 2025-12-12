@@ -84,6 +84,7 @@ function initDatabase() {
   `).run();
 
   // pedidos
+  //faaz uma copia de dados simples o produto no momento do pedido
   database.prepare(`
     CREATE TABLE IF NOT EXISTS Pedidos (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
