@@ -211,12 +211,12 @@
 
             const produtosFiltrados = prods.filter(prod => {
 
-                // ===== FILTRO POR TAGS (multi) =====
+                // tags que foram selecionadas
                 const passaTags =
                     filtrosSelecionados.size === 0 ||
                     prod.tags.some(tag => filtrosSelecionados.has(tag));
 
-                // ===== BUSCA SOMENTE PELO NOME =====
+                // texto de busca
                 const passaBusca =
                     textoBusca === "" ||
                     prod.nome.toLowerCase().includes(textoBusca);
@@ -446,6 +446,7 @@
         function sairConta(){
             localStorage.clear()
             window.location.href = "index.html"
+
         }
 
         carregarProdutos();
